@@ -31,6 +31,7 @@
     "@ckeditor/ckeditor5-block-quote": "^26.0.0",
     "@ckeditor/ckeditor5-ckfinder": "^26.0.0",
     "@ckeditor/ckeditor5-cloud-services": "^26.0.0",
+    "@ckeditor/ckeditor5-code-block": "^26.0.0",
     "@ckeditor/ckeditor5-easy-image": "^26.0.0",
     "@ckeditor/ckeditor5-editor-balloon": "^26.0.0",
     "@ckeditor/ckeditor5-essentials": "^26.0.0",

@@ -7,6 +7,7 @@
 import BalloonEditorBase from '@ckeditor/ckeditor5-editor-balloon/src/ballooneditor';
 
 // Custom
+import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock';
 import Mention from '@ckeditor/ckeditor5-mention/src/mention';
 import Mathematics from 'ckeditor5-math/src/math';
 
@@ -74,6 +75,7 @@ BalloonEditor.builtinPlugins = [
 	Mention,
 	ImageResize,
 	Mathematics,
+	CodeBlock,
 ];
 
 // Editor configuration.
@@ -92,6 +94,7 @@ BalloonEditor.defaultConfig = {
 		'insertTable',
 		'mediaEmbed',
 		'math',
+		'codeBlock',
 		'|',
 		'undo',
 		'redo'
