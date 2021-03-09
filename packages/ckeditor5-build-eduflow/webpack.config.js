@@ -46,6 +46,8 @@ module.exports = {
 
 	plugins: [
     new webpack.NormalModuleReplacementPlugin(/pilcrow\.svg/,  '../../ckeditor5-build-eduflow/theme/icons/pilcrow-eduflow.svg'),
+    new webpack.NormalModuleReplacementPlugin(/bulletedlist\.svg/,  '../../ckeditor5-build-eduflow/theme/icons/bulletedlist-eduflow.svg'),
+    new webpack.NormalModuleReplacementPlugin(/numberedlist\.svg/,  '../../ckeditor5-build-eduflow/theme/icons/numberedlist-eduflow.svg'),
 		new CKEditorWebpackPlugin( {
 			// UI language. Language codes follow the https://en.wikipedia.org/wiki/ISO_639-1 format.
 			// When changing the built-in language, remember to also change it in the editor's configuration (src/ckeditor.js).
