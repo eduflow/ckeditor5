@@ -127,8 +127,8 @@ module.exports = {
 			"@peergrade/ckeditor5-build-eduflow/theme/icons/code-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
-			/embed\.svg/,
-			"@peergrade/ckeditor5-build-eduflow/theme/icons/embed-eduflow.svg"
+			/media\.svg/,
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/media-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/image\.svg/,
