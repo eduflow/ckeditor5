@@ -109,13 +109,19 @@ BalloonEditor.defaultConfig = {
 		]
 	},
 	image: {
+		styles: [
+			'alignLeft', 'alignCenter', 'alignRight'
+		],
 		toolbar: [
 			'imageStyle:alignLeft',
 			'imageStyle:alignCenter',
 			'imageStyle:alignRight',
 			'imageTextAlternative',
 			'|',
-			'resizeImage'
+			'resizeImage',
+			'|',
+			'imageTextAlternative',
+			'linkImage'
 		]
 	},
 	table: {
