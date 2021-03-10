@@ -99,34 +99,24 @@ BalloonEditor.defaultConfig = {
 		'codeBlock',
 		'|',
 		'undo',
-		'redo'
+		'redo',
 	],
 	toolbar: {
-		items: [
-			'bold',
-			'italic',
-			'link'
-		]
+		items: ['bold', 'italic', 'link'],
 	},
 	image: {
-		styles: [
-			'alignLeft', 'alignCenter', 'alignRight'
-		],
+		styles: ['alignLeft', 'alignCenter', 'alignRight'],
 		toolbar: [
 			'imageStyle:alignLeft',
 			'imageStyle:alignCenter',
 			'imageStyle:alignRight',
 			'linkImage',
 			'imageTextAlternative',
-			'resizeImage'
-		]
+			'resizeImage',
+		],
 	},
 	table: {
-		contentToolbar: [
-			'tableColumn',
-			'tableRow',
-			'mergeTableCells'
-		]
+		contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells'],
 	},
 	// This value must be kept in sync with the language defined in webpack.config.js.
 	language: 'en',
@@ -137,6 +127,6 @@ BalloonEditor.defaultConfig = {
 		lazyLoad: undefined, // async () => { ... }, called once before render engine missing. After resolution, renders equation.
 		outputType: 'script', // or span
 		forceOutputType: false, // forces output to use outputType
-		enablePreview: true // Enable preview view
-	}
+		enablePreview: true, // Enable preview view
+	},
 };
