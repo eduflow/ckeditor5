@@ -4,5 +4,5 @@
 <path d="M12 11H15" stroke="white" stroke-linecap="round"/>
 <path d="M12 8H15" stroke="white" stroke-linecap="round"/>
 <path d="M12 5H15" stroke="white" stroke-linecap="round"/>
-<rect x="1" y="4" width="8" height="8" rx="2" stroke="white" style="width: 8px; height: 8px;"/>
+<rect x="1" y="4" width="8" height="8" rx="2" stroke="white" style="width: 8px; height: 8px;" fill="none" />
 </svg>
