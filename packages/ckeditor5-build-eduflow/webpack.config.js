@@ -102,6 +102,31 @@ module.exports = {
 			"@peergrade/ckeditor5-build-eduflow/theme/icons/cancel-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
+			/object-left\.svg/,
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/object-left-eduflow.svg"
+		),
+		new webpack.NormalModuleReplacementPlugin(
+			/object-right\.svg/,
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/object-right-eduflow.svg"
+		),
+		new webpack.NormalModuleReplacementPlugin(
+			/object-center\.svg/,
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/object-center-eduflow.svg"
+		),
+		new webpack.NormalModuleReplacementPlugin(
+			/formula\.svg/,
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/formula-eduflow.svg"
+		),
+		// Use formula-eduflow for math.svg (ckeditor5-math's .svg) too
+		new webpack.NormalModuleReplacementPlugin(
+			/math\.svg/,
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/formula-eduflow.svg"
+    ),
+		new webpack.NormalModuleReplacementPlugin(
+			/code\.svg/,
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/code-eduflow.svg"
+		),
+		new webpack.NormalModuleReplacementPlugin(
 			/embed\.svg/,
 			"../../ckeditor5-build-eduflow/theme/icons/embed-eduflow.svg"
 		),
