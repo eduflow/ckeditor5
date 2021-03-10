@@ -10,6 +10,7 @@ import BalloonEditorBase from '@ckeditor/ckeditor5-editor-balloon/src/balloonedi
 import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock';
 import Mention from '@ckeditor/ckeditor5-mention/src/mention';
 import Mathematics from 'ckeditor5-math/src/math';
+import HtmlEmbed from '@ckeditor/ckeditor5-html-embed/src/htmlembed';
 
 // Default
 import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
@@ -78,6 +79,7 @@ BalloonEditor.builtinPlugins = [
 	Mathematics,
 	CodeBlock,
 	LinkImage,
+	HtmlEmbed,
 ];
 
 // Editor configuration.
@@ -97,6 +99,7 @@ BalloonEditor.defaultConfig = {
 		'mediaEmbed',
 		'math',
 		'codeBlock',
+		'htmlEmbed',
 		'|',
 		'undo',
 		'redo',
