@@ -114,7 +114,7 @@ BalloonEditor.defaultConfig = {
 			'imageStyle:alignCenter',
 			'imageStyle:alignRight',
 			'imageTextAlternative'
-		],
+		]
 	},
 	table: {
 		contentToolbar: [
