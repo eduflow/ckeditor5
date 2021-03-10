@@ -51,19 +51,19 @@ module.exports = {
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/bold\.svg/,
-			"../../ckeditor5-build-eduflow/theme/icons/bold-eduflow.svg"
+			"../../../ckeditor5-build-eduflow/theme/icons/bold-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/italic\.svg/,
-			"../../ckeditor5-build-eduflow/theme/icons/italic-eduflow.svg"
+			"../../../ckeditor5-build-eduflow/theme/icons/italic-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/underline\.svg/,
-			"../../ckeditor5-build-eduflow/theme/icons/underline-eduflow.svg"
+			"../../../ckeditor5-build-eduflow/theme/icons/underline-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/strikethough\.svg/,
-			"../../ckeditor5-build-eduflow/theme/icons/strikethrough-eduflow.svg"
+			"../../../ckeditor5-build-eduflow/theme/icons/strikethrough-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/bulletedlist\.svg/,
@@ -74,12 +74,12 @@ module.exports = {
 			"../../ckeditor5-build-eduflow/theme/icons/numberedlist-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
-			/link\.svg/,
-			"../../ckeditor5-build-eduflow/theme/icons/link-eduflow.svg"
+			/\/link\.svg/,
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/link-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
-			/unlink\.svg/,
-			"../../ckeditor5-build-eduflow/theme/icons/unlink-eduflow.svg"
+			/\/unlink\.svg/,
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/unlink-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/horizontalline\.svg/,
@@ -95,11 +95,11 @@ module.exports = {
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/check\.svg/,
-			"../../ckeditor5-build-eduflow/theme/icons/check-eduflow.svg"
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/check-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/cancel\.svg/,
-			"../../ckeditor5-build-eduflow/theme/icons/cancel-eduflow.svg"
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/cancel-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/embed\.svg/,
