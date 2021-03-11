@@ -43,8 +43,10 @@ import HtmlEmbed from '@ckeditor/ckeditor5-html-embed/src/htmlembed';
 import HorizontalLine from '@ckeditor/ckeditor5-horizontal-line/src/horizontalline';
 import Mention from '@ckeditor/ckeditor5-mention/src/mention';
 import Mathematics from 'ckeditor5-math/src/math';
+import Strikethrough from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
 import TableProperties from '@ckeditor/ckeditor5-table/src/tableproperties';
 import TableCellProperties from '@ckeditor/ckeditor5-table/src/tablecellproperties';
+import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline';
 
 import '../theme/theme.css';
 
@@ -87,8 +89,10 @@ const plugins = [
 	Highlight,
 	HtmlEmbed,
 	ImageResize,
+	Strikethrough,
 	TableProperties,
 	TableCellProperties,
+	Underline,
 ];
 
 BalloonEditor.builtinPlugins = plugins;

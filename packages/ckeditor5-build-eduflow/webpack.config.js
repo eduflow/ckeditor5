@@ -125,6 +125,10 @@ module.exports = {
 		new webpack.NormalModuleReplacementPlugin(
 			/code\.svg/,
 			"@peergrade/ckeditor5-build-eduflow/theme/icons/code-eduflow.svg"
+    ),
+		new webpack.NormalModuleReplacementPlugin(
+			/codeblock\.svg/,
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/code-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/media\.svg/,
