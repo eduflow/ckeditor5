@@ -6,12 +6,6 @@
 // The editor creator to use.
 import BalloonEditorBase from '@ckeditor/ckeditor5-editor-balloon/src/ballooneditor';
 
-// Custom
-import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock';
-import Mention from '@ckeditor/ckeditor5-mention/src/mention';
-import Mathematics from 'ckeditor5-math/src/math';
-import HtmlEmbed from '@ckeditor/ckeditor5-html-embed/src/htmlembed';
-
 // Default
 import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
 import UploadAdapter from '@ckeditor/ckeditor5-adapter-ckfinder/src/uploadadapter';
@@ -40,6 +34,14 @@ import Table from '@ckeditor/ckeditor5-table/src/table';
 import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
 import TextTransformation from '@ckeditor/ckeditor5-typing/src/texttransformation';
 import CloudServices from '@ckeditor/ckeditor5-cloud-services/src/cloudservices';
+
+// Custom
+import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock';
+import Mention from '@ckeditor/ckeditor5-mention/src/mention';
+import Mathematics from 'ckeditor5-math/src/math';
+import HtmlEmbed from '@ckeditor/ckeditor5-html-embed/src/htmlembed';
+import TableProperties from '@ckeditor/ckeditor5-table/src/tableproperties';
+import TableCellProperties from '@ckeditor/ckeditor5-table/src/tablecellproperties';
 
 import '../theme/theme.css';
 
@@ -80,6 +82,8 @@ BalloonEditor.builtinPlugins = [
 	CodeBlock,
 	LinkImage,
 	HtmlEmbed,
+	TableProperties,
+	TableCellProperties,
 ];
 
 // Editor configuration.
@@ -119,7 +123,13 @@ BalloonEditor.defaultConfig = {
 		],
 	},
 	table: {
-		contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells'],
+		contentToolbar: [
+			'tableColumn',
+			'tableRow',
+			'mergeTableCells',
+			'tableProperties',
+			'tableCellProperties',
+		],
 	},
 	// This value must be kept in sync with the language defined in webpack.config.js.
 	language: 'en',
