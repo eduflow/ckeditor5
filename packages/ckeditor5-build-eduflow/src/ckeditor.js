@@ -88,6 +88,7 @@ const plugins = [
 	ImageResize,
 	Strikethrough,
 	Underline,
+	HorizontalLine,
 ];
 
 BalloonEditor.builtinPlugins =
