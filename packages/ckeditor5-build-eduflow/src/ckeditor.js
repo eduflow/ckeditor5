@@ -152,4 +152,4 @@ const config = {
 BalloonEditor.defaultConfig = config;
 ClassicEditor.defaultConfig = config;
 
-export default { ClassicEditor, BalloonEditor };
+export default { BalloonEditor, ClassicEditor };
