@@ -58,7 +58,6 @@ const plugins = [
 	Essentials,
 	UploadAdapter,
 	Autoformat,
-	BlockToolbar,
 	Bold,
 	Italic,
 	BlockQuote,
@@ -77,8 +76,6 @@ const plugins = [
 	MediaEmbed,
 	Paragraph,
 	PasteFromOffice,
-	Table,
-	TableToolbar,
 	TextTransformation,
 
 	// ADDED
@@ -90,16 +87,55 @@ const plugins = [
 	HtmlEmbed,
 	ImageResize,
 	Strikethrough,
-	TableProperties,
-	TableCellProperties,
 	Underline,
 ];
 
-BalloonEditor.builtinPlugins = plugins;
+BalloonEditor.builtinPlugins =
+	plugins +
+	[
+		BlockToolbar,
+		Table,
+		TableToolbar,
+
+		// ADDED
+		TableProperties,
+		TableCellProperties,
+	];
 ClassicEditor.builtinPlugins = plugins;
 
 // Editor configuration.
 const config = {
+	// This value must be kept in sync with the language defined in webpack.config.js.
+	language: 'en',
+
+	toolbar: {
+		items: ['bold', 'italic', 'underline', 'highlight', 'link', 'code'],
+	},
+
+	image: {
+		styles: ['alignLeft', 'alignCenter', 'alignRight'],
+		toolbar: [
+			'imageStyle:alignLeft',
+			'imageStyle:alignCenter',
+			'imageStyle:alignRight',
+			'linkImage',
+			'imageTextAlternative',
+			'resizeImage',
+		],
+	},
+
+	// Custom
+	math: {
+		engine: 'katex', // or katex or function. E.g. (equation, element, display) => { ... }
+		lazyLoad: undefined, // async () => { ... }, called once before render engine missing. After resolution, renders equation.
+		outputType: 'script', // or span
+		forceOutputType: false, // forces output to use outputType
+		enablePreview: true, // Enable preview view
+	},
+};
+
+BalloonEditor.defaultConfig = {
+	...config,
 	blockToolbar: [
 		'heading',
 		'|',
@@ -115,20 +151,6 @@ const config = {
 		'codeBlock',
 		'htmlEmbed',
 	],
-	toolbar: {
-		items: ['bold', 'italic', 'underline', 'highlight', 'link', 'code'],
-	},
-	image: {
-		styles: ['alignLeft', 'alignCenter', 'alignRight'],
-		toolbar: [
-			'imageStyle:alignLeft',
-			'imageStyle:alignCenter',
-			'imageStyle:alignRight',
-			'linkImage',
-			'imageTextAlternative',
-			'resizeImage',
-		],
-	},
 	table: {
 		contentToolbar: [
 			'tableColumn',
@@ -138,20 +160,8 @@ const config = {
 			'tableCellProperties',
 		],
 	},
-	// This value must be kept in sync with the language defined in webpack.config.js.
-	language: 'en',
-
-	// Custom
-	math: {
-		engine: 'katex', // or katex or function. E.g. (equation, element, display) => { ... }
-		lazyLoad: undefined, // async () => { ... }, called once before render engine missing. After resolution, renders equation.
-		outputType: 'script', // or span
-		forceOutputType: false, // forces output to use outputType
-		enablePreview: true, // Enable preview view
-	},
 };
 
-BalloonEditor.defaultConfig = config;
 ClassicEditor.defaultConfig = {
 	...config,
 	toolbar: {
