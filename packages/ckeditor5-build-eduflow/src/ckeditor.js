@@ -3,8 +3,9 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
-// The editor creator to use.
+// The editor creator(s) to use.
 import BalloonEditorBase from '@ckeditor/ckeditor5-editor-balloon/src/ballooneditor';
+import ClassicEditorBase from '@ckeditor/ckeditor5-editor-classic/src/classiceditor'; // custom
 
 // Default
 import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
@@ -45,10 +46,11 @@ import TableCellProperties from '@ckeditor/ckeditor5-table/src/tablecellproperti
 
 import '../theme/theme.css';
 
-export default class BalloonEditor extends BalloonEditorBase {}
+class BalloonEditor extends BalloonEditorBase {}
+class ClassicEditor extends ClassicEditorBase {}
 
 // Plugins to include in the build.
-BalloonEditor.builtinPlugins = [
+const plugins = [
 	Essentials,
 	UploadAdapter,
 	Autoformat,
@@ -86,8 +88,11 @@ BalloonEditor.builtinPlugins = [
 	TableCellProperties,
 ];
 
+BalloonEditor.builtinPlugins = plugins;
+ClassicEditor.builtinPlugins = plugins;
+
 // Editor configuration.
-BalloonEditor.defaultConfig = {
+const config = {
 	blockToolbar: [
 		'heading',
 		'|',
@@ -143,3 +148,8 @@ BalloonEditor.defaultConfig = {
 		enablePreview: true, // Enable preview view
 	},
 };
+
+BalloonEditor.defaultConfig = config;
+ClassicEditor.defaultConfig = config;
+
+export default { ClassicEditor, BalloonEditor };
