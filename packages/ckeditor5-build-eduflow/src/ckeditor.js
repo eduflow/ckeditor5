@@ -38,9 +38,11 @@ import CloudServices from '@ckeditor/ckeditor5-cloud-services/src/cloudservices'
 
 // Custom
 import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock';
+import Highlight from '@ckeditor/ckeditor5-highlight/src/highlight';
+import HtmlEmbed from '@ckeditor/ckeditor5-html-embed/src/htmlembed';
+import HorizontalLine from '@ckeditor/ckeditor5-horizontal-line/src/horizontalline';
 import Mention from '@ckeditor/ckeditor5-mention/src/mention';
 import Mathematics from 'ckeditor5-math/src/math';
-import HtmlEmbed from '@ckeditor/ckeditor5-html-embed/src/htmlembed';
 import TableProperties from '@ckeditor/ckeditor5-table/src/tableproperties';
 import TableCellProperties from '@ckeditor/ckeditor5-table/src/tablecellproperties';
 
@@ -78,12 +80,13 @@ const plugins = [
 	TextTransformation,
 
 	// ADDED
-	Mention,
-	ImageResize,
-	Mathematics,
 	CodeBlock,
 	LinkImage,
+	Mathematics,
+	Mention,
+	Highlight,
 	HtmlEmbed,
+	ImageResize,
 	TableProperties,
 	TableCellProperties,
 ];
@@ -98,23 +101,18 @@ const config = {
 		'|',
 		'bulletedList',
 		'numberedList',
-		'|',
-		'outdent',
-		'indent',
-		'|',
-		'uploadImage',
+		'horizontalLine',
 		'blockQuote',
 		'insertTable',
+		'|',
+		'uploadImage',
 		'mediaEmbed',
 		'math',
 		'codeBlock',
 		'htmlEmbed',
-		'|',
-		'undo',
-		'redo',
 	],
 	toolbar: {
-		items: ['bold', 'italic', 'link'],
+		items: ['bold', 'italic', 'underline', 'highlight', 'link', 'code'],
 	},
 	image: {
 		styles: ['alignLeft', 'alignCenter', 'alignRight'],
@@ -150,6 +148,27 @@ const config = {
 };
 
 BalloonEditor.defaultConfig = config;
-ClassicEditor.defaultConfig = config;
+ClassicEditor.defaultConfig = {
+	...config,
+	toolbar: {
+		items: [
+			'bold',
+			'italic',
+			'underline',
+			'strikethrough',
+			'highlight',
+			'link',
+			'|',
+			'bulletedList',
+			'numberedList',
+			'|',
+			'uploadImage',
+			'mediaEmbed',
+			'math',
+			'|',
+			'codeBlock',
+		],
+	},
+};
 
 export default { BalloonEditor, ClassicEditor };
