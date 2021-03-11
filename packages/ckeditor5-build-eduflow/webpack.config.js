@@ -3,41 +3,36 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
-'use strict';
+"use strict";
 
 /* eslint-env node */
 
-const path = require('path');
-const webpack = require('webpack');
-const { bundler, styles } = require('@ckeditor/ckeditor5-dev-utils');
-const CKEditorWebpackPlugin = require('@ckeditor/ckeditor5-dev-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
+const path = require("path");
+const webpack = require("webpack");
+const { bundler, styles } = require("@ckeditor/ckeditor5-dev-utils");
+const CKEditorWebpackPlugin = require("@ckeditor/ckeditor5-dev-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
-	devtool: 'source-map',
+	devtool: "source-map",
 	performance: { hints: false },
 
-	entry: {
-		ckeditor: path.resolve(__dirname, 'src', 'ckeditor.js'),
-		'ckeditor.min': path.resolve(__dirname, 'src', 'ckeditor.js'),
-	},
+	entry: path.resolve(__dirname, "src", "ckeditor.js"),
 
 	output: {
 		// The name under which the editor will be exported.
-		library: 'CKEDITOR',
+		library: "CKEDITOR",
 
-		path: path.resolve(__dirname, 'build'),
-		filename: '[name].js',
-		libraryTarget: 'umd',
-		libraryExport: 'default',
+		path: path.resolve(__dirname, "build"),
+		filename: "ckeditor.js",
+		libraryTarget: "umd",
+		libraryExport: "default",
 	},
 
 	optimization: {
 		minimizer: [
 			new TerserPlugin({
 				sourceMap: true,
-				include: /\.min\.js$/,
-
 				terserOptions: {
 					output: {
 						// Preserve CKEditor 5 license comments.
@@ -52,107 +47,107 @@ module.exports = {
 	plugins: [
 		new webpack.NormalModuleReplacementPlugin(
 			/pilcrow\.svg/,
-			'@peergrade/ckeditor5-build-eduflow/theme/icons/pilcrow-eduflow.svg'
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/pilcrow-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/bold\.svg/,
-			'@peergrade/ckeditor5-build-eduflow/theme/icons/bold-eduflow.svg'
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/bold-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/italic\.svg/,
-			'@peergrade/ckeditor5-build-eduflow/theme/icons/italic-eduflow.svg'
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/italic-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/underline\.svg/,
-			'@peergrade/ckeditor5-build-eduflow/theme/icons/underline-eduflow.svg'
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/underline-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/strikethough\.svg/,
-			'@peergrade/ckeditor5-build-eduflow/theme/icons/strikethrough-eduflow.svg'
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/strikethrough-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/bulletedlist\.svg/,
-			'@peergrade/ckeditor5-build-eduflow/theme/icons/bulletedlist-eduflow.svg'
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/bulletedlist-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/numberedlist\.svg/,
-			'@peergrade/ckeditor5-build-eduflow/theme/icons/numberedlist-eduflow.svg'
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/numberedlist-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/\/link\.svg/,
-			'@peergrade/ckeditor5-build-eduflow/theme/icons/link-eduflow.svg'
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/link-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/\/unlink\.svg/,
-			'@peergrade/ckeditor5-build-eduflow/theme/icons/unlink-eduflow.svg'
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/unlink-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/horizontalline\.svg/,
-			'@peergrade/ckeditor5-build-eduflow/theme/icons/horizontalline-eduflow.svg'
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/horizontalline-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/quote\.svg/,
-			'@peergrade/ckeditor5-build-eduflow/theme/icons/quote-eduflow.svg'
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/quote-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/table\.svg/,
-			'@peergrade/ckeditor5-build-eduflow/theme/icons/table-eduflow.svg'
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/table-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/check\.svg/,
-			'@peergrade/ckeditor5-build-eduflow/theme/icons/check-eduflow.svg'
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/check-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/cancel\.svg/,
-			'@peergrade/ckeditor5-build-eduflow/theme/icons/cancel-eduflow.svg'
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/cancel-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/object-left\.svg/,
-			'@peergrade/ckeditor5-build-eduflow/theme/icons/object-left-eduflow.svg'
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/object-left-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/object-right\.svg/,
-			'@peergrade/ckeditor5-build-eduflow/theme/icons/object-right-eduflow.svg'
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/object-right-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/object-center\.svg/,
-			'@peergrade/ckeditor5-build-eduflow/theme/icons/object-center-eduflow.svg'
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/object-center-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/formula\.svg/,
-			'@peergrade/ckeditor5-build-eduflow/theme/icons/formula-eduflow.svg'
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/formula-eduflow.svg"
 		),
 		// Use formula-eduflow for math.svg (ckeditor5-math's .svg) too
 		new webpack.NormalModuleReplacementPlugin(
 			/math\.svg/,
-			'@peergrade/ckeditor5-build-eduflow/theme/icons/formula-eduflow.svg'
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/formula-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/code\.svg/,
-			'@peergrade/ckeditor5-build-eduflow/theme/icons/code-eduflow.svg'
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/code-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/media\.svg/,
-			'@peergrade/ckeditor5-build-eduflow/theme/icons/media-eduflow.svg'
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/media-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/image\.svg/,
-			'@peergrade/ckeditor5-build-eduflow/theme/icons/image-eduflow.svg'
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/image-eduflow.svg"
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/marker\.svg/,
-			'@peergrade/ckeditor5-build-eduflow/theme/icons/marker-eduflow.svg'
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/marker-eduflow.svg"
 		),
 		// Use this for pen too
 		new webpack.NormalModuleReplacementPlugin(
 			/pen\.svg/,
-			'@peergrade/ckeditor5-build-eduflow/theme/icons/marker-eduflow.svg'
+			"@peergrade/ckeditor5-build-eduflow/theme/icons/marker-eduflow.svg"
 		),
 		new CKEditorWebpackPlugin({
 			// UI language. Language codes follow the https://en.wikipedia.org/wiki/ISO_639-1 format.
 			// When changing the built-in language, remember to also change it in the editor's configuration (src/ckeditor.js).
-			language: 'en',
-			additionalLanguages: 'all',
+			language: "en",
+			additionalLanguages: "all",
 		}),
 		new webpack.BannerPlugin({
 			banner: bundler.getLicenseBanner(),
@@ -164,26 +159,26 @@ module.exports = {
 		rules: [
 			{
 				test: /\.svg$/,
-				use: ['raw-loader'],
+				use: ["raw-loader"],
 			},
 			{
 				test: /\.css$/,
 				use: [
 					{
-						loader: 'style-loader',
+						loader: "style-loader",
 						options: {
-							injectType: 'singletonStyleTag',
+							injectType: "singletonStyleTag",
 							attributes: {
-								'data-cke': true,
+								"data-cke": true,
 							},
 						},
 					},
 					{
-						loader: 'postcss-loader',
+						loader: "postcss-loader",
 						options: styles.getPostCssConfig({
 							themeImporter: {
 								themePath: require.resolve(
-									'@ckeditor/ckeditor5-theme-lark'
+									"@ckeditor/ckeditor5-theme-lark"
 								),
 							},
 							minify: true,

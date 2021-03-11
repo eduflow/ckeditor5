@@ -1,6 +1,6 @@
 {
   "name": "@peergrade/ckeditor5-build-eduflow",
-  "version": "26.0.0-next.29",
+  "version": "26.0.0-next.28",
   "description": "The balloon editor build of CKEditor 5 with a block toolbar – the best browser-based rich text editor.",
   "keywords": [
     "wysiwyg",
