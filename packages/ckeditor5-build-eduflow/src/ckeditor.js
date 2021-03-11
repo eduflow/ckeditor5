@@ -54,11 +54,11 @@ class BalloonEditor extends BalloonEditorBase {}
 class ClassicEditor extends ClassicEditorBase {}
 
 // Plugins to include in the build.
-const essentialPlugins = [Essentials];
-
 const plugins = [
+	Essentials,
 	UploadAdapter,
 	Autoformat,
+	BlockToolbar,
 	Bold,
 	Italic,
 	BlockQuote,
@@ -88,20 +88,14 @@ const plugins = [
 	HtmlEmbed,
 	ImageResize,
 	Strikethrough,
+	Table,
+	TableToolbar,
 	Underline,
 	HorizontalLine,
 ];
 
-BalloonEditor.builtinPlugins =
-	essentialPlugins +
-	[BlockToolbar, Table, TableToolbar] +
-	plugins +
-	[
-		// ADDED
-		TableProperties,
-		TableCellProperties,
-	];
-ClassicEditor.builtinPlugins = essentialPlugins + plugins;
+BalloonEditor.builtinPlugins = plugins;
+ClassicEditor.builtinPlugins = plugins;
 
 // Editor configuration.
 const config = {
