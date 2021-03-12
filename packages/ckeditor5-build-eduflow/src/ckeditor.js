@@ -90,6 +90,8 @@ const plugins = [
 	Strikethrough,
 	Table,
 	TableToolbar,
+	TableProperties,
+	TableCellProperties,
 	Underline,
 	HorizontalLine,
 ];
