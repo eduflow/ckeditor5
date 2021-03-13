@@ -217,7 +217,7 @@ class Media {
 		if ( options.renderForEditingView || ( options.renderMediaPreview && this.url && this._previewRenderer ) ) {
 			if ( this.url ) {
 				attributes[ 'data-oembed-url' ] = this.url;
-				attributes[ 'src' ] = this.url;
+				attributes[ 'url' ] = this.url;
 			}
 
 			if ( options.renderForEditingView ) {
