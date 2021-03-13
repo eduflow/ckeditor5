@@ -216,7 +216,7 @@ export default class MediaEmbedEditing extends Plugin {
 			// Upcast semantic media.
 			.elementToElement( {
 				view: {
-					name: 'oembed',
+					name: 'o-embed',
 					attributes: {
 						url: true
 					}
