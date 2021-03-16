@@ -117,8 +117,6 @@ const config = {
 			'imageStyle:alignCenter',
 			'imageStyle:alignRight',
 			'linkImage',
-			'imageTextAlternative',
-			'resizeImage',
 		],
 	},
 
