@@ -107,7 +107,15 @@ const config = {
 	language: 'en',
 
 	toolbar: {
-		items: ['bold', 'italic', 'underline', 'highlight', 'link', 'code'],
+		items: [
+			'bold',
+			'italic',
+			'underline',
+			'strikethrough',
+			'highlight',
+			'link',
+			'code',
+		],
 	},
 
 	image: {
