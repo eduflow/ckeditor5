@@ -121,6 +121,11 @@ export default class IconView extends View {
 			this.element.querySelectorAll( '.ck-icon__fill' ).forEach( path => {
 				path.style.fill = this.fillColor;
 			} );
+			// See https://github.com/ckeditor/ckeditor5/issues/9310
+			// Support passing highlight/pen colors to stroke attribute
+			this.element.querySelectorAll( '.ck-icon__stroke' ).forEach( path => {
+				path.style.stroke = this.fillColor;
+			} );
 		}
 	}
 }
