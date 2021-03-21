@@ -139,6 +139,10 @@ module.exports = {
 			'@peergrade/ckeditor5-build-eduflow/theme/icons/image-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
+			/eraser\.svg/,
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/eraser-eduflow.svg'
+		),
+		new webpack.NormalModuleReplacementPlugin(
 			/marker\.svg/,
 			'@peergrade/ckeditor5-build-eduflow/theme/icons/marker-eduflow.svg'
 		),
