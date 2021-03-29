@@ -1,6 +1,6 @@
 {
   "name": "@peergrade/ckeditor5-build-eduflow",
-  "version": "26.0.0-next.51",
+  "version": "26.0.0-next.53",
   "description": "The balloon editor build of CKEditor 5 with a block toolbar – the best browser-based rich text editor.",
   "keywords": [
     "wysiwyg",
@@ -34,11 +34,11 @@
     "@ckeditor/ckeditor5-code-block": "^26.0.0",
     "@ckeditor/ckeditor5-easy-image": "^26.0.0",
     "@ckeditor/ckeditor5-editor-balloon": "^26.0.0",
+    "@ckeditor/ckeditor5-editor-classic": "^26.0.0",
     "@ckeditor/ckeditor5-essentials": "^26.0.0",
     "@ckeditor/ckeditor5-heading": "^26.0.0",
     "@ckeditor/ckeditor5-highlight": "^26.0.0",
     "@ckeditor/ckeditor5-horizontal-line": "^26.0.0",
-    "@ckeditor/ckeditor5-html-embed": "^26.0.0",
     "@ckeditor/ckeditor5-image": "^26.0.0",
     "@ckeditor/ckeditor5-indent": "^26.0.0",
     "@ckeditor/ckeditor5-link": "^26.0.0",
@@ -56,7 +56,6 @@
     "@ckeditor/ckeditor5-core": "^26.0.0",
     "@ckeditor/ckeditor5-dev-utils": "^24.4.0",
     "@ckeditor/ckeditor5-dev-webpack-plugin": "^24.4.0",
-    "@ckeditor/ckeditor5-editor-classic": "^26.0.0",
     "@ckeditor/ckeditor5-theme-lark": "^26.0.0",
     "postcss-loader": "^3.0.0",
     "raw-loader": "^4.0.1",
