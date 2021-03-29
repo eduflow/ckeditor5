@@ -1,6 +1,144 @@
 Changelog
 =========
 
+## [27.0.0](https://github.com/ckeditor/ckeditor5/compare/v26.0.0...v27.0.0) (2021-03-22)
+
+### Release highlights
+
+We are happy to announce the release of CKEditor 5 v27.0.0.
+
+Starting from this version, collaboration features release notes will be included in the CKEditor 5 changelog. Changes for the previous releases are available on https://ckeditor.com/collaboration/changelog/.
+
+This release introduces some new features:
+
+* The new [text part language](https://github.com/ckeditor/ckeditor5/issues/8989) feature allows you to define the language for each passage of content written in multiple languages. This helps satisfy the WCAG Success Criterion 3.1.2 Language of Parts.
+* Support for [drag and dropping of textual content and block objects](https://ckeditor.com/docs/ckeditor5/latest/features/pasting/drag-drop.html) (like images and tables) within the editor.
+* Support for [dropping HTML content from outside of the editor](https://ckeditor.com/docs/ckeditor5/latest/features/pasting/drag-drop.html) into the editor.
+* [Alignment can now be set using classes](https://github.com/ckeditor/ckeditor5/issues/8516).
+* [Typing `[x]` will now insert a checked to-do list item](https://github.com/ckeditor/ckeditor5/issues/8877).
+* Support for [bubbling of `view.Document` events](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/deep-dive/event-system.html#view-events-bubbling).
+
+<!-- TODO: Read more in the blog post: [URL]. -->
+
+### MAJOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)
+
+**Note:** Check out the [Migration to CKEditor 5 v27.0.0](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/migration/migration-to-27.0.0.html) guide for more detailed information on how to upgrade to this version.
+
+* **[clipboard](https://www.npmjs.com/package/@ckeditor/ckeditor5-clipboard)**: The `inputTransformation` event is no longer fired by the `Clipboard` plugin. Now the `ClipboardPipeline` plugin is responsible for firing this event (see [#9128](https://github.com/ckeditor/ckeditor5/issues/9128)).
+* **[clipboard](https://www.npmjs.com/package/@ckeditor/ckeditor5-clipboard)**: The `clipboardInput` and `inputTransformation` events should not be fired or stopped in the feature code. The `data.content` property should be assigned to override the default content instead. You can stop this event only if you want to completely disable pasting or dropping of some content. [Read more about the clipboard pipeline in the migration to v27.0.0 guide](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/migration/migration-to-27.0.0.html#clipboard-input-pipeline-integration). See [#9128](https://github.com/ckeditor/ckeditor5/issues/9128).
+* Introduced bubbling of the `view.Document` events, similar to how bubbling works in the DOM. This allowed us to re-prioritize many listeners that previously had to rely on the `priority` property. However, it means that existing listeners that use priorities may now be executed at a wrong time. The listeners to such events should be reviewed in terms of when they should be executed (in what context/element/phase). [Read more about event bubbling in the migration to v27.0.0 guide](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/migration/migration-to-27.0.0.html#the-viewdocument-event-bubbling). See [#8640](https://github.com/ckeditor/ckeditor5/issues/8640).
+
+### Features
+
+* **[alignment](https://www.npmjs.com/package/@ckeditor/ckeditor5-alignment)**: Introduced an option to use classes instead of inline styles. Closes [#8516](https://github.com/ckeditor/ckeditor5/issues/8516). ([commit](https://github.com/ckeditor/ckeditor5/commit/638543bd6d3f1e1c1ffc864e4d4007744fffc62c))
+* **[autoformat](https://www.npmjs.com/package/@ckeditor/ckeditor5-autoformat)**: Typing `[x]` will insert a checked to-do list item. Closes [#8877](https://github.com/ckeditor/ckeditor5/issues/8877). ([commit](https://github.com/ckeditor/ckeditor5/commit/18be7dabaf62c763bd3272fc8467aec0ae94ac98))
+* **[clipboard](https://www.npmjs.com/package/@ckeditor/ckeditor5-clipboard)**: Implemented basic support for content drag and drop. Closes [#9128](https://github.com/ckeditor/ckeditor5/issues/9128). ([commit](https://github.com/ckeditor/ckeditor5/commit/8461da5fd6d3e050b8fd15aecf4527a83d0899af))
+* **[clipboard](https://www.npmjs.com/package/@ckeditor/ckeditor5-clipboard)**: The `contentInsertion` event is fired from `ClipboardPipeline` to enable customization of content insertion (see [#9128](https://github.com/ckeditor/ckeditor5/issues/9128)). ([commit](https://github.com/ckeditor/ckeditor5/commit/8461da5fd6d3e050b8fd15aecf4527a83d0899af))
+* **[core](https://www.npmjs.com/package/@ckeditor/ckeditor5-core)**: Created the universal caption icon. Closes [#9196](https://github.com/ckeditor/ckeditor5/issues/9196). ([commit](https://github.com/ckeditor/ckeditor5/commit/6dce730c27db063c13c71d363458731cb57faac9))
+* **[engine](https://www.npmjs.com/package/@ckeditor/ckeditor5-engine)**: Introduced bubbling of the `view.Document` events, similar to how bubbling works in the DOM. Bubbling allows listening on a view event on a specific kind of element, hence simplifying code that needs to handle a specific event for only that element (e.g. `enter` in `blockquote` elements only). Read more in the [Event system deep-dive guide](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/deep-dive/event-system.html). Closes [#8640](https://github.com/ckeditor/ckeditor5/issues/8640). ([commit](https://github.com/ckeditor/ckeditor5/commit/5527283324ad8bef5231acde0e49f9fc78df9c90))
+* **[engine](https://www.npmjs.com/package/@ckeditor/ckeditor5-engine)**: Introduced `ArrowKeysObserver`. See [#8640](https://github.com/ckeditor/ckeditor5/issues/8640). ([commit](https://github.com/ckeditor/ckeditor5/commit/5527283324ad8bef5231acde0e49f9fc78df9c90))
+* **[language](https://www.npmjs.com/package/@ckeditor/ckeditor5-language)**: Added support for setting the text part language. Closes [#8989](https://github.com/ckeditor/ckeditor5/issues/8989).
+
+### Bug fixes
+
+* **[engine](https://www.npmjs.com/package/@ckeditor/ckeditor5-engine)**: `DataController#toView()` should have a default value for the `options` parameter. Closes [#9293](https://github.com/ckeditor/ckeditor5/issues/9293). ([commit](https://github.com/ckeditor/ckeditor5/commit/f77a3d57bddb96ae3280736f974cfd0b148611cb))
+* **[highlight](https://www.npmjs.com/package/@ckeditor/ckeditor5-highlight)** The remove highlight button now also gets disabled along with the main highlight command. Closes [#9174](https://github.com/ckeditor/ckeditor5/issues/9174). ([commit](https://github.com/ckeditor/ckeditor5/commit/04acdfec9e7ee4b38daa1ef372e201f535d960fc))
+* **[utils](https://www.npmjs.com/package/@ckeditor/ckeditor5-utils)**: The `EmitterMixin#listenTo()` method is split into listener and emitter parts. The `ObservableMixin` decorated methods reverted to the original method while destroying an observable. ([commit](https://github.com/ckeditor/ckeditor5/commit/5527283324ad8bef5231acde0e49f9fc78df9c90))
+
+### Other changes
+
+* **[clipboard](https://www.npmjs.com/package/@ckeditor/ckeditor5-clipboard)**: The paste as plain text feature was extracted to the dedicated `PastePlainText` plugin (see [#9128](https://github.com/ckeditor/ckeditor5/issues/9128)). ([commit](https://github.com/ckeditor/ckeditor5/commit/8461da5fd6d3e050b8fd15aecf4527a83d0899af))
+* **[engine](https://www.npmjs.com/package/@ckeditor/ckeditor5-engine)**: The `mouseup` event is fired by the `MouseObserver` (see [#9128](https://github.com/ckeditor/ckeditor5/issues/9128)). ([commit](https://github.com/ckeditor/ckeditor5/commit/8461da5fd6d3e050b8fd15aecf4527a83d0899af))
+* **[table](https://www.npmjs.com/package/@ckeditor/ckeditor5-table)**: The `mouseup` event is no longer fired by the `MouseEventsObserver` from the `@ckeditor/ckeditor5-table` package (now handled by `MouseObserver`) (see [#9128](https://github.com/ckeditor/ckeditor5/issues/9128)). ([commit](https://github.com/ckeditor/ckeditor5/commit/8461da5fd6d3e050b8fd15aecf4527a83d0899af))
+* **[typing](https://www.npmjs.com/package/@ckeditor/ckeditor5-typing)**: The `TwoStepCaretMovement` feature is now using bubbling events. Closes [#7437](https://github.com/ckeditor/ckeditor5/issues/7437). ([commit](https://github.com/ckeditor/ckeditor5/commit/5527283324ad8bef5231acde0e49f9fc78df9c90))
+* **[utils](https://www.npmjs.com/package/@ckeditor/ckeditor5-utils)**: Added the `language.getLanguageDirection` helper function allowing to determine the text direction based on the language code. ([commit](https://github.com/ckeditor/ckeditor5/commit/9f1b10fc8efd61b4bf9f4234c8d8b84e705af9b6))
+* Optimized icons. ([commit](https://github.com/ckeditor/ckeditor5/commit/358a653c18853f5bc4afba04da2ea3b883b5d1d6))
+* Updated English translations for the text part language feature. ([commit](https://github.com/ckeditor/ckeditor5/commit/eaed55a23dccd44c2a37dac5d820940458170903))
+
+### Released packages
+
+Check out the [Versioning policy](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html) guide for more information.
+
+<details>
+<summary>Released packages (summary)</summary>
+
+New packages:
+
+* [@ckeditor/ckeditor5-language](https://www.npmjs.com/package/@ckeditor/ckeditor5-language): v27.0.0
+
+Major releases (contain major breaking changes):
+
+* [@ckeditor/ckeditor5-clipboard](https://www.npmjs.com/package/@ckeditor/ckeditor5-clipboard): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-widget](https://www.npmjs.com/package/@ckeditor/ckeditor5-widget): v26.0.0 => v27.0.0
+
+Releases containing new features:
+
+* [@ckeditor/ckeditor5-alignment](https://www.npmjs.com/package/@ckeditor/ckeditor5-alignment): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-autoformat](https://www.npmjs.com/package/@ckeditor/ckeditor5-autoformat): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-block-quote](https://www.npmjs.com/package/@ckeditor/ckeditor5-block-quote): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-ckfinder](https://www.npmjs.com/package/@ckeditor/ckeditor5-ckfinder): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-code-block](https://www.npmjs.com/package/@ckeditor/ckeditor5-code-block): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-core](https://www.npmjs.com/package/@ckeditor/ckeditor5-core): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-engine](https://www.npmjs.com/package/@ckeditor/ckeditor5-engine): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-enter](https://www.npmjs.com/package/@ckeditor/ckeditor5-enter): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-image](https://www.npmjs.com/package/@ckeditor/ckeditor5-image): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-link](https://www.npmjs.com/package/@ckeditor/ckeditor5-link): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-list](https://www.npmjs.com/package/@ckeditor/ckeditor5-list): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-markdown-gfm](https://www.npmjs.com/package/@ckeditor/ckeditor5-markdown-gfm): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-media-embed](https://www.npmjs.com/package/@ckeditor/ckeditor5-media-embed): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-mention](https://www.npmjs.com/package/@ckeditor/ckeditor5-mention): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-paragraph](https://www.npmjs.com/package/@ckeditor/ckeditor5-paragraph): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-paste-from-office](https://www.npmjs.com/package/@ckeditor/ckeditor5-paste-from-office): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-restricted-editing](https://www.npmjs.com/package/@ckeditor/ckeditor5-restricted-editing): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-table](https://www.npmjs.com/package/@ckeditor/ckeditor5-table): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-theme-lark](https://www.npmjs.com/package/@ckeditor/ckeditor5-theme-lark): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-typing](https://www.npmjs.com/package/@ckeditor/ckeditor5-typing): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-utils](https://www.npmjs.com/package/@ckeditor/ckeditor5-utils): v26.0.0 => v27.0.0
+
+Other releases:
+
+* [@ckeditor/ckeditor5-adapter-ckfinder](https://www.npmjs.com/package/@ckeditor/ckeditor5-adapter-ckfinder): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-autosave](https://www.npmjs.com/package/@ckeditor/ckeditor5-autosave): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-basic-styles](https://www.npmjs.com/package/@ckeditor/ckeditor5-basic-styles): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-build-balloon](https://www.npmjs.com/package/@ckeditor/ckeditor5-build-balloon): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-build-balloon-block](https://www.npmjs.com/package/@ckeditor/ckeditor5-build-balloon-block): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-build-classic](https://www.npmjs.com/package/@ckeditor/ckeditor5-build-classic): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-build-decoupled-document](https://www.npmjs.com/package/@ckeditor/ckeditor5-build-decoupled-document): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-build-inline](https://www.npmjs.com/package/@ckeditor/ckeditor5-build-inline): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-cloud-services](https://www.npmjs.com/package/@ckeditor/ckeditor5-cloud-services): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-collaboration-core](https://www.npmjs.com/package/@ckeditor/ckeditor5-collaboration-core): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-comments](https://www.npmjs.com/package/@ckeditor/ckeditor5-comments): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-easy-image](https://www.npmjs.com/package/@ckeditor/ckeditor5-easy-image): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-editor-balloon](https://www.npmjs.com/package/@ckeditor/ckeditor5-editor-balloon): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-editor-classic](https://www.npmjs.com/package/@ckeditor/ckeditor5-editor-classic): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-editor-decoupled](https://www.npmjs.com/package/@ckeditor/ckeditor5-editor-decoupled): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-editor-inline](https://www.npmjs.com/package/@ckeditor/ckeditor5-editor-inline): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-essentials](https://www.npmjs.com/package/@ckeditor/ckeditor5-essentials): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-export-pdf](https://www.npmjs.com/package/@ckeditor/ckeditor5-export-pdf): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-export-word](https://www.npmjs.com/package/@ckeditor/ckeditor5-export-word): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-font](https://www.npmjs.com/package/@ckeditor/ckeditor5-font): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-heading](https://www.npmjs.com/package/@ckeditor/ckeditor5-heading): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-highlight](https://www.npmjs.com/package/@ckeditor/ckeditor5-highlight): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-horizontal-line](https://www.npmjs.com/package/@ckeditor/ckeditor5-horizontal-line): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-html-embed](https://www.npmjs.com/package/@ckeditor/ckeditor5-html-embed): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-indent](https://www.npmjs.com/package/@ckeditor/ckeditor5-indent): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-operations-compressor](https://www.npmjs.com/package/@ckeditor/ckeditor5-operations-compressor): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-page-break](https://www.npmjs.com/package/@ckeditor/ckeditor5-page-break): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-pagination](https://www.npmjs.com/package/@ckeditor/ckeditor5-pagination): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-real-time-collaboration](https://www.npmjs.com/package/@ckeditor/ckeditor5-real-time-collaboration): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-remove-format](https://www.npmjs.com/package/@ckeditor/ckeditor5-remove-format): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-select-all](https://www.npmjs.com/package/@ckeditor/ckeditor5-select-all): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-special-characters](https://www.npmjs.com/package/@ckeditor/ckeditor5-special-characters): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-track-changes](https://www.npmjs.com/package/@ckeditor/ckeditor5-track-changes): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-ui](https://www.npmjs.com/package/@ckeditor/ckeditor5-ui): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-undo](https://www.npmjs.com/package/@ckeditor/ckeditor5-undo): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-upload](https://www.npmjs.com/package/@ckeditor/ckeditor5-upload): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-watchdog](https://www.npmjs.com/package/@ckeditor/ckeditor5-watchdog): v26.0.0 => v27.0.0
+* [@ckeditor/ckeditor5-word-count](https://www.npmjs.com/package/@ckeditor/ckeditor5-word-count): v26.0.0 => v27.0.0
+* [@ckeditor/letters](https://www.npmjs.com/package/@ckeditor/letters): v26.0.0 => v27.0.0
+</details>
+
+
 ## [26.0.0](https://github.com/ckeditor/ckeditor5/compare/v25.0.0...v26.0.0) (2021-03-01)
 
 ### Release highlights
@@ -9,19 +147,20 @@ We are happy to announce the release of CKEditor 5 v26.0.0.
 
 This release brings some new features:
 
-* [It's now possible to add plugins to CKEditor 5 builds](https://github.com/ckeditor/ckeditor5/issues/8395). Read more in the [DLL builds](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html) guide.
-* [The editor placeholder behaves like a native input placeholder now](https://github.com/ckeditor/ckeditor5/issues/8058).
-* [It's now possible to style inline widgets (e.g. with bold)](https://github.com/ckeditor/ckeditor5/issues/1633).
-
-There were also some important bug fixes:
-
-* [Autoformat will not create a code block when typing in bulleted/numbered lists](https://github.com/ckeditor/ckeditor5/issues/8633).
+* [It is now possible to add plugins to CKEditor 5 builds](https://github.com/ckeditor/ckeditor5/issues/8395). Read more in the [DLL builds](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html) guide.
+* [The editor placeholder now behaves like a native input placeholder](https://github.com/ckeditor/ckeditor5/issues/8058).
+* [It is now possible to style inline widgets (e.g. with bold)](https://github.com/ckeditor/ckeditor5/issues/1633).
 * [The font feature now supports loading legacy `<font>` elements](https://github.com/ckeditor/ckeditor5/issues/8621).
-* [Indent buttons order is misleading in all default build configurations](https://github.com/ckeditor/ckeditor5/issues/8884).
-* [Crash when copying nested table which was pasted into the editor](https://github.com/ckeditor/ckeditor5/issues/8917).
-* [A period does not stick to the preceding word during word-wrap](https://github.com/ckeditor/ckeditor5/issues/8852).
 
-<!-- TODO: Read more in the blog post: [URL]. -->
+There were also some important bug fixes and improvements:
+
+* [Autoformat will no longer create a code block when typing in bulleted or numbered lists](https://github.com/ckeditor/ckeditor5/issues/8633).
+* [Indent buttons order was reversed in all default build configurations](https://github.com/ckeditor/ckeditor5/issues/8884).
+* [Copying a nested table pasted into the editor no longer crashes it](https://github.com/ckeditor/ckeditor5/issues/8917).
+* [A period now sticks to the preceding word during word wrap](https://github.com/ckeditor/ckeditor5/issues/8852).
+* [The <kbd>Ctrl</kbd> key is now translated to <kbd>Cmd</kbd> on macOS](https://github.com/ckeditor/ckeditor5/issues/5705) to avoid conflicts with some macOS keyboard shortcuts.
+
+Read more in the blog post: https://ckeditor.com/blog/ckeditor-5-v26.0.0-with-extensible-builds-inline-widget-styling-and-annotations-guides/.
 
 ### Collaboration features
 
@@ -29,7 +168,7 @@ The CKEditor 5 Collaboration features changelog can be found here: https://ckedi
 
 ### MAJOR BREAKING CHANGES [ℹ️](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/support/versioning-policy.html#major-and-minor-breaking-changes)
 
-**Note:** Check out the [Migration to 26.0.0](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/migration/migration-to-26.0.0.html) guide for more detailed information on how to upgrade to this version.
+**Note:** Check out the [Migration to CKEditor 5 v26.0.0](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/migration/migration-to-26.0.0.html) guide for more detailed information on how to upgrade to this version.
 
 * Several plugins are not loaded automatically as dependencies of other plugins anymore. From now on, they need to be provided by the editor creator manually (via `config.plugins`). This list includes:
   - The `CloudServicesUploadAdapter` plugin no longer loads `CloudServices`. Make sure to add `CloudServices` to the editor plugins when using the `CloudServicesUploadAdapter` or `EasyImage` features.
@@ -41,54 +180,54 @@ The CKEditor 5 Collaboration features changelog can be found here: https://ckedi
   - The `LinkImageUI` plugin no longer loads `Image`. Make sure to add `Image` to the editor plugins when using the `LinkImage` feature.
   - The `ExportPdf` plugin no longer loads `CloudServices`. Make sure to add `CloudServices` to the editor plugins when using the `ExportPdf` feature.
   - The `ExportWord` plugin no longer loads `CloudServices`. Make sure to add `CloudServices` to the editor plugins when using the `ExportWord` feature.
-* **[cloud-services-core](https://www.npmjs.com/package/@ckeditor/ckeditor-cloud-services-core)**: The package has been merged into `@ckeditor/ckeditor5-cloud-services`. All classes that were available in the `@ckeditor/ckeditor-cloud-services-core` package have been moved to the `@ckeditor/ckeditor5-cloud-services` package. They should now be instantiated via factory methods on the `CloudServicesCore` plugin that's located in `@ckeditor/ckeditor5-cloud-services`. See [#8811](https://github.com/ckeditor/ckeditor5/issues/8811).
-* **[image](https://www.npmjs.com/package/@ckeditor/ckeditor5-image)**: The following modules have been moved (before → after):
+* **[cloud-services-core](https://www.npmjs.com/package/@ckeditor/ckeditor-cloud-services-core)**: The package was merged into `@ckeditor/ckeditor5-cloud-services`. All classes that were available in the `@ckeditor/ckeditor-cloud-services-core` package were moved to the `@ckeditor/ckeditor5-cloud-services` package. They should now be instantiated via factory methods on the `CloudServicesCore` plugin that is located in `@ckeditor/ckeditor5-cloud-services`. See [#8811](https://github.com/ckeditor/ckeditor5/issues/8811).
+* **[image](https://www.npmjs.com/package/@ckeditor/ckeditor5-image)**: The following modules were moved (before → after):
   - `image/image/imageinsertcommand~ImageInsertCommand` → `image/image/insertimagecommand~InsertImageCommand`
   - `image/imageresize/imageresizecommand~ImageResizeCommand` → `image/imageresize/resizeimagecommand~ResizeImageCommand`
   - `image/imageupload/imageuploadcommand~ImageUploadCommand` → `image/imageupload/uploadimagecommand~UploadImageCommand`
 
 * **[list](https://www.npmjs.com/package/@ckeditor/ckeditor5-list)**: The to-do list item toggle keystroke changed to <kbd>Ctrl</kbd>+<kbd>Enter</kbd> (<kbd>Cmd</kbd>+<kbd>Enter</kbd> on Mac).
-* **[list](https://www.npmjs.com/package/@ckeditor/ckeditor5-list)**: The following module `list/todolistcheckedcommand~TodoListCheckCommand` has been moved to `list/checktodolistcommand~CheckTodoListCommand`.
-* Keystrokes with the <kbd>Ctrl</kbd> modifier will not be handled on macOS, unless the modifier is registered as a forced one (for example: `Ctrl!+A` will not be translated to `Cmd+A` on macOS).
+* **[list](https://www.npmjs.com/package/@ckeditor/ckeditor5-list)**: The `list/todolistcheckedcommand~TodoListCheckCommand` module was moved to `list/checktodolistcommand~CheckTodoListCommand`.
+* Keystrokes with the <kbd>Ctrl</kbd> modifier will not be handled on macOS unless the modifier is registered as a forced one (for example: `Ctrl!+A` will not be translated to `Cmd+A` on macOS).
 
 ### Features
 
 * **[cloud-services](https://www.npmjs.com/package/@ckeditor/ckeditor5-cloud-services)**: Created the `CloudServicesCore` plugin that provides the base API for communication with CKEditor Cloud Services. ([commit](https://github.com/ckeditor/ckeditor5/commit/959c1d6d56d43468f01afed6c27637a449f78515))
-* **[core](https://www.npmjs.com/package/@ckeditor/ckeditor5-core)**: The `PluginCollection` class will allow requiring a plugin by name, if it is provided in `config.plugins` or if it was already loaded. Closes [#2907](https://github.com/ckeditor/ckeditor5/issues/2907). ([commit](https://github.com/ckeditor/ckeditor5/commit/b278fde89d1eb635be7e4e3a57d8dba2bd0f98a6))
-* **[engine](https://www.npmjs.com/package/@ckeditor/ckeditor5-engine)**: `ContainerElement` can be marked as `isAllowedInsideAttributeElement` in order to allow wrapping it with attribute elements. Useful for instance for inline widgets. Other element types (UI, Raw, Empty) have this flag on by default but it can be changed via `options.isAllowedInsideAttributeElement` to `false`. Read more in `DowncastWriter#create*()` methods documentation. Closes [#1633](https://github.com/ckeditor/ckeditor5/issues/1633). ([commit](https://github.com/ckeditor/ckeditor5/commit/fcb166ea2bed00cb83eb1c226a6923a6de2e706e))
-* **[font](https://www.npmjs.com/package/@ckeditor/ckeditor5-font)**: Added the `<font>` styling compatibility. Closes [#8621](https://github.com/ckeditor/ckeditor5/issues/8621). ([commit](https://github.com/ckeditor/ckeditor5/commit/0545fe6515f5454f7c7961ee2415c23366e2da08))
-* **[utils](https://www.npmjs.com/package/@ckeditor/ckeditor5-utils)**: Added the forced modifier key (`Ctrl!`) for keystrokes that should not be mapped to <kbd>Command</kbd> on macOS. ([commit](https://github.com/ckeditor/ckeditor5/commit/8dac3a98bb93cc6e1d0bfa8d2db8a5d9a6f89988))
+* **[core](https://www.npmjs.com/package/@ckeditor/ckeditor5-core)**: The `PluginCollection` class will allow requiring a plugin by name if it is provided in `config.plugins` or if it was already loaded. Closes [#2907](https://github.com/ckeditor/ckeditor5/issues/2907). ([commit](https://github.com/ckeditor/ckeditor5/commit/b278fde89d1eb635be7e4e3a57d8dba2bd0f98a6))
+* **[engine](https://www.npmjs.com/package/@ckeditor/ckeditor5-engine)**: `ContainerElement` can be marked as `isAllowedInsideAttributeElement` in order to allow wrapping it with attribute elements. This is useful, for example, for inline widgets. Other element types (UI, Raw, Empty) have this flag on by default but it can be changed via `options.isAllowedInsideAttributeElement` to `false`. Read more in the `DowncastWriter#create*()` methods documentation. Closes [#1633](https://github.com/ckeditor/ckeditor5/issues/1633). ([commit](https://github.com/ckeditor/ckeditor5/commit/fcb166ea2bed00cb83eb1c226a6923a6de2e706e))
+* **[font](https://www.npmjs.com/package/@ckeditor/ckeditor5-font)**: Added support for the `<font>` element. Closes [#8621](https://github.com/ckeditor/ckeditor5/issues/8621). ([commit](https://github.com/ckeditor/ckeditor5/commit/0545fe6515f5454f7c7961ee2415c23366e2da08))
+* **[utils](https://www.npmjs.com/package/@ckeditor/ckeditor5-utils)**: Added the forced modifier key (`Ctrl!`) for keystrokes that should not be mapped to <kbd>Cmd</kbd> on macOS. ([commit](https://github.com/ckeditor/ckeditor5/commit/8dac3a98bb93cc6e1d0bfa8d2db8a5d9a6f89988))
 
 ### Bug fixes
 
-* **[build-*](https://www.npmjs.com/search?q=keywords%3Ackeditor5-build%20maintainer%3Ackeditor)**: Switched indent buttons order in the default build config to "outdent, indent". Closes [#8884](https://github.com/ckeditor/ckeditor5/issues/8884). ([commit](https://github.com/ckeditor/ckeditor5/commit/1e4217506c19fdceb6700b928d86cf464859c57c))
+* **[build-*](https://www.npmjs.com/search?q=keywords%3Ackeditor5-build%20maintainer%3Ackeditor)**: Switched the order of indent buttons in the default build configuration to "outdent, indent". Closes [#8884](https://github.com/ckeditor/ckeditor5/issues/8884). ([commit](https://github.com/ckeditor/ckeditor5/commit/1e4217506c19fdceb6700b928d86cf464859c57c))
 * **[engine](https://www.npmjs.com/package/@ckeditor/ckeditor5-engine)**: `DowncastWriter` should handle `UIElements` consistently while wrapping with and inserting them into attribute elements. Closes [#8959](https://github.com/ckeditor/ckeditor5/issues/8959). ([commit](https://github.com/ckeditor/ckeditor5/commit/fcb166ea2bed00cb83eb1c226a6923a6de2e706e))
 * **[engine](https://www.npmjs.com/package/@ckeditor/ckeditor5-engine)**: Words should not break on link boundaries. Closes [#8852](https://github.com/ckeditor/ckeditor5/issues/8852). ([commit](https://github.com/ckeditor/ckeditor5/commit/b67732d66525a814a591c6b185acbfb3b54c3792))
 * **[engine](https://www.npmjs.com/package/@ckeditor/ckeditor5-engine)**: Undoing the deletion of merged paragraphs should result in the original tree. Closes [#8976](https://github.com/ckeditor/ckeditor5/issues/8976). ([commit](https://github.com/ckeditor/ckeditor5/commit/ecba70b44a0185bf5193da7bd77907bd981da74d))
 * **[engine](https://www.npmjs.com/package/@ckeditor/ckeditor5-engine)**: Pasting formatted single-line text over a widget should not split it into multiple paragraphs. Closes [#8953](https://github.com/ckeditor/ckeditor5/issues/8953). ([commit](https://github.com/ckeditor/ckeditor5/commit/dfe803553789de8b162b0dd7fbfac4c419a9b806))
 * **[engine](https://www.npmjs.com/package/@ckeditor/ckeditor5-engine)**: The editor placeholder should not disappear until typing started. Closes [#8689](https://github.com/ckeditor/ckeditor5/issues/8689). ([commit](https://github.com/ckeditor/ckeditor5/commit/8a276bdb4f09a74b4e67a4bfe4ddc3409edf84ef))
-* **[engine](https://www.npmjs.com/package/@ckeditor/ckeditor5-engine)**: Fixed content not restored on undo when multiple blocks and widgets were removed. Closes [#8870](https://github.com/ckeditor/ckeditor5/issues/8870). ([commit](https://github.com/ckeditor/ckeditor5/commit/385234a66ae0168bc57a36d7ec9f1e8f759e0b69))
-* **[font](https://www.npmjs.com/package/@ckeditor/ckeditor5-font)**: Fixed the `supportAllValues` configuration for the `FontSize` and `FontFamily` features to work with nested elements (tables). Closes [#7965](https://github.com/ckeditor/ckeditor5/issues/7965). ([commit](https://github.com/ckeditor/ckeditor5/commit/768466c6e0e18b0f4c2230b1f66a2defb2496c50)). Thanks to [@dkrahn](https://github.com/dkrahn)!
+* **[engine](https://www.npmjs.com/package/@ckeditor/ckeditor5-engine)**: Fixed content is not restored on undo when multiple blocks and widgets were removed. Closes [#8870](https://github.com/ckeditor/ckeditor5/issues/8870). ([commit](https://github.com/ckeditor/ckeditor5/commit/385234a66ae0168bc57a36d7ec9f1e8f759e0b69))
+* **[font](https://www.npmjs.com/package/@ckeditor/ckeditor5-font)**: Fixed the `supportAllValues` configuration for the font size and font family features to work with nested elements (tables). Closes [#7965](https://github.com/ckeditor/ckeditor5/issues/7965). ([commit](https://github.com/ckeditor/ckeditor5/commit/768466c6e0e18b0f4c2230b1f66a2defb2496c50)). Thanks to [@dkrahn](https://github.com/dkrahn)!
 * **[heading](https://www.npmjs.com/package/@ckeditor/ckeditor5-heading)**: In the `Title` plugin, the body placeholder is visible even when the body section is focused. See [#8689](https://github.com/ckeditor/ckeditor5/issues/8689). ([commit](https://github.com/ckeditor/ckeditor5/commit/8a276bdb4f09a74b4e67a4bfe4ddc3409edf84ef))
-* **[image](https://www.npmjs.com/package/@ckeditor/ckeditor5-image)**: The Image caption placeholder is now hidden when focused. See [#8689](https://github.com/ckeditor/ckeditor5/issues/8689). ([commit](https://github.com/ckeditor/ckeditor5/commit/8a276bdb4f09a74b4e67a4bfe4ddc3409edf84ef))
-* **[link](https://www.npmjs.com/package/@ckeditor/ckeditor5-link)**: The Autolink plugin will no longer automatically match domains that only have a `www` subdomain followed with a top level domain, e.g. `http://www.test`. Closes [#8050](https://github.com/ckeditor/ckeditor5/issues/8050). ([commit](https://github.com/ckeditor/ckeditor5/commit/2165447015f688b864a29e50a543e2411ecc9e11))
-* **[link](https://www.npmjs.com/package/@ckeditor/ckeditor5-link)**: IP addresses should be converted into links while typing by the Autolink feature. Closes [#8881](https://github.com/ckeditor/ckeditor5/issues/8881). ([commit](https://github.com/ckeditor/ckeditor5/commit/5b85b86160d991f24f5ff46700e1ea90703c40bd))
+* **[image](https://www.npmjs.com/package/@ckeditor/ckeditor5-image)**: The image caption placeholder is now hidden when focused. See [#8689](https://github.com/ckeditor/ckeditor5/issues/8689). ([commit](https://github.com/ckeditor/ckeditor5/commit/8a276bdb4f09a74b4e67a4bfe4ddc3409edf84ef))
+* **[link](https://www.npmjs.com/package/@ckeditor/ckeditor5-link)**: The `Autolink` plugin will no longer automatically match domains that only have a `www` subdomain followed with a top level domain, e.g. `http://www.test`. Closes [#8050](https://github.com/ckeditor/ckeditor5/issues/8050). ([commit](https://github.com/ckeditor/ckeditor5/commit/2165447015f688b864a29e50a543e2411ecc9e11))
+* **[link](https://www.npmjs.com/package/@ckeditor/ckeditor5-link)**: IP addresses should be converted into links by the autolink feature while typing. Closes [#8881](https://github.com/ckeditor/ckeditor5/issues/8881). ([commit](https://github.com/ckeditor/ckeditor5/commit/5b85b86160d991f24f5ff46700e1ea90703c40bd))
 * **[media-embed](https://www.npmjs.com/package/@ckeditor/ckeditor5-media-embed)**: The `insertMediaEmbed` command should be disabled if any non-media object is selected (see [#8798](https://github.com/ckeditor/ckeditor5/issues/8798)). ([commit](https://github.com/ckeditor/ckeditor5/commit/428917601db732c6dfab48380eda2d8bbbfc7e19))
 * **[table](https://www.npmjs.com/package/@ckeditor/ckeditor5-table)**: The `insertTable` command should be disabled if any object is selected. Closes [#8798](https://github.com/ckeditor/ckeditor5/issues/8798). ([commit](https://github.com/ckeditor/ckeditor5/commit/428917601db732c6dfab48380eda2d8bbbfc7e19))
-* **[utils](https://www.npmjs.com/package/@ckeditor/ckeditor5-utils)**: The keystrokes are no longer conflicting on macOS. Closes [#5705](https://github.com/ckeditor/ckeditor5/issues/5705). ([commit](https://github.com/ckeditor/ckeditor5/commit/8dac3a98bb93cc6e1d0bfa8d2db8a5d9a6f89988))
+* **[utils](https://www.npmjs.com/package/@ckeditor/ckeditor5-utils)**: The editor keystrokes are no longer conflicting on macOS. Closes [#5705](https://github.com/ckeditor/ckeditor5/issues/5705). ([commit](https://github.com/ckeditor/ckeditor5/commit/8dac3a98bb93cc6e1d0bfa8d2db8a5d9a6f89988))
 * The editor will show the placeholder even when focused. See [#8689](https://github.com/ckeditor/ckeditor5/issues/8689). ([commit](https://github.com/ckeditor/ckeditor5/commit/8a276bdb4f09a74b4e67a4bfe4ddc3409edf84ef))
 
 ### Other changes
 
-* Enabled creating builds that can be extended (with more plugins) without the need to recompile. This required splitting the project into the so-called DLL part and consumers of this DLL. Under the hood, the mechanism is based on [webpack DLLs](https://webpack.js.org/plugins/dll-plugin/). This is the first part of the required changes and it contains the necessary breaking changes (see the "MAJOR BREAKING CHANGES" section above). For more information see the ["DLL builds"](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html) guide. Closes [[#8395](https://github.com/ckeditor/ckeditor5/issues/8395)](https://github.com/ckeditor/ckeditor5/issues/8395). ([commit](https://github.com/ckeditor/ckeditor5/commit/b278fde89d1eb635be7e4e3a57d8dba2bd0f98a6))
-* **[cloud-services-core](https://www.npmjs.com/package/@ckeditor/ckeditor-cloud-services-core)**: All classes available in the `@ckeditor/ckeditor-cloud-services-core` package have been moved to the `@ckeditor/ckeditor5-cloud-services` package. They should now be instantiated via factory methods on the `CloudServicesCore` plugin. Closes [#8811](https://github.com/ckeditor/ckeditor5/issues/8811). ([commit](https://github.com/ckeditor/ckeditor5/commit/959c1d6d56d43468f01afed6c27637a449f78515))
+* Enabled creating builds that can be extended (with more plugins) without the need to recompile. This required splitting the project into the so-called DLL part and consumers of this DLL. Under the hood, the mechanism is based on [webpack DLLs](https://webpack.js.org/plugins/dll-plugin/). This is the first part of the required changes and it contains the necessary breaking changes (see the "MAJOR BREAKING CHANGES" section above). For more information, see the [DLL builds](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/dll-builds.html) guide. Closes [[#8395](https://github.com/ckeditor/ckeditor5/issues/8395)](https://github.com/ckeditor/ckeditor5/issues/8395). ([commit](https://github.com/ckeditor/ckeditor5/commit/b278fde89d1eb635be7e4e3a57d8dba2bd0f98a6))
+* **[cloud-services-core](https://www.npmjs.com/package/@ckeditor/ckeditor-cloud-services-core)**: All classes available in the `@ckeditor/ckeditor-cloud-services-core` package were moved to the `@ckeditor/ckeditor5-cloud-services` package. They should now be instantiated via factory methods on the `CloudServicesCore` plugin. Closes [#8811](https://github.com/ckeditor/ckeditor5/issues/8811). ([commit](https://github.com/ckeditor/ckeditor5/commit/959c1d6d56d43468f01afed6c27637a449f78515))
 * **[engine](https://www.npmjs.com/package/@ckeditor/ckeditor5-engine)**: The `KeyObserver` should provide information about `metaKey` being pressed. ([commit](https://github.com/ckeditor/ckeditor5/commit/8dac3a98bb93cc6e1d0bfa8d2db8a5d9a6f89988))
-* **[image](https://www.npmjs.com/package/@ckeditor/ckeditor5-image)**: Add WEBP support to the inline pasting of images from source URLs. ([commit](https://github.com/ckeditor/ckeditor5/commit/48ad51d61e10473bab106c17d83b6e05188cd915))
-* **[image](https://www.npmjs.com/package/@ckeditor/ckeditor5-image)**: Introduced `Image.isImageWidget()` utility method. ([commit](https://github.com/ckeditor/ckeditor5/commit/b278fde89d1eb635be7e4e3a57d8dba2bd0f98a6))
+* **[image](https://www.npmjs.com/package/@ckeditor/ckeditor5-image)**: Add WebP format support to the inline pasting of images from source URLs. ([commit](https://github.com/ckeditor/ckeditor5/commit/48ad51d61e10473bab106c17d83b6e05188cd915))
+* **[image](https://www.npmjs.com/package/@ckeditor/ckeditor5-image)**: Introduced the `Image.isImageWidget()` utility method. ([commit](https://github.com/ckeditor/ckeditor5/commit/b278fde89d1eb635be7e4e3a57d8dba2bd0f98a6))
 * **[list](https://www.npmjs.com/package/@ckeditor/ckeditor5-list)**: The to-do list item toggle keystroke changed to <kbd>Ctrl</kbd>+<kbd>Enter</kbd> (<kbd>Cmd</kbd>+<kbd>Enter</kbd> on Mac). ([commit](https://github.com/ckeditor/ckeditor5/commit/8dac3a98bb93cc6e1d0bfa8d2db8a5d9a6f89988))
 * **[widget](https://www.npmjs.com/package/@ckeditor/ckeditor5-widget)**: The `checkSelectionOnObject` function should be exported by the `@ckeditor/ckeditor5-widget` package (as `@ckeditor/ckeditor5-widget/src/utils`) (see [#8798](https://github.com/ckeditor/ckeditor5/issues/8798)). ([commit](https://github.com/ckeditor/ckeditor5/commit/428917601db732c6dfab48380eda2d8bbbfc7e19))
 * Updated translations. ([commit](https://github.com/ckeditor/ckeditor5/commit/aa272552fa06e2320f8b7d3c4e0079b187260b36))
-* Unified buttons and commands naming conventions. Old name values are available as aliases. Read more about those changes in the [Code style](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/contributing/code-style.html#buttons-commands-and-plugins) guide. Closes [#8033](https://github.com/ckeditor/ckeditor5/issues/8033). ([commit](https://github.com/ckeditor/ckeditor5/commit/e0fcb17d404352133609aa6875d62e056261677f))
+* Unified button and command naming conventions. Old names are available as aliases. Read more about these changes in the [Code style](https://ckeditor.com/docs/ckeditor5/latest/framework/guides/contributing/code-style.html#buttons-commands-and-plugins) guide. Closes [#8033](https://github.com/ckeditor/ckeditor5/issues/8033). ([commit](https://github.com/ckeditor/ckeditor5/commit/e0fcb17d404352133609aa6875d62e056261677f))
 
   Changes in toolbar buttons (before → after):
   - `imageUpload` → `uploadImage`
@@ -339,7 +478,7 @@ There were also some important bug fixes:
 * [Multiple issues with the lists and list styles](https://github.com/ckeditor/ckeditor5/issues?q=is%3Aissue+milestone%3A%22iteration+38%22+-label%3Atype%3Adocs+-label%3Atype%3Atask+sort%3Aupdated-desc+label%3Apackage%3Alist).
 * [Follow-ups to the HMTL embed feature](https://github.com/ckeditor/ckeditor5/issues?q=is%3Aissue+milestone%3A%22iteration+38%22+-label%3Atype%3Adocs+-label%3Atype%3Atask+sort%3Aupdated-desc+label%3Apackage%3Ahtml-embed) introduced in the previous release.
 * [Pasting plain text on link no longer breaks the link](https://github.com/ckeditor/ckeditor5/issues/8158).
-* [Select All does select all now](https://github.com/ckeditor/ckeditor5/issues/7978) - including tables and blockquotes.
+* [Select All does select all now](https://github.com/ckeditor/ckeditor5/issues/7978) - including tables and block quotes.
 * [The `supportAllValues` option in the font feature now works with nested elements](https://github.com/ckeditor/ckeditor5/issues/8233).
 
 Please note that there are some **major breaking changes** in this release. Be sure to review them before upgrading.
@@ -1091,13 +1230,13 @@ This release brings some highly anticipated features:
 
 * Support for [linking images](https://github.com/ckeditor/ckeditor5/issues/702).
 * [Typing around widgets](https://github.com/ckeditor/ckeditor5/issues/407).
-* An option to [automatically set link protocol](https://github.com/ckeditor/ckeditor5/issues/4858).
+* An option to [automatically set the link protocol](https://github.com/ckeditor/ckeditor5/issues/4858).
 * [Improved selection handling when working with links](https://github.com/ckeditor/ckeditor5/issues/1016).
 
 New features were also accompanied by a set of bug fixes, to name a few:
 
 * [Autoformatting will no longer change formatting when typing in an inline code](https://github.com/ckeditor/ckeditor5/issues/1239).
-* Editor will no longer [crash if there's a HTML comment in the source data](https://github.com/ckeditor/ckeditor5/issues/5734).
+* The editor will no longer [crash if there is an HTML comment in the source data](https://github.com/ckeditor/ckeditor5/issues/5734).
 
 Read more in the blog post: https://ckeditor.com/blog/CKEditor-5-v20.0.0-with-linking-images-and-multi-cell-comments-released/
 
@@ -1403,7 +1542,7 @@ Other releases:
 
 We are happy to announce the release of CKEditor 5 v19.0.0.
 
-This release is focused on [further improving the table selection plugin](https://github.com/ckeditor/ckeditor5/issues/6285) and includes following the enhancements:
+This release is focused on [further improving the table selection plugin](https://github.com/ckeditor/ckeditor5/issues/6285) and includes the following enhancements:
 
 * [An option to select an entire row or column](https://github.com/ckeditor/ckeditor5/issues/6500).
 * [Custom keyboard handling in tables, allowing for consistent and more convenient navigation using the keyboard](https://github.com/ckeditor/ckeditor5/issues/3267).
