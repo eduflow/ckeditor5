@@ -93,7 +93,7 @@ const plugins = [
 	TableToolbar,
 	TableProperties,
 	TableCellProperties,
-	Underline,
+	Underline
 ];
 
 BalloonEditor.builtinPlugins = plugins;
@@ -112,18 +112,20 @@ const config = {
 			'strikethrough',
 			'highlight',
 			'link',
-			'code',
-		],
+			'code'
+		]
 	},
 
 	image: {
-		styles: ['alignLeft', 'alignCenter', 'alignRight'],
+		styles: [ 'alignLeft', 'alignCenter', 'alignRight' ],
 		toolbar: [
 			'imageStyle:alignLeft',
 			'imageStyle:alignCenter',
 			'imageStyle:alignRight',
 			'linkImage',
-		],
+			'imageTextAlternative',
+			'resizeImage'
+		]
 	},
 
 	// Custom
@@ -132,8 +134,8 @@ const config = {
 		lazyLoad: undefined, // async () => { ... }, called once before render engine missing. After resolution, renders equation.
 		outputType: 'script', // or span
 		forceOutputType: false, // forces output to use outputType
-		enablePreview: true, // Enable preview view
-	},
+		enablePreview: true // Enable preview view
+	}
 };
 
 BalloonEditor.defaultConfig = {
@@ -150,7 +152,7 @@ BalloonEditor.defaultConfig = {
 		'uploadImage',
 		'mediaEmbed',
 		'math',
-		'codeBlock',
+		'codeBlock'
 	],
 	table: {
 		contentToolbar: [
@@ -158,9 +160,9 @@ BalloonEditor.defaultConfig = {
 			'tableRow',
 			'mergeTableCells',
 			'tableProperties',
-			'tableCellProperties',
-		],
-	},
+			'tableCellProperties'
+		]
+	}
 };
 
 ClassicEditor.defaultConfig = {
@@ -181,9 +183,9 @@ ClassicEditor.defaultConfig = {
 			'mediaEmbed',
 			'math',
 			'|',
-			'codeBlock',
-		],
-	},
+			'codeBlock'
+		]
+	}
 };
 
 export default { BalloonEditor, ClassicEditor };
