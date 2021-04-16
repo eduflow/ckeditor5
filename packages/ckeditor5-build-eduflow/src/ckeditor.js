@@ -42,7 +42,7 @@ import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock';
 import Highlight from '@ckeditor/ckeditor5-highlight/src/highlight';
 import HorizontalLine from '@ckeditor/ckeditor5-horizontal-line/src/horizontalline';
 import Mention from '@ckeditor/ckeditor5-mention/src/mention';
-import Mathematics from 'ckeditor5-math/src/math';
+import Mathematics from '@peergrade/ckeditor5-math/src/math';
 import Strikethrough from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
 import TableProperties from '@ckeditor/ckeditor5-table/src/tableproperties';
 import TableCellProperties from '@ckeditor/ckeditor5-table/src/tablecellproperties';
@@ -162,6 +162,11 @@ BalloonEditor.defaultConfig = {
 			'tableProperties',
 			'tableCellProperties'
 		]
+	},
+	math: {
+		...config.math,
+		popupClassName: [ 'eduflow-editor-balloon' ],
+		previewClassName: [ 'eduflow-editor-balloon' ]
 	}
 };
 
@@ -185,6 +190,11 @@ ClassicEditor.defaultConfig = {
 			'|',
 			'codeBlock'
 		]
+	},
+	math: {
+		...config.math,
+		popupClassName: [ 'eduflow-editor-classic' ],
+		previewClassName: [ 'eduflow-editor-classic' ]
 	}
 };
 
