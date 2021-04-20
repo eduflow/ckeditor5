@@ -151,6 +151,10 @@ module.exports = {
 			/pen\.svg/,
 			'@peergrade/ckeditor5-build-eduflow/theme/icons/pen-eduflow.svg'
 		),
+		new webpack.NormalModuleReplacementPlugin( // img alt text
+			/low-vision\.svg/,
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/low-vision-eduflow.svg'
+		),
 		new CKEditorWebpackPlugin( {
 			// UI language. Language codes follow the https://en.wikipedia.org/wiki/ISO_639-1 format.
 			// When changing the built-in language, remember to also change it in the editor's configuration (src/ckeditor.js).
