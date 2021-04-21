@@ -273,7 +273,7 @@
  * Specifies an additional editor class name to apply in the outermost editor element.
  *
  *		const config = {
- *			className: 'my-editor-instance'
+ *			editorClass: 'my-editor-instance'
  *		};
  *
  * - {@link module:editor-classic/classiceditorui~ClassicEditorUI#element `ClassicEditor#element`})
