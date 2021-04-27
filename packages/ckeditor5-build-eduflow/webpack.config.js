@@ -94,6 +94,26 @@ module.exports = {
 			'@peergrade/ckeditor5-build-eduflow/theme/icons/table-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
+			/table-cell-properties\.svg/,
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/table-cell-properties-eduflow.svg'
+		),
+		new webpack.NormalModuleReplacementPlugin(
+			/table-properties\.svg/,
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/table-properties-eduflow.svg'
+		),
+		new webpack.NormalModuleReplacementPlugin(
+			/table-merge\.svg/,
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/table-merge-eduflow.svg'
+		),
+		new webpack.NormalModuleReplacementPlugin(
+			/table-column\.svg/,
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/table-column-eduflow.svg'
+		),
+		new webpack.NormalModuleReplacementPlugin(
+			/table-row\.svg/,
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/table-row-eduflow.svg'
+		),
+		new webpack.NormalModuleReplacementPlugin(
 			/check\.svg/,
 			'@peergrade/ckeditor5-build-eduflow/theme/icons/check-eduflow.svg'
 		),
