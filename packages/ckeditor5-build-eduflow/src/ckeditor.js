@@ -53,9 +53,31 @@ import '../theme/theme.css';
 class BalloonEditor extends BalloonEditorBase {}
 class ClassicEditor extends ClassicEditorBase {}
 
+function EditorClassPlugin( editor ) {
+	const className = editor.config.get( 'editorClass' );
+
+	editor.ui.on( 'ready', () => {
+		// For all balloons and popups to inherit from.
+		editor.ui.view.body._bodyCollectionContainer.classList.add( className );
+
+		// Note: Balloon editor doesn't have one.
+		if ( editor.ui.view.element ) {
+			editor.ui.view.element.classList.add( className );
+		}
+	} );
+
+	// For the editing root. In the Classic editor, it slightly duplicates with the class set on
+	// editor.ui.view.element because editor.ui.view.element contains the editing root. In the alloon editor,
+	// which does not have the UI container (view), this makes perfect sense, though.
+	editor.editing.view.change( writer => {
+		writer.addClass( className, editor.editing.view.document.getRoot() );
+	} );
+}
+
 // Plugins to include in the build.
 const plugins = [
 	Essentials,
+	EditorClassPlugin,
 	UploadAdapter,
 	Autoformat,
 	BlockToolbar,
