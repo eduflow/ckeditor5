@@ -41,6 +41,7 @@ import CloudServices from '@ckeditor/ckeditor5-cloud-services/src/cloudservices'
 import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock';
 import Highlight from '@ckeditor/ckeditor5-highlight/src/highlight';
 import HorizontalLine from '@ckeditor/ckeditor5-horizontal-line/src/horizontalline';
+import HtmlEmbed from '@ckeditor/ckeditor5-html-embed/src/htmlembed';
 import Mention from '@ckeditor/ckeditor5-mention/src/mention';
 import Mathematics from 'ckeditor5-math/src/math';
 import Strikethrough from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
@@ -106,6 +107,7 @@ const plugins = [
 	CodeBlock,
 	HorizontalLine,
 	Highlight,
+	HtmlEmbed,
 	ImageResize,
 	LinkImage,
 	Mathematics,
