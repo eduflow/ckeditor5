@@ -41,7 +41,7 @@ import CloudServices from '@ckeditor/ckeditor5-cloud-services/src/cloudservices'
 import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock';
 import Highlight from '@ckeditor/ckeditor5-highlight/src/highlight';
 import HorizontalLine from '@ckeditor/ckeditor5-horizontal-line/src/horizontalline';
-import HtmlEmbed from '@ckeditor/ckeditor5-html-embed/src/htmlembed';
+import HtmlEmbed from 'ckeditor5-iframe/src/htmlembed';
 import Mention from '@ckeditor/ckeditor5-mention/src/mention';
 import Mathematics from 'ckeditor5-math/src/math';
 import Strikethrough from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
@@ -54,25 +54,25 @@ import '../theme/theme.css';
 class BalloonEditor extends BalloonEditorBase {}
 class ClassicEditor extends ClassicEditorBase {}
 
-function EditorClassPlugin( editor ) {
-	const className = editor.config.get( 'editorClass' );
+function EditorClassPlugin(editor) {
+	const className = editor.config.get('editorClass');
 
-	editor.ui.on( 'ready', () => {
+	editor.ui.on('ready', () => {
 		// For all balloons and popups to inherit from.
-		editor.ui.view.body._bodyCollectionContainer.classList.add( className );
+		editor.ui.view.body._bodyCollectionContainer.classList.add(className);
 
 		// Note: Balloon editor doesn't have one.
-		if ( editor.ui.view.element ) {
-			editor.ui.view.element.classList.add( className );
+		if (editor.ui.view.element) {
+			editor.ui.view.element.classList.add(className);
 		}
-	} );
+	});
 
 	// For the editing root. In the Classic editor, it slightly duplicates with the class set on
 	// editor.ui.view.element because editor.ui.view.element contains the editing root. In the alloon editor,
 	// which does not have the UI container (view), this makes perfect sense, though.
-	editor.editing.view.change( writer => {
-		writer.addClass( className, editor.editing.view.document.getRoot() );
-	} );
+	editor.editing.view.change((writer) => {
+		writer.addClass(className, editor.editing.view.document.getRoot());
+	});
 }
 
 // Plugins to include in the build.
@@ -117,7 +117,7 @@ const plugins = [
 	TableToolbar,
 	TableProperties,
 	TableCellProperties,
-	Underline
+	Underline,
 ];
 
 BalloonEditor.builtinPlugins = plugins;

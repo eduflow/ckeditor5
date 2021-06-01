@@ -39,7 +39,7 @@
     "@ckeditor/ckeditor5-heading": "^27.1.0",
     "@ckeditor/ckeditor5-highlight": "^27.1.0",
     "@ckeditor/ckeditor5-horizontal-line": "^27.1.0",
-    "@ckeditor/ckeditor5-html-embed": "^27.1.0",
+    "ckeditor5-iframe": "^27.1.0-next.0",
     "@ckeditor/ckeditor5-image": "^27.1.0",
     "@ckeditor/ckeditor5-indent": "^27.1.0",
     "@ckeditor/ckeditor5-link": "^27.1.0",
