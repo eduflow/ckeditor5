@@ -23,7 +23,8 @@ ClassicEditor.create( document.querySelector( '#editor' ), {
 				url: genericUrlRegex,
 				html: match => {
 					return `<o-embed url="${ match[ 0 ] }"></o-embed>`;
-				}
+				},
+				automaticEmbed: false
 			}
 		]
 	}
