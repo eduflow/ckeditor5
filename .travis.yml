@@ -8,10 +8,11 @@ branches:
   - stable
   - release
   - /^v\d+\.\d+\.\d+$/
+  - /^(ck|cf|ci)\/epic\/\d+/
 services:
 - xvfb
 node_js:
-- "12"
+- "14"
 cache: yarn
 before_install:
 - export START_TIME=$( date +%s )

@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -87,6 +87,7 @@ export default class CodeBlockEditing extends Plugin {
 		const schema = editor.model.schema;
 		const model = editor.model;
 		const view = editor.editing.view;
+		const isDocumentListEditingLoaded = editor.plugins.has( 'DocumentListEditing' );
 
 		const normalizedLanguagesDefs = getNormalizedAndLocalizedLanguageDefinitions( editor );
 
@@ -97,19 +98,20 @@ export default class CodeBlockEditing extends Plugin {
 		editor.commands.add( 'indentCodeBlock', new IndentCodeBlockCommand( editor ) );
 		editor.commands.add( 'outdentCodeBlock', new OutdentCodeBlockCommand( editor ) );
 
-		const getCommandExecuter = commandName => {
-			return ( data, cancel ) => {
-				const command = this.editor.commands.get( commandName );
+		this.listenTo( view.document, 'tab', ( evt, data ) => {
+			const commandName = data.shiftKey ? 'outdentCodeBlock' : 'indentCodeBlock';
+			const command = editor.commands.get( commandName );
 
-				if ( command.isEnabled ) {
-					this.editor.execute( commandName );
-					cancel();
-				}
-			};
-		};
+			if ( !command.isEnabled ) {
+				return;
+			}
 
-		editor.keystrokes.set( 'Tab', getCommandExecuter( 'indentCodeBlock' ) );
-		editor.keystrokes.set( 'Shift+Tab', getCommandExecuter( 'outdentCodeBlock' ) );
+			editor.execute( commandName );
+
+			data.stopPropagation();
+			data.preventDefault();
+			evt.stop();
+		}, { context: 'pre' } );
 
 		schema.register( 'codeBlock', {
 			allowWhere: '$block',
@@ -118,8 +120,17 @@ export default class CodeBlockEditing extends Plugin {
 			allowAttributes: [ 'language' ]
 		} );
 
+		// Allow all list* attributes on `codeBlock` (integration with DocumentList).
 		// Disallow all attributes on $text inside `codeBlock`.
-		schema.addAttributeCheck( context => {
+		schema.addAttributeCheck( ( context, attributeName ) => {
+			const isDocumentListAttributeOnCodeBlock = context.endsWith( 'codeBlock' ) &&
+				attributeName.startsWith( 'list' ) &&
+				attributeName !== 'list';
+
+			if ( isDocumentListEditingLoaded && isDocumentListAttributeOnCodeBlock ) {
+				return true;
+			}
+
 			if ( context.endsWith( 'codeBlock $text' ) ) {
 				return false;
 			}
@@ -210,7 +221,11 @@ export default class CodeBlockEditing extends Plugin {
 		const outdent = commands.get( 'outdent' );
 
 		if ( indent ) {
-			indent.registerChildCommand( commands.get( 'indentCodeBlock' ) );
+			// Priority is highest due to integration with `IndentList` command of `List` plugin.
+			// If selection is in a code block we give priority to it. This way list item cannot be indented
+			// but if we would give priority to indenting list item then user would have to indent list item
+			// as much as possible and only then he could indent code block.
+			indent.registerChildCommand( commands.get( 'indentCodeBlock' ), { priority: 'highest' } );
 		}
 
 		if ( outdent ) {
@@ -219,7 +234,7 @@ export default class CodeBlockEditing extends Plugin {
 
 		// Customize the response to the <kbd>Enter</kbd> and <kbd>Shift</kbd>+<kbd>Enter</kbd>
 		// key press when the selection is in the code block. Upon enter key press we can either
-		// leave the block if it's "two enters" in a row or create a new code block line, preserving
+		// leave the block if it's "two or three enters" in a row or create a new code block line, preserving
 		// previous line's indentation.
 		this.listenTo( editor.editing.view.document, 'enter', ( evt, data ) => {
 			const positionParent = editor.model.document.selection.getLastPosition().parent;
@@ -301,7 +316,7 @@ function leaveBlockStartOnEnter( editor, isSoftEnter ) {
 		return false;
 	}
 
-	if ( !nodeAfter || !nodeAfter.is( 'element', 'softBreak' ) ) {
+	if ( !isSoftBreakNode( nodeAfter ) ) {
 		return false;
 	}
 
@@ -352,42 +367,61 @@ function leaveBlockEndOnEnter( editor, isSoftEnter ) {
 
 	let emptyLineRangeToRemoveOnEnter;
 
-	if ( isSoftEnter || !modelDoc.selection.isCollapsed || !lastSelectionPosition.isAtEnd || !nodeBefore ) {
+	if ( isSoftEnter || !modelDoc.selection.isCollapsed || !lastSelectionPosition.isAtEnd || !nodeBefore || !nodeBefore.previousSibling ) {
 		return false;
 	}
 
-	// When the position is directly preceded by a soft break
+	// When the position is directly preceded by two soft breaks
 	//
-	//		<codeBlock>foo<softBreak></softBreak>[]</codeBlock>
+	//		<codeBlock>foo<softBreak></softBreak><softBreak></softBreak>[]</codeBlock>
 	//
 	// it creates the following range that will be cleaned up before leaving:
 	//
-	//		<codeBlock>foo[<softBreak></softBreak>]</codeBlock>
+	//		<codeBlock>foo[<softBreak></softBreak><softBreak></softBreak>]</codeBlock>
 	//
-	if ( nodeBefore.is( 'element', 'softBreak' ) ) {
-		emptyLineRangeToRemoveOnEnter = model.createRangeOn( nodeBefore );
+	if ( isSoftBreakNode( nodeBefore ) && isSoftBreakNode( nodeBefore.previousSibling ) ) {
+		emptyLineRangeToRemoveOnEnter = model.createRange(
+			model.createPositionBefore( nodeBefore.previousSibling ), model.createPositionAfter( nodeBefore )
+		);
 	}
 
-	// When there's some text before the position made purely of white–space characters
+	// When there's some text before the position that is
+	// preceded by two soft breaks and made purely of white–space characters
 	//
-	//		<codeBlock>foo<softBreak></softBreak>    []</codeBlock>
-	//
-	// but NOT when it's the first one of the kind
-	//
-	//		<codeBlock>    []</codeBlock>
+	//		<codeBlock>foo<softBreak></softBreak><softBreak></softBreak>    []</codeBlock>
 	//
 	// it creates the following range to clean up before leaving:
 	//
-	//		<codeBlock>foo[<softBreak></softBreak>    ]</codeBlock>
+	//		<codeBlock>foo[<softBreak></softBreak><softBreak></softBreak>    ]</codeBlock>
 	//
 	else if (
-		nodeBefore.is( '$text' ) &&
-		!nodeBefore.data.match( /\S/ ) &&
-		nodeBefore.previousSibling &&
-		nodeBefore.previousSibling.is( 'element', 'softBreak' )
+		isEmptyishTextNode( nodeBefore ) &&
+		isSoftBreakNode( nodeBefore.previousSibling ) &&
+		isSoftBreakNode( nodeBefore.previousSibling.previousSibling )
 	) {
 		emptyLineRangeToRemoveOnEnter = model.createRange(
-			model.createPositionBefore( nodeBefore.previousSibling ), model.createPositionAfter( nodeBefore )
+			model.createPositionBefore( nodeBefore.previousSibling.previousSibling ), model.createPositionAfter( nodeBefore )
+		);
+	}
+
+	// When there's some text before the position that is made purely of white–space characters
+	// and is preceded by some other text made purely of white–space characters
+	//
+	//		<codeBlock>foo<softBreak></softBreak>    <softBreak></softBreak>    []</codeBlock>
+	//
+	// it creates the following range to clean up before leaving:
+	//
+	//		<codeBlock>foo[<softBreak></softBreak>    <softBreak></softBreak>    ]</codeBlock>
+	//
+	else if (
+		isEmptyishTextNode( nodeBefore ) &&
+		isSoftBreakNode( nodeBefore.previousSibling ) &&
+		isEmptyishTextNode( nodeBefore.previousSibling.previousSibling ) &&
+		isSoftBreakNode( nodeBefore.previousSibling.previousSibling.previousSibling )
+	) {
+		emptyLineRangeToRemoveOnEnter = model.createRange(
+			model.createPositionBefore( nodeBefore.previousSibling.previousSibling.previousSibling ),
+			model.createPositionAfter( nodeBefore )
 		);
 	}
 
@@ -395,8 +429,9 @@ function leaveBlockEndOnEnter( editor, isSoftEnter ) {
 	//
 	//		<codeBlock>    []</codeBlock>
 	//		<codeBlock>  a []</codeBlock>
-	//		<codeBlock>foo<softBreak></softBreak>bar[]</codeBlock>
-	//		<codeBlock>foo<softBreak></softBreak> a []</codeBlock>
+	//		<codeBlock>foo<softBreak></softBreak>[]</codeBlock>
+	//		<codeBlock>foo<softBreak></softBreak><softBreak></softBreak>bar[]</codeBlock>
+	//		<codeBlock>foo<softBreak></softBreak><softBreak></softBreak> a []</codeBlock>
 	//
 	else {
 		return false;
@@ -404,7 +439,7 @@ function leaveBlockEndOnEnter( editor, isSoftEnter ) {
 
 	// We're doing everything in a single change block to have a single undo step.
 	editor.model.change( writer => {
-		// Remove the last <softBreak> and all white space characters that followed it.
+		// Remove the last <softBreak>s and all white space characters that followed them.
 		writer.remove( emptyLineRangeToRemoveOnEnter );
 
 		// "Clone" the <codeBlock> in the standard way.
@@ -421,4 +456,12 @@ function leaveBlockEndOnEnter( editor, isSoftEnter ) {
 	view.scrollToTheSelection();
 
 	return true;
+}
+
+function isEmptyishTextNode( node ) {
+	return node && node.is( '$text' ) && !node.data.match( /\S/ );
+}
+
+function isSoftBreakNode( node ) {
+	return node && node.is( 'element', 'softBreak' );
 }

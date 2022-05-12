@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -49,9 +49,6 @@ export default class UIElement extends Element {
 	 */
 	constructor( document, name, attributes, children ) {
 		super( document, name, attributes, children );
-
-		// Override the default of the base class.
-		this._isAllowedInsideAttributeElement = true;
 
 		/**
 		 * Returns `null` because filler is not needed for UIElements.
@@ -126,9 +123,10 @@ export default class UIElement extends Element {
 	 * Do not use inheritance to create custom rendering method, replace `render()` method instead:
 	 *
 	 *		const myUIElement = downcastWriter.createUIElement( 'span' );
-	 *		myUIElement.render = function( domDocument ) {
+	 *		myUIElement.render = function( domDocument, domConverter ) {
 	 *			const domElement = this.toDomElement( domDocument );
-	 *			domElement.innerHTML = '<b>this is ui element</b>';
+	 *
+	 *			domConverter.setContentOf( domElement, '<b>this is ui element</b>' );
 	 *
 	 *			return domElement;
 	 *		};
@@ -138,9 +136,11 @@ export default class UIElement extends Element {
 	 * after rendering your UI element.
 	 *
 	 * @param {Document} domDocument
+	 * @param {module:engine/view/domconverter~DomConverter} domConverter Instance of the DomConverter used to optimize the output.
 	 * @returns {HTMLElement}
 	 */
 	render( domDocument ) {
+		// Provide basic, default output.
 		return this.toDomElement( domDocument );
 	}
 

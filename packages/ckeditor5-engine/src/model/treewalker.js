@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -233,9 +233,8 @@ export default class TreeWalker {
 
 		// Get node just after the current position.
 		// Use a highly optimized version instead of checking the text node first and then getting the node after. See #6582.
-		const positionParent = position.parent;
-		const textNodeAtPosition = getTextNodeAtPosition( position, positionParent );
-		const node = textNodeAtPosition ? textNodeAtPosition : getNodeAfterPosition( position, positionParent, textNodeAtPosition );
+		const textNodeAtPosition = getTextNodeAtPosition( position, parent );
+		const node = textNodeAtPosition ? textNodeAtPosition : getNodeAfterPosition( position, parent, textNodeAtPosition );
 
 		if ( node instanceof Element ) {
 			if ( !this.shallow ) {

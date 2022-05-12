@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -185,7 +185,7 @@ describe( 'CodeBlockEditing', () => {
 		} );
 
 		it( 'should execute outdentCodeBlock command on Shift+Tab keystroke', () => {
-			domEvtDataStub.keyCode += getCode( 'Shift' );
+			domEvtDataStub.shiftKey = true;
 
 			setModelData( model, '<codeBlock language="plaintext">[]foo</codeBlock>' );
 
@@ -220,6 +220,180 @@ describe( 'CodeBlockEditing', () => {
 			editor.editing.view.document.fire( 'keydown', domEvtDataStub );
 
 			expect( editor.execute.called ).to.be.false;
+			sinon.assert.notCalled( domEvtDataStub.preventDefault );
+			sinon.assert.notCalled( domEvtDataStub.stopPropagation );
+		} );
+
+		it( 'should not call indent block command when outside `pre` context', () => {
+			const indentBlockCommand = editor.commands.get( 'indentCodeBlock' );
+			const indentBlockCommandSpy = sinon.spy( indentBlockCommand, 'execute' );
+
+			setModelData( model,
+				'<paragraph>[]foo</paragraph>',
+				'<codeBlock language="plaintext">bar</codeBlock>'
+			);
+
+			editor.editing.view.document.fire( 'keydown', domEvtDataStub );
+
+			sinon.assert.notCalled( indentBlockCommandSpy );
+			sinon.assert.notCalled( domEvtDataStub.preventDefault );
+			sinon.assert.notCalled( domEvtDataStub.stopPropagation );
+		} );
+
+		it( 'should not call outdent block command when outside `pre` context', () => {
+			const outdentBlockCommand = editor.commands.get( 'outdentCodeBlock' );
+			const outdentBlockCommandSpy = sinon.spy( outdentBlockCommand, 'execute' );
+
+			domEvtDataStub.shiftKey = true;
+
+			setModelData( model,
+				'<paragraph>[]foo</paragraph>',
+				'<codeBlock language="plaintext">bar</codeBlock>'
+			);
+
+			editor.editing.view.document.fire( 'keydown', domEvtDataStub );
+
+			sinon.assert.notCalled( outdentBlockCommandSpy );
+			sinon.assert.notCalled( domEvtDataStub.preventDefault );
+			sinon.assert.notCalled( domEvtDataStub.stopPropagation );
+		} );
+
+		it( 'should not indent on tab key when tab event was captured by listener with higher priority', () => {
+			setModelData( model, '<codeBlock language="plaintext">[]foo</codeBlock>' );
+
+			const onTabPress = ( bubblingEventInfo, domEventData ) => {
+				domEventData.preventDefault();
+				domEventData.stopPropagation();
+				bubblingEventInfo.stop();
+			};
+
+			const onTabPressSpy = sinon.spy( onTabPress );
+
+			editor.editing.view.document.on( 'tab', onTabPressSpy, { context: 'pre', priority: 'highest' } );
+
+			editor.editing.view.document.fire( 'keydown', domEvtDataStub );
+
+			sinon.assert.notCalled( editor.execute );
+			sinon.assert.calledOnce( domEvtDataStub.preventDefault );
+			sinon.assert.calledOnce( domEvtDataStub.stopPropagation );
+			sinon.assert.calledOnce( onTabPressSpy );
+		} );
+
+		it( 'should not be stopped by a listener with lower priority', () => {
+			setModelData( model, '<codeBlock language="plaintext">[]foo</codeBlock>' );
+
+			const onTabPress = ( bubblingEventInfo, domEventData ) => {
+				domEventData.preventDefault();
+				domEventData.stopPropagation();
+				bubblingEventInfo.stop();
+			};
+
+			const onTabPressSpy = sinon.spy( onTabPress );
+
+			editor.editing.view.document.on( 'tab', onTabPressSpy, { context: 'pre', priority: 'low' } );
+
+			editor.editing.view.document.fire( 'keydown', domEvtDataStub );
+
+			sinon.assert.calledOnce( editor.execute );
+			sinon.assert.calledWithExactly( editor.execute, 'indentCodeBlock' );
+			sinon.assert.calledOnce( domEvtDataStub.preventDefault );
+			sinon.assert.calledOnce( domEvtDataStub.stopPropagation );
+			sinon.assert.notCalled( onTabPressSpy );
+		} );
+
+		it( 'should not outdent on tab key when tab event was captured by listener with higher priority', () => {
+			setModelData( model, '<codeBlock language="plaintext">[]foo</codeBlock>' );
+
+			model.change( writer => {
+				// <codeBlock language="plaintext">  foo[]</codeBlock>
+				writer.insertText( '  ', model.document.getRoot().getChild( 0 ), 0 );
+			} );
+
+			domEvtDataStub.shiftKey = true;
+
+			const onTabPress = ( bubblingEventInfo, domEventData ) => {
+				domEventData.preventDefault();
+				domEventData.stopPropagation();
+				bubblingEventInfo.stop();
+			};
+
+			const onTabPressSpy = sinon.spy( onTabPress );
+
+			editor.editing.view.document.on( 'tab', onTabPressSpy, { context: 'pre', priority: 'highest' } );
+
+			editor.editing.view.document.fire( 'keydown', domEvtDataStub );
+
+			sinon.assert.notCalled( editor.execute );
+			sinon.assert.calledOnce( domEvtDataStub.preventDefault );
+			sinon.assert.calledOnce( domEvtDataStub.stopPropagation );
+			sinon.assert.calledOnce( onTabPressSpy );
+		} );
+
+		it( 'outdent should not be stopped by a listener with lower priority', () => {
+			setModelData( model, '<codeBlock language="plaintext">[]foo</codeBlock>' );
+
+			model.change( writer => {
+				// <codeBlock language="plaintext">  []foo</codeBlock>
+				writer.insertText( '	', model.document.getRoot().getChild( 0 ) );
+			} );
+
+			domEvtDataStub.shiftKey = true;
+
+			const onTabPress = ( bubblingEventInfo, domEventData ) => {
+				domEventData.preventDefault();
+				domEventData.stopPropagation();
+				bubblingEventInfo.stop();
+			};
+
+			const onTabPressSpy = sinon.spy( onTabPress );
+
+			editor.editing.view.document.on( 'tab', onTabPressSpy, { context: 'pre', priority: 'lowest' } );
+
+			editor.editing.view.document.fire( 'keydown', domEvtDataStub );
+
+			sinon.assert.calledOnce( editor.execute );
+			sinon.assert.calledWithExactly( editor.execute, 'outdentCodeBlock' );
+			sinon.assert.calledOnce( domEvtDataStub.preventDefault );
+			sinon.assert.calledOnce( domEvtDataStub.stopPropagation );
+			sinon.assert.notCalled( onTabPressSpy );
+		} );
+
+		it( 'should not stop tab event if indent command was not executed', () => {
+			model.schema.register( 'fakePre', {
+				allowIn: '$root'
+			} );
+
+			editor.conversion.elementToElement( {
+				model: 'fakePre',
+				view: 'pre'
+			} );
+
+			setModelData( model, '<fakePre>[]</fakePre>' );
+
+			editor.editing.view.document.fire( 'keydown', domEvtDataStub );
+
+			sinon.assert.neverCalledWith( editor.execute, 'indentCodeBlock' );
+			sinon.assert.notCalled( domEvtDataStub.preventDefault );
+			sinon.assert.notCalled( domEvtDataStub.stopPropagation );
+		} );
+
+		it( 'should not stop tab event if outdent command was not executed', () => {
+			model.schema.register( 'fakePre', {
+				allowIn: '$root'
+			} );
+
+			editor.conversion.elementToElement( {
+				model: 'fakePre',
+				view: 'pre'
+			} );
+
+			setModelData( model, '<fakePre>[]</fakePre>' );
+
+			domEvtDataStub.shiftKey = true;
+
+			editor.editing.view.document.fire( 'keydown', domEvtDataStub );
+
+			sinon.assert.neverCalledWith( editor.execute, 'outdentCodeBlock' );
 			sinon.assert.notCalled( domEvtDataStub.preventDefault );
 			sinon.assert.notCalled( domEvtDataStub.stopPropagation );
 		} );
@@ -394,7 +568,7 @@ describe( 'CodeBlockEditing', () => {
 
 		describe( 'leaving block using the enter key', () => {
 			describe( 'leaving the block end', () => {
-				it( 'should leave the block when pressed twice at the end', () => {
+				it( 'should leave the block when pressed three times at the end', () => {
 					const spy = sinon.spy( editor.editing.view, 'scrollToTheSelection' );
 
 					setModelData( model, '<codeBlock language="css">foo[]</codeBlock>' );
@@ -407,6 +581,11 @@ describe( 'CodeBlockEditing', () => {
 					viewDoc.fire( 'enter', getEvent() );
 
 					expect( getModelData( model ) ).to.equal(
+						'<codeBlock language="css">foo<softBreak></softBreak><softBreak></softBreak>[]</codeBlock>' );
+
+					viewDoc.fire( 'enter', getEvent() );
+
+					expect( getModelData( model ) ).to.equal(
 						'<codeBlock language="css">foo</codeBlock>' +
 						'<paragraph>[]</paragraph>'
 					);
@@ -415,14 +594,17 @@ describe( 'CodeBlockEditing', () => {
 
 					editor.execute( 'undo' );
 					expect( getModelData( model ) ).to.equal(
-						'<codeBlock language="css">foo<softBreak></softBreak>[]</codeBlock>' );
+						'<codeBlock language="css">foo<softBreak></softBreak><softBreak></softBreak>[]</codeBlock>' );
+
+					editor.execute( 'undo' );
+					expect( getModelData( model ) ).to.equal( '<codeBlock language="css">foo<softBreak></softBreak>[]</codeBlock>' );
 
 					editor.execute( 'undo' );
 					expect( getModelData( model ) ).to.equal( '<codeBlock language="css">foo[]</codeBlock>' );
 				} );
 
 				it( 'should not leave the block when the selection is not collapsed', () => {
-					setModelData( model, '<codeBlock language="css">f[oo<softBreak></softBreak>]</codeBlock>' );
+					setModelData( model, '<codeBlock language="css">f[oo<softBreak></softBreak><softBreak></softBreak>]</codeBlock>' );
 
 					viewDoc.fire( 'enter', getEvent() );
 
@@ -430,7 +612,7 @@ describe( 'CodeBlockEditing', () => {
 						'<codeBlock language="css">f<softBreak></softBreak>[]</codeBlock>' );
 				} );
 
-				it( 'should not leave the block when pressed twice when in the middle of the code', () => {
+				it( 'should not leave the block when pressed three times when in the middle of the code', () => {
 					setModelData( model, '<codeBlock language="css">fo[]o</codeBlock>' );
 
 					viewDoc.fire( 'enter', getEvent() );
@@ -442,9 +624,16 @@ describe( 'CodeBlockEditing', () => {
 
 					expect( getModelData( model ) ).to.equal(
 						'<codeBlock language="css">fo<softBreak></softBreak><softBreak></softBreak>[]o</codeBlock>' );
+
+					viewDoc.fire( 'enter', getEvent() );
+
+					expect( getModelData( model ) ).to.equal(
+						'<codeBlock language="css">' +
+						'fo<softBreak></softBreak><softBreak></softBreak><softBreak></softBreak>[]o' +
+						'</codeBlock>' );
 				} );
 
-				it( 'should not leave the block when pressed twice at the beginning of the code', () => {
+				it( 'should not leave the block when pressed three times at the beginning of the code', () => {
 					setModelData( model, '<codeBlock language="css">[]foo</codeBlock>' );
 
 					viewDoc.fire( 'enter', getEvent() );
@@ -456,23 +645,49 @@ describe( 'CodeBlockEditing', () => {
 
 					expect( getModelData( model ) ).to.equal(
 						'<codeBlock language="css"><softBreak></softBreak><softBreak></softBreak>[]foo</codeBlock>' );
+
+					viewDoc.fire( 'enter', getEvent() );
+
+					expect( getModelData( model ) ).to.equal(
+						'<codeBlock language="css">' +
+						'<softBreak></softBreak><softBreak></softBreak><softBreak></softBreak>[]foo' +
+						'</codeBlock>' );
 				} );
 
-				it( 'should not leave the block when pressed shift+enter twice at the end of the code', () => {
-					setModelData( model, '<codeBlock language="css">foo<softBreak></softBreak>[]</codeBlock>' );
+				it( 'should not leave the block when pressed shift+enter three times at the end of the code', () => {
+					setModelData( model, '<codeBlock language="css">foo<softBreak></softBreak><softBreak></softBreak>[]</codeBlock>' );
 
 					viewDoc.fire( 'enter', getEvent( { isSoft: true } ) );
 
 					expect( getModelData( model ) ).to.equal(
-						'<codeBlock language="css">foo<softBreak></softBreak><softBreak></softBreak>[]</codeBlock>' );
+						'<codeBlock language="css">' +
+						'foo<softBreak></softBreak><softBreak></softBreak><softBreak></softBreak>[]' +
+						'</codeBlock>' );
 				} );
 
-				it( 'should clean up the last line if has white–space characters only', () => {
-					setModelData( model, '<codeBlock language="css">foo<softBreak></softBreak>[]</codeBlock>' );
+				it( 'should clean up the last two lines if the last one has white-space characters only', () => {
+					setModelData( model, '<codeBlock language="css">foo<softBreak></softBreak><softBreak></softBreak>[]</codeBlock>' );
 
 					model.change( writer => {
-						// <codeBlock language="css">foo<softBreak></softBreak>  []</codeBlock>
+						// <codeBlock language="css">foo<softBreak></softBreak><softBreak></softBreak>  []</codeBlock>
+						writer.insertText( '  ', model.document.getRoot().getChild( 0 ), 5 );
+					} );
+
+					viewDoc.fire( 'enter', getEvent() );
+
+					expect( getModelData( model ) ).to.equal(
+						'<codeBlock language="css">foo</codeBlock><paragraph>[]</paragraph>' );
+				} );
+
+				it( 'should clean up the last two lines if both have white-space characters only', () => {
+					setModelData( model, '<codeBlock language="css">foo<softBreak></softBreak><softBreak></softBreak>[]</codeBlock>' );
+
+					model.change( writer => {
+						// <codeBlock language="css">foo<softBreak></softBreak>  <softBreak></softBreak>[]</codeBlock>
 						writer.insertText( '  ', model.document.getRoot().getChild( 0 ), 4 );
+
+						// <codeBlock language="css">foo<softBreak></softBreak>  <softBreak></softBreak>  []</codeBlock>
+						writer.insertText( '  ', model.document.getRoot().getChild( 0 ), 7 );
 					} );
 
 					viewDoc.fire( 'enter', getEvent() );

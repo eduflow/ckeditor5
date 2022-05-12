@@ -7,7 +7,11 @@ category: features
 
 The {@link module:link/link~Link} feature brings support for link editing to the rich-text editor. It allows for inserting hyperlinks into the edited content and offers the UI to create and edit them.
 
-Thanks to the [autolink](#autolink-feature) plugin, typed or pasted URLs and e-mail addresses will be automatically turned into working links as you type. The plugin is enabled in all {@link builds/guides/overview predefined builds}.
+Thanks to the [autolink](#autolink-feature) plugin, typed or pasted URLs and e-mail addresses will be automatically turned into working links as you type.
+
+<info-box info>
+	This feature is enabled by default in all {@link installation/advanced/predefined-builds predefined builds}.
+</info-box>
 
 ## Demo
 
@@ -29,7 +33,7 @@ CKEditor 5 allows for typing both at inner and outer boundaries of links to make
 
 ## Custom link attributes (decorators)
 
-By default, all links created in the editor have the `href="..."` attribute in the {@link builds/guides/integration/basic-api#getting-the-editor-data editor data}. If you want your links to have additional link attributes, {@link module:link/link~LinkConfig#decorators link decorators} provide an easy way to configure and manage them.
+By default, all links created in the editor have the `href="..."` attribute in the {@link installation/getting-started/basic-api#getting-the-editor-data editor data}. If you want your links to have additional link attributes, {@link module:link/link~LinkConfig#decorators link decorators} provide an easy way to configure and manage them.
 
 There are two types of link decorators you can use:
 
@@ -242,7 +246,7 @@ ClassicEditor
 
 ## Autolink feature
 
-Automatic linking of URLs typed or pasted into the editor is enabled by default in the preconfigured builds. The {@link module:link/autolink~AutoLink `AutoLink`} feature will automatically turn URLs or e-mail addresses into real, working links.
+Automatic linking of URLs typed or pasted into the editor is enabled by default in the predefined builds. The {@link module:link/autolink~AutoLink `AutoLink`} feature will automatically turn URLs or e-mail addresses into real, working links.
 
 To use the autolink function simply press <kbd>Space</kbd>, <kbd>Enter</kbd> or <kbd>Shift</kbd>+<kbd>Enter</kbd> after a link.
 
@@ -278,6 +282,10 @@ ClassicEditor
 	.then( ... )
 	.catch( ... );
 ```
+
+<info-box info>
+	Read more about {@link installation/getting-started/installing-plugins installing plugins}.
+</info-box>
 
 ## Common API
 

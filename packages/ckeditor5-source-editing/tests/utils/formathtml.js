@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -191,6 +191,20 @@ describe( 'SourceEditing utils', () => {
 				'        </fieldset>\n' +
 				'    </form>\n' +
 				'</main>';
+
+			expect( formatHtml( source ) ).to.equal( sourceFormatted );
+		} );
+
+		it( 'should not format pre blocks', () => {
+			const source = '' +
+				'<blockquote>' +
+					'<pre><code>abc</code></pre>' +
+				'</blockquote>';
+
+			const sourceFormatted = '' +
+				'<blockquote>\n' +
+				'    <pre><code>abc</code></pre>\n' +
+				'</blockquote>';
 
 			expect( formatHtml( source ) ).to.equal( sourceFormatted );
 		} );

@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -49,7 +49,7 @@ import '../../theme/components/dropdown/listdropdown.css';
  * {@link module:ui/dropdown/button/dropdownbutton~DropdownButton} interface). For instance, you can use
  * {@link module:ui/dropdown/button/splitbuttonview~SplitButtonView} to create a dropdown with a split button.
  *
- *		const dropdown = createDropdown( model, SplitButtonView );
+ *		const dropdown = createDropdown( locale, SplitButtonView );
  *
  *		// Configure dropdown's button properties:
  *		dropdown.buttonView.set( {

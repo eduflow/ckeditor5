@@ -6,7 +6,7 @@ order: 40
 
 # Base64 image upload adapter
 
-The {@link module:upload/adapters/base64uploadadapter~Base64UploadAdapter Base64 image upload adapter} plugin converts images inserted into the rich-text editor into [Base64-encoded strings](https://en.wikipedia.org/wiki/Base64) in the {@link builds/guides/integration/saving-data editor output}.
+The {@link module:upload/adapters/base64uploadadapter~Base64UploadAdapter Base64 image upload adapter} plugin converts images inserted into the rich-text editor into [Base64-encoded strings](https://en.wikipedia.org/wiki/Base64) in the {@link installation/advanced/saving-data editor output}.
 
 This kind of image upload does not require any server-side processing &mdash; images are stored with the rest of the text and displayed by the web browser without additional requests. On the downside, this approach can bloat your database with very long data strings which has a negative impact on the performance.
 
@@ -49,7 +49,7 @@ ClassicEditor
 Once enabled in the plugin list, the Base64 image upload adapter works out–of–the–box without any additional configuration.
 
 <info-box info>
-	Read more about {@link builds/guides/integration/installing-plugins installing plugins}.
+	Read more about {@link installation/getting-started/installing-plugins installing plugins}.
 </info-box>
 
 ## Configuration
@@ -65,7 +65,7 @@ The allowed file types that can be uploaded should actually be configured in two
 
 Use the {@link module:image/imageupload~ImageUploadConfig#types `image.upload.types`} configuration option to define the allowed image MIME types that can be uploaded to CKEditor 5.
 
-By default, users are allowed to upload `jpeg`, `png`, `gif`, `bmp`, `webp` and `tiff` files, but you can customize this behavior to accept, for example, SVG files.
+By default, users are allowed to upload `jpeg`, `png`, `gif`, `bmp`, `webp` and `tiff` files. You can customize this behavior to accept, for example, SVG files (in this case use `svg+xml` type).
 
 #### Server-side configuration
 

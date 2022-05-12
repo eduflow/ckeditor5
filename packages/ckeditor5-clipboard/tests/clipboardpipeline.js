@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -290,7 +290,7 @@ describe( 'ClipboardPipeline feature', () => {
 			const dataTransferMock = createDataTransfer( { 'text/html': '<p>x</p>', 'text/plain': 'y' } );
 			const spy = sinon.stub( editor.model, 'insertContent' );
 
-			editor.isReadOnly = true;
+			editor.enableReadOnlyMode( 'unit-test' );
 
 			viewDocument.fire( 'paste', {
 				dataTransfer: dataTransferMock,
@@ -307,7 +307,7 @@ describe( 'ClipboardPipeline feature', () => {
 
 			viewDocument.on( 'clipboardInput', spy, { priority: 'high' } );
 
-			editor.isReadOnly = true;
+			editor.enableReadOnlyMode( 'unit-test' );
 
 			viewDocument.fire( 'clipboardInput', {
 				dataTransfer: dataTransferMock
@@ -315,7 +315,7 @@ describe( 'ClipboardPipeline feature', () => {
 
 			sinon.assert.notCalled( spy );
 
-			editor.isReadOnly = false;
+			editor.disableReadOnlyMode( 'unit-test' );
 
 			viewDocument.fire( 'clipboardInput', {
 				dataTransfer: dataTransferMock
@@ -507,7 +507,7 @@ describe( 'ClipboardPipeline feature', () => {
 			const spy = sinon.spy();
 
 			setModelData( editor.model, '<paragraph>a[bc</paragraph><paragraph>de]f</paragraph>' );
-			editor.isReadOnly = true;
+			editor.enableReadOnlyMode( 'unit-test' );
 
 			viewDocument.on( 'clipboardOutput', spy );
 

@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -13,7 +13,7 @@ import BubblingEventInfo from '@ckeditor/ckeditor5-engine/src/view/observer/bubb
 import { keyCodes } from '@ckeditor/ckeditor5-utils/src/keyboard';
 
 /**
- * Enter observer introduces the {@link module:engine/view/document~Document#event:enter} event.
+ * Enter observer introduces the {@link module:engine/view/document~Document#event:enter `Document#enter`} event.
  *
  * @extends module:engine/view/observer/observer~Observer
  */

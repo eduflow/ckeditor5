@@ -25,7 +25,7 @@ You can find all the official packages listed in the [CKEditor 5 repository's RE
 
 In order to start developing CKEditor 5 you will require:
 
-* [Node.js](https://nodejs.org/en/) 12.0.0+
+* [Node.js](https://nodejs.org/en/) 14.0.0+
 * [Git](https://git-scm.com/)
 
 ## Setting up the CKEditor development environment
@@ -230,7 +230,7 @@ yarn docs:content-styles
 
 The stylesheet will be saved in the `build/content-styles` folder.
 
-To learn more, refer to the {@link builds/guides/integration/content-styles Content styles} guide.
+To learn more, refer to the {@link installation/advanced/content-styles Content styles} guide.
 
 ## Additional information for contributors
 

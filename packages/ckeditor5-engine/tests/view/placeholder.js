@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -326,6 +326,21 @@ describe( 'placeholder', () => {
 
 		it( 'should not set attributes/class when first child is not element (isDirectHost=false)', () => {
 			setData( view, '<ui:span></ui:span>' );
+			viewDocument.isFocused = false;
+
+			enablePlaceholder( {
+				view,
+				element: viewRoot,
+				text: 'foo bar baz',
+				isDirectHost: false
+			} );
+
+			expect( viewRoot.getChild( 0 ).hasAttribute( 'data-placeholder' ) ).to.be.false;
+			expect( viewRoot.getChild( 0 ).hasClass( 'ck-placeholder' ) ).to.be.false;
+		} );
+
+		it( 'should not set attributes/class when first child is an AttributeElement (isDirectHost=false)', () => {
+			setData( view, '<attribute:ul><attribute:li>foo</attribute:li></attribute:ul>' );
 			viewDocument.isFocused = false;
 
 			enablePlaceholder( {

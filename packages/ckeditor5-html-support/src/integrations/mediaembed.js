@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -9,9 +9,9 @@
 
 import { Plugin } from 'ckeditor5/src/core';
 
-import { setViewAttributes } from '../conversionutils.js';
 import DataFilter from '../datafilter';
 import DataSchema from '../dataschema';
+import { updateViewAttributes } from '../conversionutils.js';
 
 /**
  * Provides the General HTML Support integration with {@link module:media-embed/mediaembed~MediaEmbed Media Embed} feature.
@@ -100,10 +100,11 @@ function modelToViewMediaAttributeConverter( mediaElementName ) {
 					return;
 				}
 
+				const { attributeOldValue, attributeNewValue } = data;
 				const containerElement = conversionApi.mapper.toViewElement( data.item );
 				const viewElement = getDescendantElement( conversionApi.writer, containerElement, elementName );
 
-				setViewAttributes( conversionApi.writer, data.attributeNewValue, viewElement );
+				updateViewAttributes( conversionApi.writer, attributeOldValue, attributeNewValue, viewElement );
 			} );
 		}
 	};

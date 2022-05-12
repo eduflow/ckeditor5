@@ -1,5 +1,5 @@
 ---
-category: framework-guides
+category: framework-plugins
 order: 30
 ---
 
@@ -8,7 +8,7 @@ order: 30
 This guide will show you how to create a simple rich-text editor plugin for CKEditor 5.
 
 <info-box>
-	Before you get to work, you should check out the {@link framework/guides/quick-start Quick start} guide first to set up the framework and building tools.
+	Before you get to work, you should check out the {@link framework/guides/quick-start Quick start} guide first to set up the framework and building tools. Be sure to check out the {@link framework/guides/package-generator package generator guide} as well.
 </info-box>
 
 CKEditor plugins need to implement the {@link module:core/plugin~PluginInterface}. The easiest way to do that is to inherit from the {@link module:core/plugin~Plugin base `Plugin` class}. However, you can also write simple constructor functions. This guide uses the former method.
@@ -135,13 +135,13 @@ class InsertImage extends Plugin {
 }
 ```
 
-And add `insertImage` to `config.toolbar`:
+And add the `InsertImage` plugin to `config.plugins` and `insertImage` to `config.toolbar`:
 
 ```js
 ClassicEditor
 	.create( document.querySelector( '#editor' ), {
 		// ...
-
+		plugins: [ Essentials, Paragraph, Bold, Italic, Image, InsertImage ],
 		toolbar: [ 'bold', 'italic', 'insertImage' ]
 	} )
 	// ...
@@ -203,18 +203,21 @@ Congratulations! You have just created your first CKEditor 5 plugin!
 
 ## Bonus. Enabling image captions
 
-Thanks to the fact that all plugins operate on the model and on the view, and know as little about themselves as possible, you can easily enable image captions by simply loading the {@link module:image/imagecaption~ImageCaption} plugin:
+All the plugins operate both on the model and on the view, and know as little about themselves as possible. Thanks to this fact, you can easily enable image captions by simply loading the {@link module:image/imagecaption~ImageCaption} plugin which handles the captions feature and the {@link module:image/imagetoolbar~ImageToolbar} which gives you the ability to control such image properties like having the caption or not. It is also necessary to specify what to include in this new toolbar. In this case, it would be a toggle executing the {@link module:image/imagecaption/toggleimagecaptioncommand~ToggleImageCaptionCommand} which disables or enables the image caption:
 
 ```js
 import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption';
-
+import ImageToolbar from '@ckeditor/ckeditor5-image/src/imagetoolbar';
 // ...
 
 ClassicEditor
 	.create( document.querySelector( '#editor' ), {
 		// Add ImageCaption to the plugin list.
-		plugins: [ Essentials, Paragraph, Bold, Italic, Image, InsertImage, ImageCaption ],
-
+		plugins: [ Essentials, Paragraph, Bold, Italic, Image, InsertImage, ImageCaption, ImageToolbar ],
+		// ...
+		image: {
+            toolbar: [ 'toggleImageCaption' ]
+        }
 		// ...
 	} )
 	// ...
@@ -237,6 +240,7 @@ import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
 import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
 import Image from '@ckeditor/ckeditor5-image/src/image';
 import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption';
+import ImageToolbar from '@ckeditor/ckeditor5-image/src/imagetoolbar';
 
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import ButtonView from '@ckeditor/ckeditor5-ui/src/button/buttonview';
@@ -277,8 +281,11 @@ class InsertImage extends Plugin {
 
 ClassicEditor
 	.create( document.querySelector( '#editor' ), {
-		plugins: [ Essentials, Paragraph, Bold, Italic, Image, InsertImage, ImageCaption ],
-		toolbar: [ 'bold', 'italic', 'insertImage' ]
+		plugins: [ Essentials, Paragraph, Bold, Italic, Image, InsertImage, ImageCaption, ImageToolbar ],
+		toolbar: [ 'bold', 'italic', 'insertImage' ],
+		image: {
+            toolbar: [ 'toggleImageCaption' ]
+        }
 	} )
 	.then( editor => {
 		console.log( 'Editor was initialized', editor );

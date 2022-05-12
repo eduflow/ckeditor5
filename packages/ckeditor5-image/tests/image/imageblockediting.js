@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -62,6 +62,14 @@ describe( 'ImageBlockEditing', () => {
 		expect( model.schema.checkChild( [ '$root', 'imageBlock' ], 'imageBlock' ) ).to.be.false;
 		expect( model.schema.checkChild( [ '$root', 'imageBlock' ], '$text' ) ).to.be.false;
 		expect( model.schema.checkChild( [ '$root', '$block' ], 'imageBlock' ) ).to.be.false;
+	} );
+
+	it( 'inherits attributes from $blockObject', () => {
+		model.schema.extend( '$blockObject', {
+			allowAttributes: 'foo'
+		} );
+
+		expect( model.schema.checkAttribute( 'imageBlock', 'foo' ) ).to.be.true;
 	} );
 
 	it( 'should register ImageLoadObserver', () => {
@@ -288,6 +296,14 @@ describe( 'ImageBlockEditing', () => {
 
 				expect( getModelData( model, { withoutSelection: true } ) )
 					.to.equal( '' );
+			} );
+
+			it( 'should consume the src attribute on <img>', () => {
+				editor.data.upcastDispatcher.on( 'element:img', ( evt, data, conversionApi ) => {
+					expect( conversionApi.consumable.test( data.viewItem, { attributes: 'src' } ) ).to.be.false;
+				}, { priority: 'low' } );
+
+				editor.setData( '<figure class="image"><img src="/assets/sample.png" alt="alt text" /></figure>' );
 			} );
 
 			it( 'should dispatch conversion for nested elements', () => {

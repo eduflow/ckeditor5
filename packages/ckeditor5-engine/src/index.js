@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -28,10 +28,17 @@ export { default as LivePosition } from './model/liveposition';
 export { default as Model } from './model/model';
 export { default as TreeWalker } from './model/treewalker';
 export { default as Element } from './model/element';
+export { default as Position } from './model/position';
+export { default as DocumentFragment } from './model/documentfragment';
+export { default as History } from './model/history';
+export { default as Text } from './model/text';
 
 export { default as DomConverter } from './view/domconverter';
 export { default as Renderer } from './view/renderer';
 export { default as ViewDocument } from './view/document';
+export { default as ViewText } from './view/text';
+export { default as ViewElement } from './view/element';
+export { default as ViewDocumentFragment } from './view/documentfragment';
 
 export { getFillerOffset } from './view/containerelement';
 export { default as Observer } from './view/observer/observer';

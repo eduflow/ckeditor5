@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -33,14 +33,21 @@ export default class InsertParagraphCommand extends Command {
 	 * @param {Object} options Options for the executed command.
 	 * @param {module:engine/model/position~Position} options.position The model position at which
 	 * the new paragraph will be inserted.
+	 * @param {Object} attributes Attributes keys and values to set on a inserted paragraph
 	 * @fires execute
 	 */
 	execute( options ) {
 		const model = this.editor.model;
+		const attributes = options.attributes;
+
 		let position = options.position;
 
 		model.change( writer => {
 			const paragraph = writer.createElement( 'paragraph' );
+
+			if ( attributes ) {
+				model.schema.setAllowedAttributes( paragraph, attributes, writer );
+			}
 
 			if ( !model.schema.checkChild( position.parent, paragraph ) ) {
 				const allowedParent = model.schema.findAllowedParent( position, paragraph );

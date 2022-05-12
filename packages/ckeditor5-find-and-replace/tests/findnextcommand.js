@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -24,6 +24,17 @@ describe( 'FindNextCommand', () => {
 
 	afterEach( () => {
 		return editor.destroy();
+	} );
+
+	describe( 'constructor()', () => {
+		it( 'sets public properties', () => {
+			expect( command ).to.have.property( 'isEnabled', false );
+			expect( command ).to.have.property( 'affectsData', false );
+		} );
+
+		it( 'sets state property', () => {
+			expect( command ).to.have.property( '_state', editor.plugins.get( 'FindAndReplaceEditing' ).state );
+		} );
 	} );
 
 	describe( 'isEnabled', () => {
@@ -61,7 +72,7 @@ describe( 'FindNextCommand', () => {
 			command._state.results.add( {} );
 			command._state.results.add( {} );
 
-			editor.isReadOnly = true;
+			editor.enableReadOnlyMode( 'unit-test' );
 
 			expect( command.isEnabled ).to.be.true;
 		} );
@@ -73,8 +84,8 @@ describe( 'FindNextCommand', () => {
 			command._state.results.add( {} );
 			command._state.results.add( {} );
 
-			editor.isReadOnly = true;
-			editor.isReadOnly = false;
+			editor.enableReadOnlyMode( 'unit-test' );
+			editor.disableReadOnlyMode( 'unit-test' );
 
 			expect( command.isEnabled ).to.be.true;
 		} );
@@ -87,12 +98,6 @@ describe( 'FindNextCommand', () => {
 			expect( multiRootEditor.commands.get( 'findNext' ).isEnabled ).to.be.true;
 
 			await multiRootEditor.destroy();
-		} );
-	} );
-
-	describe( '_state', () => {
-		it( 'is set to plugin\'s state', () => {
-			expect( command._state ).to.equal( editor.plugins.get( 'FindAndReplaceEditing' ).state );
 		} );
 	} );
 

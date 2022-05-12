@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -58,6 +58,14 @@ export default class DowncastWriter {
 		 * @type {Map.<String,Set>}
 		 */
 		this._cloneGroups = new Map();
+
+		/**
+		 * The slot factory used by the `elementToStructure` downcast helper.
+		 *
+		 * @private
+		 * @type {Function|null}
+		 */
+		this._slotFactory = null;
 	}
 
 	/**
@@ -177,15 +185,13 @@ export default class DowncastWriter {
 	 *		// Set `id` of a marker element so it is not joined or merged with "normal" elements.
 	 *		writer.createAttributeElement( 'span', { class: 'my-marker' }, { id: 'marker:my' } );
 	 *
-	 * **Note:** By default an `AttributeElement` is split by a
-	 * {@link module:engine/view/containerelement~ContainerElement `ContainerElement`} but this behavior can be modified
-	 * with `isAllowedInsideAttributeElement` option set while {@link #createContainerElement creating the element}.
-	 *
 	 * @param {String} name Name of the element.
 	 * @param {Object} [attributes] Element's attributes.
 	 * @param {Object} [options] Element's options.
 	 * @param {Number} [options.priority] Element's {@link module:engine/view/attributeelement~AttributeElement#priority priority}.
 	 * @param {Number|String} [options.id] Element's {@link module:engine/view/attributeelement~AttributeElement#id id}.
+	 * @param {Array.<String>} [options.renderUnsafeAttributes] A list of attribute names that should be rendered in the editing
+	 * pipeline even though they would normally be filtered out by unsafe attribute detection mechanisms.
 	 * @returns {module:engine/view/attributeelement~AttributeElement} Created element.
 	 */
 	createAttributeElement( name, attributes, options = {} ) {
@@ -197,6 +203,10 @@ export default class DowncastWriter {
 
 		if ( options.id ) {
 			attributeElement._id = options.id;
+		}
+
+		if ( options.renderUnsafeAttributes ) {
+			attributeElement._unsafeAttributesToRender.push( ...options.renderUnsafeAttributes );
 		}
 
 		return attributeElement;
@@ -216,19 +226,38 @@ export default class DowncastWriter {
 	 *		// Create element with custom classes.
 	 *		writer.createContainerElement( 'p', { class: 'foo bar baz' } );
 	 *
+	 *		// Create element with children.
+	 *		writer.createContainerElement( 'figure', { class: 'image' }, [
+	 *			writer.createEmptyElement( 'img' ),
+	 *			writer.createContainerElement( 'figcaption' )
+	 *		] );
+	 *
+	 *		// Create element with specific options.
+	 *		writer.createContainerElement( 'span', { class: 'placeholder' }, { renderUnsafeAttributes: [ 'foo' ] } );
+	 *
 	 * @param {String} name Name of the element.
 	 * @param {Object} [attributes] Elements attributes.
+	 * @param {module:engine/view/node~Node|Iterable.<module:engine/view/node~Node>|Object} [childrenOrOptions]
+	 * A node or a list of nodes to be inserted into the created element. If no children were specified, element's `options`
+	 * can be passed in this argument.
 	 * @param {Object} [options] Element's options.
-	 * @param {Boolean} [options.isAllowedInsideAttributeElement=false] Whether an element is
-	 * {@link module:engine/view/element~Element#isAllowedInsideAttributeElement allowed inside an AttributeElement} and can be wrapped
-	 * with {@link module:engine/view/attributeelement~AttributeElement} by {@link module:engine/view/downcastwriter~DowncastWriter}.
+	 * @param {Array.<String>} [options.renderUnsafeAttributes] A list of attribute names that should be rendered in the editing
+	 * pipeline even though they would normally be filtered out by unsafe attribute detection mechanisms.
 	 * @returns {module:engine/view/containerelement~ContainerElement} Created element.
 	 */
-	createContainerElement( name, attributes, options = {} ) {
-		const containerElement = new ContainerElement( this.document, name, attributes );
+	createContainerElement( name, attributes, childrenOrOptions = {}, options = {} ) {
+		let children = null;
 
-		if ( options.isAllowedInsideAttributeElement !== undefined ) {
-			containerElement._isAllowedInsideAttributeElement = options.isAllowedInsideAttributeElement;
+		if ( isPlainObject( childrenOrOptions ) ) {
+			options = childrenOrOptions;
+		} else {
+			children = childrenOrOptions;
+		}
+
+		const containerElement = new ContainerElement( this.document, name, attributes, children );
+
+		if ( options.renderUnsafeAttributes ) {
+			containerElement._unsafeAttributesToRender.push( ...options.renderUnsafeAttributes );
 		}
 
 		return containerElement;
@@ -245,11 +274,18 @@ export default class DowncastWriter {
 	 *
 	 * @param {String} name Name of the element.
 	 * @param {Object} [attributes] Elements attributes.
+	 * @param {Object} [options] Element's options.
+	 * @param {Array.<String>} [options.renderUnsafeAttributes] A list of attribute names that should be rendered in the editing
+	 * pipeline even though they would normally be filtered out by unsafe attribute detection mechanisms.
 	 * @returns {module:engine/view/editableelement~EditableElement} Created element.
 	 */
-	createEditableElement( name, attributes ) {
+	createEditableElement( name, attributes, options = {} ) {
 		const editableElement = new EditableElement( this.document, name, attributes );
 		editableElement._document = this.document;
+
+		if ( options.renderUnsafeAttributes ) {
+			editableElement._unsafeAttributesToRender.push( ...options.renderUnsafeAttributes );
+		}
 
 		return editableElement;
 	}
@@ -263,16 +299,15 @@ export default class DowncastWriter {
 	 * @param {String} name Name of the element.
 	 * @param {Object} [attributes] Elements attributes.
 	 * @param {Object} [options] Element's options.
-	 * @param {Boolean} [options.isAllowedInsideAttributeElement=true] Whether an element is
-	 * {@link module:engine/view/element~Element#isAllowedInsideAttributeElement allowed inside an AttributeElement} and can be wrapped
-	 * with {@link module:engine/view/attributeelement~AttributeElement} by {@link module:engine/view/downcastwriter~DowncastWriter}.
+	 * @param {Array.<String>} [options.renderUnsafeAttributes] A list of attribute names that should be rendered in the editing
+	 * pipeline even though they would normally be filtered out by unsafe attribute detection mechanisms.
 	 * @returns {module:engine/view/emptyelement~EmptyElement} Created element.
 	 */
 	createEmptyElement( name, attributes, options = {} ) {
 		const emptyElement = new EmptyElement( this.document, name, attributes );
 
-		if ( options.isAllowedInsideAttributeElement !== undefined ) {
-			emptyElement._isAllowedInsideAttributeElement = options.isAllowedInsideAttributeElement;
+		if ( options.renderUnsafeAttributes ) {
+			emptyElement._unsafeAttributesToRender.push( ...options.renderUnsafeAttributes );
 		}
 
 		return emptyElement;
@@ -301,21 +336,13 @@ export default class DowncastWriter {
 	 * @param {String} name The name of the element.
 	 * @param {Object} [attributes] Element attributes.
 	 * @param {Function} [renderFunction] A custom render function.
-	 * @param {Object} [options] Element's options.
-	 * @param {Boolean} [options.isAllowedInsideAttributeElement=true] Whether an element is
-	 * {@link module:engine/view/element~Element#isAllowedInsideAttributeElement allowed inside an AttributeElement} and can be wrapped
-	 * with {@link module:engine/view/attributeelement~AttributeElement} by {@link module:engine/view/downcastwriter~DowncastWriter}.
 	 * @returns {module:engine/view/uielement~UIElement} The created element.
 	 */
-	createUIElement( name, attributes, renderFunction, options = {} ) {
+	createUIElement( name, attributes, renderFunction ) {
 		const uiElement = new UIElement( this.document, name, attributes );
 
 		if ( renderFunction ) {
 			uiElement.render = renderFunction;
-		}
-
-		if ( options.isAllowedInsideAttributeElement !== undefined ) {
-			uiElement._isAllowedInsideAttributeElement = options.isAllowedInsideAttributeElement;
 		}
 
 		return uiElement;
@@ -344,9 +371,8 @@ export default class DowncastWriter {
 	 * @param {Object} [attributes] Element attributes.
 	 * @param {Function} [renderFunction] A custom render function.
 	 * @param {Object} [options] Element's options.
-	 * @param {Boolean} [options.isAllowedInsideAttributeElement=true] Whether an element is
-	 * {@link module:engine/view/element~Element#isAllowedInsideAttributeElement allowed inside an AttributeElement} and can be wrapped
-	 * with {@link module:engine/view/attributeelement~AttributeElement} by {@link module:engine/view/downcastwriter~DowncastWriter}.
+	 * @param {Array.<String>} [options.renderUnsafeAttributes] A list of attribute names that should be rendered in the editing
+	 * pipeline even though they would normally be filtered out by unsafe attribute detection mechanisms.
 	 * @returns {module:engine/view/rawelement~RawElement} The created element.
 	 */
 	createRawElement( name, attributes, renderFunction, options = {} ) {
@@ -354,8 +380,8 @@ export default class DowncastWriter {
 
 		rawElement.render = renderFunction || ( () => {} );
 
-		if ( options.isAllowedInsideAttributeElement !== undefined ) {
-			rawElement._isAllowedInsideAttributeElement = options.isAllowedInsideAttributeElement;
+		if ( options.renderUnsafeAttributes ) {
+			rawElement._unsafeAttributesToRender.push( ...options.renderUnsafeAttributes );
 		}
 
 		return rawElement;
@@ -731,7 +757,7 @@ export default class DowncastWriter {
 
 			// Break attributes on nodes that do exist in the model tree so they can have attributes, other elements
 			// can't have an attribute in model and won't get wrapped with an AttributeElement while down-casted.
-			const breakAttributes = !( node.is( 'uiElement' ) && node.isAllowedInsideAttributeElement );
+			const breakAttributes = !node.is( 'uiElement' );
 
 			if ( !lastGroup || lastGroup.breakAttributes != breakAttributes ) {
 				groups.push( {
@@ -919,16 +945,6 @@ export default class DowncastWriter {
 	 *
 	 * Throws {@link module:utils/ckeditorerror~CKEditorError} `view-writer-wrap-nonselection-collapsed-range` when passed range
 	 * is collapsed and different than view selection.
-	 *
-	 * **Note:** Attribute elements by default can wrap {@link module:engine/view/text~Text},
-	 * {@link module:engine/view/emptyelement~EmptyElement}, {@link module:engine/view/uielement~UIElement},
-	 * {@link module:engine/view/rawelement~RawElement} and other attribute elements with higher priority. Other elements while placed
-	 * inside an attribute element will split it (or nest it in case of an `AttributeElement`). This behavior can be modified by changing
-	 * the `isAllowedInsideAttributeElement` option while using
-	 * {@link module:engine/view/downcastwriter~DowncastWriter#createContainerElement},
-	 * {@link module:engine/view/downcastwriter~DowncastWriter#createEmptyElement},
-	 * {@link module:engine/view/downcastwriter~DowncastWriter#createUIElement} or
-	 * {@link module:engine/view/downcastwriter~DowncastWriter#createRawElement}.
 	 *
 	 * @param {module:engine/view/range~Range} range Range to wrap.
 	 * @param {module:engine/view/attributeelement~AttributeElement} attribute Attribute element to use as wrapper.
@@ -1136,7 +1152,7 @@ export default class DowncastWriter {
 	}
 
 	/**
-	 Creates new {@link module:engine/view/selection~Selection} instance.
+	 * Creates new {@link module:engine/view/selection~Selection} instance.
 	 *
 	 * 		// Creates empty selection without ranges.
 	 *		const selection = writer.createSelection();
@@ -1197,6 +1213,63 @@ export default class DowncastWriter {
 	 */
 	createSelection( selectable, placeOrOffset, options ) {
 		return new Selection( selectable, placeOrOffset, options );
+	}
+
+	/**
+	 * Creates placeholders for child elements of the {@link module:engine/conversion/downcasthelpers~DowncastHelpers#elementToStructure
+	 * `elementToStructure()`} conversion helper.
+	 *
+	 *		const viewSlot = conversionApi.writer.createSlot();
+	 *		const viewPosition = conversionApi.writer.createPositionAt( viewElement, 0 );
+	 *
+	 *		conversionApi.writer.insert( viewPosition, viewSlot );
+	 *
+	 * It could be filtered down to a specific subset of children (only `<foo>` model elements in this case):
+	 *
+	 *		const viewSlot = conversionApi.writer.createSlot( node => node.is( 'element', 'foo' ) );
+	 *		const viewPosition = conversionApi.writer.createPositionAt( viewElement, 0 );
+	 *
+	 *		conversionApi.writer.insert( viewPosition, viewSlot );
+	 *
+	 * While providing a filtered slot, make sure to provide slots for all child nodes. A single node can not be downcasted into
+	 * multiple slots.
+	 *
+	 * **Note**: You should not change the order of nodes. View elements should be in the same order as model nodes.
+	 *
+	 * @param {'children'|module:engine/conversion/downcasthelpers~SlotFilter} [modeOrFilter='children'] The filter for child nodes.
+	 * @returns {module:engine/view/element~Element} The slot element to be placed in to the view structure while processing
+	 * {@link module:engine/conversion/downcasthelpers~DowncastHelpers#elementToStructure `elementToStructure()`}.
+	 */
+	createSlot( modeOrFilter ) {
+		if ( !this._slotFactory ) {
+			/**
+			 * The `createSlot()` method is only allowed inside the `elementToStructure` downcast helper callback.
+			 *
+			 * @error view-writer-invalid-create-slot-context
+			 */
+			throw new CKEditorError( 'view-writer-invalid-create-slot-context', this.document );
+		}
+
+		return this._slotFactory( this, modeOrFilter );
+	}
+
+	/**
+	 * Registers a slot factory.
+	 *
+	 * @protected
+	 * @param {Function} slotFactory The slot factory.
+	 */
+	_registerSlotFactory( slotFactory ) {
+		this._slotFactory = slotFactory;
+	}
+
+	/**
+	 * Clears the registered slot factory.
+	 *
+	 * @protected
+	 */
+	_clearSlotFactory() {
+		this._slotFactory = null;
 	}
 
 	/**
@@ -1283,7 +1356,6 @@ export default class DowncastWriter {
 			const child = parent.getChild( i );
 			const isText = child.is( '$text' );
 			const isAttribute = child.is( 'attributeElement' );
-			const isAllowedInsideAttributeElement = child.isAllowedInsideAttributeElement;
 
 			//
 			// (In all examples, assume that `wrapElement` is `<span class="foo">` element.)
@@ -1302,7 +1374,7 @@ export default class DowncastWriter {
 			//
 			// <p>abc</p>                   -->  <p><span class="foo">abc</span></p>
 			// <p><strong>abc</strong></p>  -->  <p><span class="foo"><strong>abc</strong></span></p>
-			else if ( isText || isAllowedInsideAttributeElement || ( isAttribute && shouldABeOutsideB( wrapElement, child ) ) ) {
+			else if ( isText || !isAttribute || shouldABeOutsideB( wrapElement, child ) ) {
 				// Clone attribute.
 				const newAttribute = wrapElement._clone();
 
@@ -1320,7 +1392,7 @@ export default class DowncastWriter {
 			//
 			// <p><a href="foo.html">abc</a></p>  -->  <p><a href="foo.html"><span class="foo">abc</span></a></p>
 			//
-			else if ( isAttribute ) {
+			else /* if ( isAttribute ) */ {
 				this._wrapChildren( child, 0, child.childCount, wrapElement );
 			}
 

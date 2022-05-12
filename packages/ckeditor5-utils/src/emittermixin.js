@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -10,6 +10,7 @@
 import EventInfo from './eventinfo';
 import uid from './uid';
 import priorities from './priorities';
+import insertToPriorityArray from './inserttopriorityarray';
 
 // To check if component is loaded more than once.
 import './version';
@@ -298,21 +299,7 @@ const EmitterMixin = {
 		// Add the callback to all callbacks list.
 		for ( const callbacks of lists ) {
 			// Add the callback to the list in the right priority position.
-			let added = false;
-
-			for ( let i = 0; i < callbacks.length; i++ ) {
-				if ( callbacks[ i ].priority < priority ) {
-					callbacks.splice( i, 0, callbackDefinition );
-					added = true;
-
-					break;
-				}
-			}
-
-			// Add at the end, if right place was not found.
-			if ( !added ) {
-				callbacks.push( callbackDefinition );
-			}
+			insertToPriorityArray( callbacks, callbackDefinition );
 		}
 	},
 
