@@ -42,13 +42,10 @@ import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock';
 import Highlight from '@ckeditor/ckeditor5-highlight/src/highlight';
 import HorizontalLine from '@ckeditor/ckeditor5-horizontal-line/src/horizontalline';
 import Mention from '@ckeditor/ckeditor5-mention/src/mention';
-import Mathematics from 'ckeditor5-math/src/math';
 import Strikethrough from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
 import TableProperties from '@ckeditor/ckeditor5-table/src/tableproperties';
 import TableCellProperties from '@ckeditor/ckeditor5-table/src/tablecellproperties';
 import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline';
-import { Accordion } from '@peergrade/ckeditor5-accordion';
-import { FileUpload } from '@peergrade/ckeditor5-fileupload';
 
 import '../theme/theme.css';
 
@@ -174,15 +171,12 @@ const plugins = [
 	TextTransformation,
 
 	// ADDED
-	Accordion,
 	Code,
 	CodeBlock,
-	FileUpload,
 	HorizontalLine,
 	Highlight,
 	ImageResize,
 	LinkImage,
-	Mathematics,
 	Mention,
 	Strikethrough,
 	Table,
