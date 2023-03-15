@@ -49,7 +49,7 @@ import TableProperties from '@ckeditor/ckeditor5-table/src/tableproperties';
 import TableCellProperties from '@ckeditor/ckeditor5-table/src/tablecellproperties';
 import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline';
 import { Accordion } from '@peergrade/ckeditor5-accordion';
-import { FileUpload } from '@peergrade/ckeditor5-fileupload';
+import { FileUpload } from '@tony/ckeditor5-fileupload';
 
 import '../theme/theme.css';
 
