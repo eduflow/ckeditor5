@@ -70,6 +70,22 @@
 							// eslint-disable-next-line no-undef
 							console.log( 'downloadLinkRewriter, optional callback', href, el, context );
 							return `${ href }?addedViaDownloadLinkRewriter`;
+					},
+					widgetConverter: ( div, writer, toWidget, defaultFn ) => {
+						// eslint-disable-next-line no-undef
+						console.log( 'widgetConverter, optional callback', div, writer, toWidget, defaultFn );
+
+						const section = writer.createRawElement( 'section', {
+							class: 'product',
+							'data-id': '1'
+						} );
+
+						writer.insert( writer.createPositionAt( div, 0 ), section );
+
+						return toWidget( div, writer );
+
+						// To have default behavior:
+						// return defaultFn();
 					}
 			}
 		})
