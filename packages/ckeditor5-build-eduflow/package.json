@@ -52,7 +52,7 @@
     "@ckeditor/ckeditor5-ui": "^36.0.1",
     "@peergrade/ckeditor5-accordion": "^36.0.1-next.0",
     "@tony/ckeditor5-fileupload": "^36.0.1-next.4",
-    "@isaul32/ckeditor5-math": "^36.0.2-next.0"
+    "@isaul32/ckeditor5-math": "^36.0.4"
   },
   "devDependencies": {
     "@ckeditor/ckeditor5-core": "^36.0.1",
