@@ -51,7 +51,7 @@
     "@ckeditor/ckeditor5-typing": "^36.0.1",
     "@ckeditor/ckeditor5-ui": "^36.0.1",
     "@peergrade/ckeditor5-accordion": "^36.0.1-next.0",
-    "@tony/ckeditor5-fileupload": "^36.0.1-next.11",
+    "@tony/ckeditor5-fileupload": "^36.0.1-next.12",
     "@isaul32/ckeditor5-math": "^36.0.4"
   },
   "devDependencies": {

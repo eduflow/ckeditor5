@@ -71,9 +71,9 @@
 							console.log( 'downloadLinkRewriter, optional callback', href, el, context );
 							return `${ href }?addedViaDownloadLinkRewriter`;
 					},
-					widgetConverter: ( div, writer, toWidget, defaultFn ) => {
+					contentWidget: ( div, writer, toWidget, defaultFn ) => {
 						// eslint-disable-next-line no-undef
-						console.log( 'widgetConverter, optional callback', div, writer, toWidget, defaultFn );
+						console.log( 'contentWidget, optional callback', div, writer, toWidget, defaultFn );
 
 						const section = writer.createRawElement( 'section', {
 							class: 'product',
