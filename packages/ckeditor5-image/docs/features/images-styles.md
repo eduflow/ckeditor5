@@ -8,6 +8,8 @@ modified_at: 2021-06-17
 
 # Image styles
 
+The image styles feature lets you adjust the appearance of images. It works by applying CSS classes to images or changing their type from inline to block or vice versa.
+
 ## Overview
 This package allows for adjusting the image appearance by:
 * **Applying CSS classes** - adding a particular [predefined](#ready-to-use-styles) or [custom](#configuring-the-styles) CSS class or removing any style-related CSS class,
@@ -80,14 +82,14 @@ A semantical style lets the user choose from predefined appearances of the image
 	If you want to enable image resizing, use [presentational image styles](#presentational-styles) instead or define custom semantical styles to make sure that there are no conflicts with the image resizing feature.
 </info-box>
 
-As the most of the predefined editor builds support editing a structured content which requires passing the control over the possible image appearances to the developer, they introduce a UI containing a set of buttons applying the semantical styles (taken from the [default styles](#styles-table) listed below).
+As most of the predefined editor builds support editing structured content which requires passing the control over the possible image appearances to the developer, they introduce a UI containing a set of buttons applying the semantical styles (taken from the [default styles](#styles-table) listed below).
 
-The example below presents an editor with such a basic configuration. There are three types of the images:
-* **a block image** {@icon @ckeditor/ckeditor5-core/theme/icons/object-center.svg Block image} - a representation of a block image with no style-related CSS class,
-* **an inline image** {@icon @ckeditor/ckeditor5-core/theme/icons/object-inline.svg Inline image} - a representation of an inline image with no style-related CSS class,
-* **a side image** {@icon @ckeditor/ckeditor5-core/theme/icons/object-inline-right.svg Side image} - a semantical style applying the `image-style-side` CSS class to it.
+The example below shows an editor with such a basic configuration. There are three types of images:
+* **A block image** {@icon @ckeditor/ckeditor5-core/theme/icons/object-center.svg Block image} &mdash; a representation of a block image with no style-related CSS class
+* **An inline image** {@icon @ckeditor/ckeditor5-core/theme/icons/object-inline.svg Inline image} &mdash; a representation of an inline image with no style-related CSS class
+* **A side image** {@icon @ckeditor/ckeditor5-core/theme/icons/object-inline-right.svg Side image} &mdash; a semantical style with the `image-style-side` CSS class applied to it
 
-You can change the style of an individual image using the contextual toolbar invoked after an image is clicked.
+You can change the style of an individual image using the contextual toolbar that opens after clicking the image.
 
 <div id="semantical-example">
 
@@ -95,7 +97,11 @@ You can change the style of an individual image using the contextual toolbar inv
 
 </div>
 
-The editor above does not require any configuration, using one of the following builds: classic, inline, balloon or balloon-block, for example:
+<info-box info>
+	All demos in this guide only present a limited set of features for clarity. Visit the {@link examples/builds/full-featured-editor full-featured editor example} to see more in action.
+</info-box>
+
+The editor above does not require any configuration, using one of the following builds: classic, inline, balloon, or balloon-block, for example:
 
 ```js
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic/src/ckeditor';
@@ -167,7 +173,7 @@ There are three ways of defining the image styles in the editor configuration:
 
 ### Demo
 
-The editor example below shows the possibilities of customizing the image visual representation and customizing image styles UI (icons, tooltips and drop-downs).
+The editor example below shows what you can achieve by customizing the visual representation of images and the UI for setting image styles (icons, tooltips, and drop-downs).
 
 {@snippet features/image-style-custom}
 
@@ -434,7 +440,7 @@ The {@link module:image/imagestyle~ImageStyle} plugin registers:
 	```
 
 <info-box>
-	We recommend using the official {@link framework/guides/development-tools#ckeditor-5-inspector CKEditor 5 inspector} for development and debugging. It will give you tons of useful information about the state of the editor such as internal data structures, selection, commands, and many more.
+	We recommend using the official {@link framework/development-tools#ckeditor-5-inspector CKEditor 5 inspector} for development and debugging. It will give you tons of useful information about the state of the editor such as internal data structures, selection, commands, and many more.
 </info-box>
 
 ## Contribute

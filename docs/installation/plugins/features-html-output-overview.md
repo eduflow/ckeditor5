@@ -1,21 +1,21 @@
 ---
-menu-title: Plugin list
+menu-title: Plugins and HTML output
 category: plugins
 order: 20
 modified_at: 2021-12-03
 ---
 
-# Features' HTML output overview
+# Plugins and HTML output
 
 Listed below are all official CKEditor 5 packages as well as some partner packages together with their possible HTML output. If a plugin generates a different HTML output depending on its configuration, it is described in the "HTML output" column.
 
 The classes, styles or attributes applied to an HTML element are all **possible** results. It does not mean they all will always be used.
 
-`$block` is a generic structural element that may contain textual content. Features like headings or paragraph implement it to inherit common behaviours. You can read more about it in the {@link framework/guides/deep-dive/schema#generic-items Schema} guide.
+`$block` is a generic structural element that may contain textual content. Features like headings or paragraph implement it to inherit common behaviours. You can read more about it in the {@link framework/deep-dive/schema#generic-items Schema} guide.
 
 If a given plugin does not generate any output, the "HTML output" is described as "None".  Wildcard character `*` means any value is possible.
 
-The data used to generate the following tables comes from the package metadata. You can read more about it in the {@link framework/guides/contributing/package-metadata package metadata} guide.
+The data used to generate the following tables comes from the package metadata. You can read more about it in the {@link framework/contributing/package-metadata package metadata} guide.
 
 <style>
 	table.features-html-output p {

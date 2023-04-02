@@ -6,11 +6,7 @@ category: features
 
 # Editor placeholder
 
-CKEditor 5 can display a configurable placeholder text when the content is empty. The placeholder helps users locate the editor in the application and prompts to input the content. It works similarly to the native DOM [`placeholder` attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder) used by inputs.
-
-<info-box info>
-	This feature is enabled by default in all {@link installation/getting-started/predefined-builds predefined builds}.
-</info-box>
+You can prompt the user to input content by displaying a configurable placeholder text when the editor is empty. This works similarly to the native DOM [`placeholder` attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-placeholder) used by inputs.
 
 ## Demo
 
@@ -24,6 +20,10 @@ See the demo of the placeholder feature:
 
 ## Installation
 
+<info-box info>
+	This feature is enabled by default in all {@link installation/getting-started/predefined-builds predefined builds}.
+</info-box>
+
 The editor placeholder feature does not require a separate plugin installation. It does, however, require configuring the editor before use. There are two different ways of configuring the editor placeholder text:
 
 ### Using the `placeholder` attribute of a textarea
@@ -31,7 +31,7 @@ The editor placeholder feature does not require a separate plugin installation. 
 Set the `placeholder` attribute on a `<textarea>` element passed to the `Editor.create()` method (for instance {@link module:editor-classic/classiceditor~ClassicEditor.create `ClassicEditor.create()`}) to configure the placeholder:
 
 ```html
-<textarea id="editor" placeholder="Type the content here!"></textarea>
+<textarea id="editor" placeholder="Type some content here!"></textarea>
 ```
 
 ```js
@@ -80,3 +80,7 @@ The editor placeholder text is displayed using a CSS pseudo–element (`::before
 {@snippet features/placeholder-custom}
 
 **Note**: The `.ck-placeholder` class is also used to display placeholders in other places, for instance, {@link features/images-captions image captions}. Make sure your custom styles apply to the right subset of placeholders.
+
+## Contribute
+
+The source code of the feature is available on GitHub at [https://github.com/ckeditor/ckeditor5/tree/master/packages/ckeditor5-core](https://github.com/ckeditor/ckeditor5/tree/master/packages/ckeditor5-core).

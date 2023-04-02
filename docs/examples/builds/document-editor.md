@@ -9,7 +9,7 @@ classes: 'main__content-wide main__content--no-toc'
 
 The editor in this example is a feature–rich build focused on rich text editing experience similar to the native word processors. It works best for creating documents which are usually later printed or exported to PDF files.
 
-See the {@link framework/guides/document-editor tutorial} to learn how to create this kind of an editor (and similar) with a custom UI layout on top of {@link module:editor-decoupled/decouplededitor~DecoupledEditor}.
+See the {@link framework/document-editor tutorial} to learn how to create this kind of an editor (and similar) with a custom UI layout on top of {@link module:editor-decoupled/decouplededitor~DecoupledEditor}.
 
 {@snippet examples/document-editor}
 
@@ -26,6 +26,15 @@ import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document/src/ck
 
 DecoupledEditor
 	.create( document.querySelector( '.document-editor__editable' ), {
+		toolbar: {
+			items: [
+				'undo', 'redo',
+				'|', 'heading',
+				'|', 'bold', 'italic',
+				'|', 'link', 'uploadImage', 'insertTable', 'mediaEmbed',
+				'|', 'bulletedList', 'numberedList', 'outdent', 'indent'
+			]
+		},
 		cloudServices: {
 			// All predefined builds include the Easy Image feature.
 			// Provide correct configuration values to use it.

@@ -15,23 +15,10 @@ ClassicEditor
 		extraPlugins: [ DocumentList, DocumentListProperties, ImageResize ],
 		toolbar: {
 			items: [
-				'heading',
-				'|',
-				'bold',
-				'italic',
-				'|',
-				'numberedList',
-				'bulletedList',
-				'|',
-				'outdent',
-				'indent',
-				'|',
-				'link',
-				'uploadImage',
-				'insertTable',
-				'|',
-				'undo',
-				'redo'
+				'undo', 'redo', '|', 'heading',
+				'|', 'bold', 'italic',
+				'|', 'link', 'uploadImage', 'insertTable', 'mediaEmbed',
+				'|', 'bulletedList', 'numberedList', 'outdent', 'indent'
 			]
 		},
 		ui: {
@@ -54,7 +41,9 @@ ClassicEditor
 		},
 		list: {
 			properties: {
-				styles: true
+				styles: true,
+				startIndex: true,
+				reversed: true
 			}
 		},
 		cloudServices: CS_CONFIG
