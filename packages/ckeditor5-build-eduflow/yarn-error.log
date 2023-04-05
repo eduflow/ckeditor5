@@ -1,0 +1,119 @@
+Arguments: 
+  /home/t/.config/asdf/installs/nodejs/19.6.0/bin/node /home/t/.config/asdf/installs/nodejs/19.6.0/bin/yarn
+
+PATH: 
+  /home/t/.config/asdf/plugins/nodejs/shims:/home/t/.config/asdf/installs/nodejs/19.6.0/bin:/home/t/.cache/antidote/junegunn/fzf/bin:/home/t/.yarn/bin:/home/t/.cache/antidote/junegunn/fzf/bin:/home/t/.config/asdf/shims:/home/t/.cache/antidote/asdf-vm/asdf/bin:/home/t/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files/Git/cmd:/mnt/c/Users/tony/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/tony/AppData/Local/Programs/Microsoft VS Code/bin:/snap/bin
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  19.6.0
+
+Platform: 
+  linux x64
+
+Trace: 
+  SyntaxError: /home/t/work/peergrade/ckeditor5/packages/ckeditor5-build-eduflow/package.json: Expected property name or '}' in JSON at position 2
+      at JSON.parse (<anonymous>)
+      at /home/t/.config/asdf/installs/nodejs/19.6.0/lib/node_modules/yarn/lib/cli.js:1629:59
+      at Generator.next (<anonymous>)
+      at step (/home/t/.config/asdf/installs/nodejs/19.6.0/lib/node_modules/yarn/lib/cli.js:310:30)
+      at /home/t/.config/asdf/installs/nodejs/19.6.0/lib/node_modules/yarn/lib/cli.js:321:13
+
+npm manifest: 
+  {
+  <<<<<<< HEAD
+    "name": "@tony/ckeditor5-build-eduflow",
+    "version": "36.0.1-next.23",
+    "description": "The balloon editor build of CKEditor 5 with a block toolbar – the best browser-based rich text editor.",
+    "keywords": [
+      "wysiwyg",
+      "rich text",
+      "editor",
+      "html",
+      "contentEditable",
+      "editing",
+      "operational transformation",
+      "ot",
+      "collaboration",
+      "collaborative",
+      "real-time",
+      "framework",
+      "ckeditor5-build",
+      "ckeditor",
+      "ckeditor5",
+      "ckeditor 5"
+    ],
+    "main": "./build/ckeditor.js",
+    "files": [
+      "build"
+    ],
+    "dependencies": {
+      "@ckeditor/ckeditor5-adapter-ckfinder": "^36.0.1",
+      "@ckeditor/ckeditor5-autoformat": "^36.0.1",
+      "@ckeditor/ckeditor5-basic-styles": "^36.0.1",
+      "@ckeditor/ckeditor5-block-quote": "^36.0.1",
+      "@ckeditor/ckeditor5-ckfinder": "^36.0.1",
+      "@ckeditor/ckeditor5-cloud-services": "^36.0.1",
+      "@ckeditor/ckeditor5-code-block": "^36.0.1",
+      "@ckeditor/ckeditor5-easy-image": "^36.0.1",
+      "@ckeditor/ckeditor5-editor-balloon": "^36.0.1",
+      "@ckeditor/ckeditor5-editor-classic": "^36.0.1",
+      "@ckeditor/ckeditor5-essentials": "^36.0.1",
+      "@ckeditor/ckeditor5-heading": "^36.0.1",
+      "@ckeditor/ckeditor5-highlight": "^36.0.1",
+      "@ckeditor/ckeditor5-horizontal-line": "^36.0.1",
+      "@ckeditor/ckeditor5-image": "^36.0.1",
+      "@ckeditor/ckeditor5-indent": "^36.0.1",
+      "@ckeditor/ckeditor5-link": "^36.0.1",
+      "@ckeditor/ckeditor5-list": "^36.0.1",
+      "@ckeditor/ckeditor5-media-embed": "^36.0.1",
+      "@ckeditor/ckeditor5-mention": "^36.0.1",
+      "@ckeditor/ckeditor5-paragraph": "^36.0.1",
+      "@ckeditor/ckeditor5-paste-from-office": "^36.0.1",
+      "@ckeditor/ckeditor5-table": "^36.0.1",
+      "@ckeditor/ckeditor5-typing": "^36.0.1",
+      "@ckeditor/ckeditor5-ui": "^36.0.1",
+      "@peergrade/ckeditor5-accordion": "^36.0.1-next.1",
+      "@tony/ckeditor5-fileupload": "^36.0.1-next.18",
+      "@isaul32/ckeditor5-math": "^36.0.7"
+    },
+    "devDependencies": {
+      "@ckeditor/ckeditor5-core": "^36.0.1",
+      "@ckeditor/ckeditor5-dev-utils": "^32.0.0",
+      "@ckeditor/ckeditor5-dev-translations": "^32.0.0",
+      "@ckeditor/ckeditor5-theme-lark": "^36.0.1",
+      "css-loader": "^5.2.7",
+      "postcss-loader": "^4.3.0",
+      "raw-loader": "^4.0.1",
+      "style-loader": "^2.0.0",
+      "terser-webpack-plugin": "^4.2.3",
+      "ts-loader": "^9.3.0",
+      "webpack": "^5.58.1",
+      "webpack-cli": "^4.9.0"
+    },
+    "engines": {
+      "node": ">=14.0.0",
+      "npm": ">=5.7.1"
+    },
+    "author": "CKSource (http://cksource.com/)",
+    "license": "GPL-2.0-or-later",
+    "homepage": "https://ckeditor.com/ckeditor-5",
+    "bugs": "https://github.com/ckeditor/ckeditor5/issues",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/ckeditor/ckeditor5.git",
+      "directory": "packages/ckeditor5-build-balloon-block"
+    },
+    "scripts": {
+      "build": "webpack --mode production",
+      "preversion": "npm run build"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
