@@ -3,69 +3,61 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
+// Typings
+import { type Editor } from '@ckeditor/ckeditor5-core';
+import { type RootElement } from '@ckeditor/ckeditor5-engine';
+import type RootEditableElement from '@ckeditor/ckeditor5-engine/src/view/rooteditableelement';
+
 // The editor creator(s) to use.
 import BalloonEditorBase from '@ckeditor/ckeditor5-editor-balloon/src/ballooneditor';
 import ClassicEditorBase from '@ckeditor/ckeditor5-editor-classic/src/classiceditor'; // custom
 
 // Default
-import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
-import UploadAdapter from '@ckeditor/ckeditor5-adapter-ckfinder/src/uploadadapter';
-import Autoformat from '@ckeditor/ckeditor5-autoformat/src/autoformat';
-import BlockToolbar from '@ckeditor/ckeditor5-ui/src/toolbar/block/blocktoolbar';
-import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
-import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
-import Code from '@ckeditor/ckeditor5-basic-styles/src/code';
-import BlockQuote from '@ckeditor/ckeditor5-block-quote/src/blockquote';
-import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
-import EasyImage from '@ckeditor/ckeditor5-easy-image/src/easyimage';
-import Heading from '@ckeditor/ckeditor5-heading/src/heading';
-import Image from '@ckeditor/ckeditor5-image/src/image';
-import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption';
-import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle';
-import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize';
-import ImageToolbar from '@ckeditor/ckeditor5-image/src/imagetoolbar';
-import ImageUpload from '@ckeditor/ckeditor5-image/src/imageupload';
-import Indent from '@ckeditor/ckeditor5-indent/src/indent';
-import Link from '@ckeditor/ckeditor5-link/src/link';
-import LinkImage from '@ckeditor/ckeditor5-link/src/linkimage';
-import List from '@ckeditor/ckeditor5-list/src/list';
-import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
-import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
-import PasteFromOffice from '@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice';
-import Table from '@ckeditor/ckeditor5-table/src/table';
-import TableColumnResize from '@ckeditor/ckeditor5-table/src/tablecolumnresize';
-import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
-import TextTransformation from '@ckeditor/ckeditor5-typing/src/texttransformation';
-import CloudServices from '@ckeditor/ckeditor5-cloud-services/src/cloudservices';
+import { Essentials } from '@ckeditor/ckeditor5-essentials';
+import { UploadAdapter } from '@ckeditor/ckeditor5-adapter-ckfinder';
+import { Autoformat } from '@ckeditor/ckeditor5-autoformat';
+import { BlockToolbar, type BodyCollection } from '@ckeditor/ckeditor5-ui';
+import { Bold, Code, Italic, Strikethrough, Underline } from '@ckeditor/ckeditor5-basic-styles';
+import { BlockQuote } from '@ckeditor/ckeditor5-block-quote';
+import { CKFinder } from '@ckeditor/ckeditor5-ckfinder';
+import { EasyImage } from '@ckeditor/ckeditor5-easy-image';
+import { Heading } from '@ckeditor/ckeditor5-heading';
+import { Image, ImageCaption, ImageStyle, ImageResize, ImageToolbar, ImageUpload } from '@ckeditor/ckeditor5-image';
+import { Indent } from '@ckeditor/ckeditor5-indent';
+import { Link, LinkImage } from '@ckeditor/ckeditor5-link';
+import { List } from '@ckeditor/ckeditor5-list';
+import { MediaEmbed } from '@ckeditor/ckeditor5-media-embed';
+import { Paragraph } from '@ckeditor/ckeditor5-paragraph';
+import { PasteFromOffice } from '@ckeditor/ckeditor5-paste-from-office';
+import { Table, TableCellProperties, TableToolbar, TableColumnResize, TableProperties } from '@ckeditor/ckeditor5-table';
+import { TextTransformation } from '@ckeditor/ckeditor5-typing';
+import { CloudServices } from '@ckeditor/ckeditor5-cloud-services';
 
 // Custom
-import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock';
-import Highlight from '@ckeditor/ckeditor5-highlight/src/highlight';
-import HorizontalLine from '@ckeditor/ckeditor5-horizontal-line/src/horizontalline';
-import Mention from '@ckeditor/ckeditor5-mention/src/mention';
-import Mathematics from '@isaul32/ckeditor5-math/src/math';
-import Strikethrough from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
-import TableProperties from '@ckeditor/ckeditor5-table/src/tableproperties';
-import TableCellProperties from '@ckeditor/ckeditor5-table/src/tablecellproperties';
-import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline';
+import { CodeBlock } from '@ckeditor/ckeditor5-code-block';
+import { Highlight } from '@ckeditor/ckeditor5-highlight';
+import { HorizontalLine } from '@ckeditor/ckeditor5-horizontal-line';
+import { Mention } from '@ckeditor/ckeditor5-mention';
+import { Math as Mathematics } from '@isaul32/ckeditor5-math';
 import { Accordion } from '@peergrade/ckeditor5-accordion';
 import { FileUpload } from '@peergrade/ckeditor5-fileupload';
 
 import '../theme/theme.css';
 
-class BalloonEditor extends BalloonEditorBase {}
-class ClassicEditor extends ClassicEditorBase {}
-
 //
 // Add CSS class to the editor upon initialiation
 // Support ticket(s): #68240
 //
-function EditorClassPlugin( editor ) {
-	const className = editor.config.get( 'editorClass' );
+function EditorClassPlugin( editor: Editor ): void {
+	const className = editor.config.get( 'editorClass' ) as string;
 
 	editor.ui.on( 'ready', () => {
+		if ( !editor.ui.view ) {
+			return;
+		}
 		// For all balloons and popups to inherit from.
-		editor.ui.view.body._bodyCollectionContainer.classList.add( className );
+		// @ts-expect-error This is a private variable
+		( editor.ui.view.body as unknown as BodyCollection )._bodyCollectionContainer.classList.add( className );
 
 		// Note: Balloon editor doesn't have one.
 		if ( editor.ui.view.element ) {
@@ -77,11 +69,11 @@ function EditorClassPlugin( editor ) {
 	// editor.ui.view.element because editor.ui.view.element contains the editing root. In the alloon editor,
 	// which does not have the UI container (view), this makes perfect sense, though.
 	editor.editing.view.change( writer => {
-		writer.addClass( className, editor.editing.view.document.getRoot() );
+		writer.addClass( className, editor.editing.view.document.getRoot() as RootEditableElement );
 	} );
 }
 
-function MoveSelectionToTextOnInit( editor ) {
+function MoveSelectionToTextOnInit( editor: Editor ): void {
 	const model = editor.model;
 	const selection = model.document.selection;
 	const schema = model.schema;
@@ -98,7 +90,7 @@ function MoveSelectionToTextOnInit( editor ) {
 			const newSelection = model.createSelection( selection.getLastPosition() );
 
 			model.change( writer => {
-				const root = editor.model.document.getRoot();
+				const root = editor.model.document.getRoot() as RootElement;
 				// covers 2 cases - single widget in content area; two widgets one under the other
 				if ( root.childCount == 1 ) {
 					writer.appendElement( 'paragraph', root );
@@ -129,7 +121,7 @@ function MoveSelectionToTextOnInit( editor ) {
 				const newSelection = model.createSelection( selection.getLastPosition() );
 
 				model.change( writer => {
-					const root = editor.model.document.getRoot();
+					const root = editor.model.document.getRoot() as RootElement;
 
 					// covers 2 cases - single widget in content area; two widgets one under the other
 					if ( root.childCount == 1 ) {
@@ -194,8 +186,13 @@ const plugins = [
 	Underline
 ];
 
-BalloonEditor.builtinPlugins = plugins;
-ClassicEditor.builtinPlugins = plugins;
+export class BalloonEditor extends BalloonEditorBase {
+	public static override builtinPlugins = plugins;
+}
+
+export class ClassicEditor extends ClassicEditorBase {
+	public static override builtinPlugins = plugins;
+}
 
 export default {
 	BalloonEditor,
