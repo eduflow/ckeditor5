@@ -112583,7 +112583,6 @@ class FileEditing extends plugin_Plugin {
                 'fileId',
                 'fileReferenceId',
                 'fileUrl',
-                'fileDownloadUrl',
                 'fileName',
                 'fileIsOpen'
             ],
@@ -112618,8 +112617,6 @@ class FileEditing extends plugin_Plugin {
                 }
                 if (viewElement.getAttribute('data-file-url')) {
                     newProps.fileUrl = viewElement.getAttribute('data-file-url');
-                    newProps.fileDownloadUrl = viewElement.getAttribute('data-file-download-url') ||
-                        viewElement.getAttribute('data-file-url');
                 }
                 if (viewElement.getAttribute('data-file-name')) {
                     newProps.fileName = viewElement.getAttribute('data-file-name');
@@ -112649,8 +112646,6 @@ class FileEditing extends plugin_Plugin {
         }).attributeToAttribute({
             view: 'data-file-url', model: 'fileUrl'
         }).attributeToAttribute({
-            view: 'data-file-download-url', model: 'fileDownloadUrl'
-        }).attributeToAttribute({
             view: 'data-file-name', model: 'fileName'
         }).attributeToAttribute({
             view: 'data-file-is-open', model: 'fileIsOpen'
@@ -112663,8 +112658,7 @@ class FileEditing extends plugin_Plugin {
                     modelElement.getAttribute('fileName')) {
                     elements.push(_createFileNameStructure(writer, modelElement.getAttribute('fileName')));
                     const buttonElements = [];
-                    const href = (modelElement.getAttribute('fileDownloadUrl') ||
-                        modelElement.getAttribute('fileUrl'));
+                    const href = modelElement.getAttribute('fileUrl');
                     buttonElements.push(_createDownloadLink(writer, href));
                     buttonElements.push(_createDeleteButton(undefined, writer));
                     elements.push(writer.createContainerElement('div', { class: 'ck-file-buttons-container' }, buttonElements));
@@ -112682,14 +112676,12 @@ class FileEditing extends plugin_Plugin {
         }).attributeToAttribute({
             view: 'data-file-url', model: 'fileUrl'
         }).attributeToAttribute({
-            view: 'data-file-download-url', model: 'fileDownloadUrl'
-        }).attributeToAttribute({
             view: 'data-file-name', model: 'fileName'
         }).attributeToAttribute({
             view: 'data-file-is-open', model: 'fileIsOpen'
         });
         conversion.for('downcast').add(dispatcher => {
-            dispatcher.on('attribute:fileDownloadUrl', (evt, data, conversionApi) => {
+            dispatcher.on('attribute:fileUrl', (evt, data, conversionApi) => {
                 const rootEl = conversionApi.mapper.toViewElement(data.item);
                 // If dragging and dropping, ignore
                 if (!rootEl ||
@@ -113061,7 +113053,6 @@ class FileUploadEditing extends plugin_Plugin {
             this.editor.model.change(writer => {
                 writer.setAttribute('fileIsOpen', 'false', fileElement);
                 writer.setAttribute('fileUrl', urls.default, fileElement);
-                writer.setAttribute('fileDownloadUrl', urls.default, fileElement);
             });
         }, { priority: 'low' });
     }
