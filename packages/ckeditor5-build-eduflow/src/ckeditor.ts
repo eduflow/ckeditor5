@@ -40,7 +40,7 @@ import { HorizontalLine } from '@ckeditor/ckeditor5-horizontal-line';
 import { Mention } from '@ckeditor/ckeditor5-mention';
 import { Math as Mathematics } from '@isaul32/ckeditor5-math';
 import { Accordion } from '@peergrade/ckeditor5-accordion';
-import { FileUpload } from '@tony/ckeditor5-fileupload';
+import { FileUpload } from '@tony/ckeditor5-fileupload-react';
 
 import '../theme/theme.css';
 
