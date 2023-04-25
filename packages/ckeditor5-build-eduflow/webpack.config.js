@@ -47,141 +47,141 @@ module.exports = {
 	plugins: [
 		new webpack.NormalModuleReplacementPlugin(
 			/pilcrow\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/pilcrow-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/pilcrow-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/bold\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/bold-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/bold-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/italic\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/italic-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/italic-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/underline\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/underline-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/underline-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/strikethrough\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/strikethrough-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/strikethrough-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/bulletedlist\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/bulletedlist-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/bulletedlist-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/numberedlist\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/numberedlist-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/numberedlist-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/\/link\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/link-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/link-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/\/unlink\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/unlink-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/unlink-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/horizontalline\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/horizontalline-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/horizontalline-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/quote\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/quote-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/quote-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/table\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/table-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/table-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/table-cell-properties\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/table-cell-properties-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/table-cell-properties-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/table-properties\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/table-properties-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/table-properties-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/table-merge\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/table-merge-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/table-merge-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/table-column\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/table-column-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/table-column-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/table-row\.svg/,
-			'/theme/icons/table-row-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/table-row-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/check\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/check-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/check-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/cancel\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/cancel-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/cancel-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/object-left\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/object-left-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/object-left-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/object-right\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/object-right-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/object-right-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/object-center\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/object-center-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/object-center-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/formula\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/formula-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/formula-eduflow.svg'
 		),
 		// Use formula-eduflow for math.svg (ckeditor5-math's .svg) too
 		new webpack.NormalModuleReplacementPlugin(
 			/math\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/formula-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/formula-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/code\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/code-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/code-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/codeblock\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/code-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/code-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/media\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/media-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/media-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/image\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/image-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/image-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/eraser\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/eraser-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/eraser-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/marker\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/marker-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/marker-eduflow.svg'
 		),
 		// Use this for pen too
 		new webpack.NormalModuleReplacementPlugin(
 			/pen\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/pen-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/pen-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin( // img alt text
 			/low-vision\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/low-vision-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/low-vision-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/accordion\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/accordion-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/accordion-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
 			/paperclip\.svg/,
-			'@tony/ckeditor5-build-eduflow/theme/icons/paperclip-eduflow.svg'
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/paperclip-eduflow.svg'
 		),
 		new CKEditorTranslationsPlugin( {
 			// UI language. Language codes follow the https://en.wikipedia.org/wiki/ISO_639-1 format.
