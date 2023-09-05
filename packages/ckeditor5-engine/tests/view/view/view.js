@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
-/* globals document, console, setTimeout */
+/* globals document, console, setTimeout, FocusEvent */
 
 import View from '../../../src/view/view';
 import Observer from '../../../src/view/observer/observer';
@@ -497,6 +497,114 @@ describe( 'view', () => {
 			sinon.assert.notCalled( global.window.scrollTo );
 		} );
 
+		it( 'should fire the #scrollToTheSelection event', () => {
+			const spy = sinon.spy();
+
+			view.on( 'scrollToTheSelection', spy );
+
+			stubSelectionRangeGeometry( { top: -200, right: 200, bottom: -100, left: 100, width: 100, height: 100 } );
+			view.scrollToTheSelection();
+
+			const range = view.document.selection.getFirstRange();
+
+			sinon.assert.calledWith( spy, sinon.match.object, {
+				target: view.domConverter.viewRangeToDom( range ),
+				alignToTop: undefined,
+				forceScroll: undefined,
+				viewportOffset: { top: 20, bottom: 20, left: 20, right: 20 },
+				ancestorOffset: 20
+			}, {
+				alignToTop: undefined,
+				forceScroll: undefined,
+				viewportOffset: 20,
+				ancestorOffset: 20
+			} );
+
+			assertScrollPosition( domRootAncestor, { scrollTop: -120, scrollLeft: 220 } );
+			sinon.assert.calledWithExactly( global.window.scrollTo, 100, -120 );
+		} );
+
+		it( 'should allow dynamic injection of options through the #scrollToTheSelection event', () => {
+			const spy = sinon.spy();
+
+			view.on( 'scrollToTheSelection', ( evt, data ) => {
+				data.viewportOffset.top += 10;
+				data.viewportOffset.bottom += 20;
+				data.viewportOffset.left += 30;
+				data.viewportOffset.right += 40;
+				data.alignToTop = true;
+			} );
+
+			view.on( 'scrollToTheSelection', spy );
+
+			stubSelectionRangeGeometry( { top: -200, right: 200, bottom: -100, left: 100, width: 100, height: 100 } );
+			view.scrollToTheSelection();
+
+			const range = view.document.selection.getFirstRange();
+
+			sinon.assert.calledWith( spy, sinon.match.object, {
+				target: view.domConverter.viewRangeToDom( range ),
+				alignToTop: true,
+				forceScroll: undefined,
+				viewportOffset: { top: 30, bottom: 40, left: 50, right: 60 },
+				ancestorOffset: 20
+			}, {
+				alignToTop: undefined,
+				forceScroll: undefined,
+				viewportOffset: 20,
+				ancestorOffset: 20
+			} );
+
+			assertScrollPosition( domRootAncestor, { scrollTop: -120, scrollLeft: 220 } );
+			sinon.assert.calledWithExactly( global.window.scrollTo, 100, -130 );
+		} );
+
+		it( 'should pass the original method arguments along the #scrollToTheSelection event', () => {
+			const spy = sinon.spy();
+
+			view.on( 'scrollToTheSelection', ( evt, data ) => {
+				data.viewportOffset.top += 10;
+				data.viewportOffset.bottom += 20;
+				data.viewportOffset.left += 30;
+				data.viewportOffset.right += 40;
+			} );
+
+			view.on( 'scrollToTheSelection', spy );
+
+			stubSelectionRangeGeometry( { top: -200, right: 200, bottom: -100, left: 100, width: 100, height: 100 } );
+			view.scrollToTheSelection( {
+				viewportOffset: {
+					top: 5,
+					bottom: 10,
+					left: 15,
+					right: 20
+				},
+				ancestorOffset: 30,
+				alignToTop: true,
+				forceScroll: true
+			} );
+
+			const range = view.document.selection.getFirstRange();
+
+			sinon.assert.calledWith( spy, sinon.match.object, {
+				target: view.domConverter.viewRangeToDom( range ),
+				alignToTop: true,
+				forceScroll: true,
+				viewportOffset: { top: 15, bottom: 30, left: 45, right: 60 },
+				ancestorOffset: 30
+			}, {
+				viewportOffset: {
+					top: 5,
+					bottom: 10,
+					left: 15,
+					right: 20
+				},
+				ancestorOffset: 30,
+				alignToTop: true,
+				forceScroll: true
+			} );
+		} );
+
 		function stubSelectionRangeGeometry( geometry ) {
 			const domRange = global.document.createRange();
 			domRange.setStart( domRoot, 0 );
@@ -833,6 +941,93 @@ describe( 'view', () => {
 
 			view.destroy();
 			domRoot.remove();
+		} );
+
+		describe( 'DOM selection clearing on editable blur', () => {
+			let view, viewDocument, domDiv, domOtherDiv;
+
+			function setupTest() {
+				domDiv = createElement( document, 'div', { id: 'editor' } );
+				domOtherDiv = createElement( document, 'div' );
+
+				document.body.appendChild( domDiv );
+				document.body.appendChild( domOtherDiv );
+
+				view = new View( new StylesProcessor() );
+				viewDocument = view.document;
+
+				createViewRoot( viewDocument, 'div', 'main' );
+				view.attachDomRoot( domDiv );
+
+				const viewText = new ViewText( viewDocument, 'foobar' );
+				const viewP = new ViewContainerElement( viewDocument, 'p', null, viewText );
+
+				viewDocument.getRoot()._appendChild( viewP );
+				viewDocument.selection._setTo( viewText, 3 );
+				viewDocument.isFocused = true;
+
+				view.forceRender();
+			}
+
+			afterEach( () => {
+				view.destroy();
+				domDiv.remove();
+				domOtherDiv.remove();
+			} );
+
+			it( 'should clear DOM selection on editor blur on iOS', () => {
+				sinon.stub( env, 'isiOS' ).value( true );
+
+				setupTest();
+
+				expect( document.getSelection().focusNode ).to.equal( domDiv.childNodes[ 0 ].childNodes[ 0 ] );
+				expect( document.getSelection().focusOffset ).to.equal( 3 );
+
+				domDiv.dispatchEvent( new FocusEvent( 'blur' ) );
+
+				expect( document.getSelection().rangeCount ).to.equal( 0 );
+			} );
+
+			it( 'should not clear DOM selection on editor blur on non-iOS browser', () => {
+				setupTest();
+
+				expect( document.getSelection().focusNode ).to.equal( domDiv.childNodes[ 0 ].childNodes[ 0 ] );
+				expect( document.getSelection().focusOffset ).to.equal( 3 );
+
+				domDiv.dispatchEvent( new FocusEvent( 'blur' ) );
+
+				expect( document.getSelection().rangeCount ).to.equal( 1 );
+				expect( document.getSelection().focusNode ).to.equal( domDiv.childNodes[ 0 ].childNodes[ 0 ] );
+				expect( document.getSelection().focusOffset ).to.equal( 3 );
+			} );
+
+			it( 'should clear DOM selection on editor blur on iOS (focus to some other element outside editor)', () => {
+				sinon.stub( env, 'isiOS' ).value( true );
+
+				setupTest();
+
+				expect( document.getSelection().focusNode ).to.equal( domDiv.childNodes[ 0 ].childNodes[ 0 ] );
+				expect( document.getSelection().focusOffset ).to.equal( 3 );
+
+				domDiv.dispatchEvent( new FocusEvent( 'blur', { relatedTarget: domOtherDiv } ) );
+
+				expect( document.getSelection().rangeCount ).to.equal( 0 );
+			} );
+
+			it( 'should not clear DOM selection on editor blur on iOS (focus to the editor editable)', () => {
+				sinon.stub( env, 'isiOS' ).value( true );
+
+				setupTest();
+
+				expect( document.getSelection().focusNode ).to.equal( domDiv.childNodes[ 0 ].childNodes[ 0 ] );
+				expect( document.getSelection().focusOffset ).to.equal( 3 );
+
+				domDiv.dispatchEvent( new FocusEvent( 'blur', { relatedTarget: domDiv } ) );
+
+				expect( document.getSelection().rangeCount ).to.equal( 1 );
+				expect( document.getSelection().focusNode ).to.equal( domDiv.childNodes[ 0 ].childNodes[ 0 ] );
+				expect( document.getSelection().focusOffset ).to.equal( 3 );
+			} );
 		} );
 	} );
 

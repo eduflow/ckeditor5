@@ -1,5 +1,6 @@
 ---
 title: Block toolbar
+meta-title: Block toolbar | CKEditor 5 Documentation
 category: features-toolbar
 order: 20
 ---
@@ -15,7 +16,7 @@ The block toolbar plugin provides an additional [configurable](#configuration) t
 {@snippet features/blocktoolbar}
 
 <info-box info>
-	This demo only presents a limited set of features. Visit the {@link examples/builds/full-featured-editor full-featured editor example} to see more in action.
+	This demo only presents a limited set of features. Visit the {@link examples/builds/full-featured-editor feature-rich editor example} to see more in action.
 </info-box>
 
 ## Additional feature information

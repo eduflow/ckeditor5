@@ -1,5 +1,6 @@
 ---
 category: features
+meta-title: Autosave | CKEditor 5 Documentation
 modified_at: 2023-05-29
 ---
 
@@ -25,7 +26,7 @@ How to understand this demo:
 * You will be asked whether you want to leave the page if an image is being uploaded or the data has not been saved successfully yet. You can test that by dropping a big image into the editor or changing the "HTTP server lag" to a high value (e.g. 9000ms) and typing something. These actions will make the editor busy for a longer time &mdash; try leaving the page then.
 
 <info-box info>
-	This demo only presents a limited set of features. Visit the {@link examples/builds/full-featured-editor full-featured editor example} to see more in action.
+	This demo only presents a limited set of features. Visit the {@link examples/builds/full-featured-editor feature-rich editor example} to see more in action.
 </info-box>
 
 ## Installation

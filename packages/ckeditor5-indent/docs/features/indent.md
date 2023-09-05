@@ -1,6 +1,7 @@
 ---
 title: Block indentation
 category: features
+meta-title: Block indentation | CKEditor 5 Documentation
 ---
 
 {@snippet features/build-indent-source}
@@ -14,7 +15,7 @@ Use the indent {@icon @ckeditor/ckeditor5-indent/theme/icons/indent.svg Indent} 
 {@snippet features/indent}
 
 <info-box info>
-	This demo only presents a limited set of features. Visit the {@link examples/builds/full-featured-editor full-featured editor example} to see more in action.
+	This demo only presents a limited set of features. Visit the {@link examples/builds/full-featured-editor feature-rich editor example} to see more in action.
 </info-box>
 
 ## Configuring the block indentation feature
@@ -145,7 +146,7 @@ ClassicEditor
 
 ## Related features
 
-Here are some CKEditor 5 features that may help structure your content better:
+Here are some CKEditor&nbsp;5 features that may help structure your content better:
 * {@link features/block-quote Block quote} &ndash; Include block quotations or pull quotes in your rich-text content.
 * {@link features/headings Headings} &ndash; Divide your content into sections.
 * {@link features/code-blocks Code block} &ndash; Insert longer, multiline code listings.
@@ -190,7 +191,7 @@ The {@link module:indent/indentblock~IndentBlock} plugin registers the following
 	```
 
 <info-box>
-	We recommend using the official {@link framework/development-tools#ckeditor-5-inspector CKEditor 5 inspector} for development and debugging. It will give you tons of useful information about the state of the editor such as internal data structures, selection, commands, and many more.
+	We recommend using the official {@link framework/development-tools/inspector CKEditor&nbsp;5 inspector} for development and debugging. It will give you tons of useful information about the state of the editor such as internal data structures, selection, commands, and many more.
 </info-box>
 
 ## Contribute

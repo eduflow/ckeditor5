@@ -137,6 +137,7 @@ export { default as ViewEmptyElement } from './view/emptyelement';
 export { default as ViewRawElement } from './view/rawelement';
 export { default as ViewUIElement } from './view/uielement';
 export { default as ViewDocumentFragment } from './view/documentfragment';
+export { default as ViewTreeWalker, type TreeWalkerValue as ViewTreeWalkerValue } from './view/treewalker';
 export type { default as ViewElementDefinition } from './view/elementdefinition';
 export type { default as ViewDocumentSelection } from './view/documentselection';
 export { default as AttributeElement } from './view/attributeelement';
@@ -155,6 +156,7 @@ export { default as ClickObserver } from './view/observer/clickobserver';
 export { default as DomEventObserver } from './view/observer/domeventobserver';
 export { default as MouseObserver } from './view/observer/mouseobserver';
 export { default as TabObserver } from './view/observer/tabobserver';
+export { default as FocusObserver } from './view/observer/focusobserver';
 
 export { default as DowncastWriter } from './view/downcastwriter';
 export { default as UpcastWriter } from './view/upcastwriter';
@@ -183,7 +185,7 @@ export type {
 export type { ViewDocumentTabEvent } from './view/observer/tabobserver';
 export type { ViewDocumentClickEvent } from './view/observer/clickobserver';
 export type { ViewDocumentSelectionChangeEvent } from './view/observer/selectionobserver';
-export type { ViewRenderEvent } from './view/view';
+export type { ViewRenderEvent, ViewScrollToTheSelectionEvent } from './view/view';
 
 // View / Styles.
 export { StylesProcessor, type BoxSides } from './view/stylesmap';

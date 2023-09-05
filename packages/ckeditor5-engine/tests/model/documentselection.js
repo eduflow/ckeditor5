@@ -44,6 +44,10 @@ describe( 'DocumentSelection', () => {
 		selection = doc.selection;
 		model.schema.register( 'p', { inheritAllFrom: '$block' } );
 
+		model.schema.extend( '$text', {
+			allowAttributes: 'bold'
+		} );
+
 		model.schema.register( 'widget', {
 			isObject: true
 		} );
@@ -1250,6 +1254,19 @@ describe( 'DocumentSelection', () => {
 			} );
 		} );
 
+		it( 'are not inherited from nodes in graveyard', () => {
+			model.change( writer => {
+				writer.insertText( 'foo', { bold: true }, model.document.graveyard, 0 );
+
+				// The only way to place selection in the graveyard is to remove all roots.
+				// This way the default range will be placed in the graveyard.
+				writer.detachRoot( 'main' );
+			} );
+
+			expect( selection.anchor.root ).to.equal( model.document.graveyard );
+			expect( selection.hasAttribute( 'bold' ) ).to.equal( false );
+		} );
+
 		describe( 'parent element\'s attributes', () => {
 			it( 'are set using a normal batch', () => {
 				let batch;
@@ -1413,6 +1430,77 @@ describe( 'DocumentSelection', () => {
 				expect( selection.hasAttribute( 'bold' ) ).to.equal( false );
 
 				selection._restoreGravity( overrideGravityUid );
+			} );
+		} );
+
+		// #14106
+		describe( 'reads surrounding attributes from inline object elements', () => {
+			beforeEach( () => {
+				model.schema.register( 'imageInline', {
+					inheritAllFrom: '$inlineObject',
+					allowAttributes: 'src'
+				} );
+			} );
+
+			it( 'inherits attributes from a node before', () => {
+				setData( model, '<p><$text bold="true">Foo Bar.</$text><imageInline bold="true"></imageInline>[]</p>' );
+
+				expect( selection.hasAttribute( 'bold' ) ).to.equal( true );
+			} );
+
+			it( 'inherits attributes from a node after with override gravity', () => {
+				setData( model, '<p><$text>Foo Bar.</$text>[]<imageInline bold="true"></imageInline></p>' );
+
+				const overrideGravityUid = selection._overrideGravity();
+
+				expect( selection.hasAttribute( 'bold' ) ).to.equal( true );
+
+				selection._restoreGravity( overrideGravityUid );
+			} );
+
+			it( 'inherits attributes from <imageInline>, even without any text before it', () => {
+				setData( model, '<p><imageInline bold="true"></imageInline>[]</p>' );
+
+				expect( selection.hasAttribute( 'bold' ) ).to.equal( true );
+			} );
+
+			it( 'ignores attributes from a node before (copyFromObject === false)', () => {
+				model.schema.setAttributeProperties( 'bold', { copyFromObject: false } );
+				setData( model, '<p><$text bold="true">Foo Bar.</$text><imageInline bold="true"></imageInline>[]</p>' );
+
+				expect( selection.hasAttribute( 'bold' ) ).to.equal( false );
+			} );
+
+			it( 'ignores attributes from a node after with override gravity (copyFromObject === false)', () => {
+				model.schema.setAttributeProperties( 'bold', { copyFromObject: false } );
+				setData( model, '<p><$text>Foo Bar.</$text>[]<imageInline bold="true"></imageInline></p>' );
+
+				const overrideGravityUid = selection._overrideGravity();
+
+				expect( selection.hasAttribute( 'bold' ) ).to.equal( false );
+
+				selection._restoreGravity( overrideGravityUid );
+			} );
+
+			it( 'ignores attributes from <imageInline>, even without any text before it (copyFromObject === false)', () => {
+				model.schema.setAttributeProperties( 'bold', { copyFromObject: false } );
+				setData( model, '<p><imageInline bold="true"></imageInline>[]</p>' );
+
+				expect( selection.hasAttribute( 'bold' ) ).to.equal( false );
+			} );
+
+			it( 'inherits attributes from a selected node (only those allowed on text)', () => {
+				setData( model, '<p>foo[<imageInline bold="true" src="123"></imageInline>]bar</p>' );
+
+				expect( selection.hasAttribute( 'bold' ) ).to.equal( true );
+				expect( selection.hasAttribute( 'src' ) ).to.equal( false );
+			} );
+
+			it( 'ignores attributes from a selected node with copyFromObject flag == false', () => {
+				model.schema.setAttributeProperties( 'bold', { copyFromObject: false } );
+				setData( model, '<p>foo[<imageInline bold="true"></imageInline>]bar</p>' );
+
+				expect( selection.hasAttribute( 'bold' ) ).to.equal( false );
 			} );
 		} );
 	} );

@@ -1,6 +1,8 @@
 ---
 category: features-images
 menu-title: Resizing images
+meta-title: Resizing images | CKEditor 5 Documentation
+meta-description: All about various ways of resizing images to fit the content better.
 order: 50
 modified_at: 2021-06-17
 ---
@@ -29,10 +31,10 @@ Images can also be pre-resized using styling, as shown below (the last three ima
 {@snippet features/image-resize}
 
 <info-box info>
-	All demos in this guide only present a limited set of features for clarity. Visit the {@link examples/builds/full-featured-editor full-featured editor example} to see more in action.
+	All demos in this guide only present a limited set of features for clarity. Visit the {@link examples/builds/full-featured-editor feature-rich editor example} to see more in action.
 </info-box>
 
-You can configure resizing images by handles in two different ways in the CKEditor 5 WYSIWYG editor:
+You can configure resizing images by handles in two different ways in the CKEditor&nbsp;5 WYSIWYG editor:
 
 * Either by installing the {@link module:image/imageresize~ImageResize} plugin, which contains **all** needed features (`ImageResizeEditing`, `ImageResizeHandles`, `ImageResizeButtons`) as described in the {@link features/images-resizing#installation installation} of this guide.
 
@@ -204,7 +206,7 @@ And the `max-width` gets overridden by the following rule:
 }
 ```
 
-Another concern when styling resized images is that by default, CKEditor 5 uses `display: table` on `<figure class="image">` elements to make it take up the size of the `<img>` element inside it. Unfortunately, [browsers do not yet support using `max-width` and `width` on the same element if it is styled with `display: table`](https://stackoverflow.com/questions/4019604/chrome-safari-ignoring-max-width-in-table/14420691#14420691). Therefore, `display: block` needs to be used when the image is resized:
+Another concern when styling resized images is that by default, CKEditor&nbsp;5 uses `display: table` on `<figure class="image">` elements to make it take up the size of the `<img>` element inside it. Unfortunately, [browsers do not yet support using `max-width` and `width` on the same element if it is styled with `display: table`](https://stackoverflow.com/questions/4019604/chrome-safari-ignoring-max-width-in-table/14420691#14420691). Therefore, `display: block` needs to be used when the image is resized:
 
 ```css
 .ck-content .image.image_resized {
@@ -284,6 +286,10 @@ Check out the difference in the live demo below:
 
 {@snippet features/image-resize-px}
 
+## Image optimization and responsive images
+
+When using the {@link features/ckbox CKBox file manager} service, it produces sets of resized, optimized images. The users can easily invoke these resized versions if needed. To learn more about these capabilities, refer to the {@link features/images-responsive responsive images} guide and the {@link @ckbox features/images/conversion CKBox conversion} guide.
+
 ## Installation
 
 <info-box>
@@ -313,7 +319,7 @@ The {@link module:image/imageresize~ImageResize} plugin registers:
 * The {@link module:image/imageresize/resizeimagecommand~ResizeImageCommand `'resizeImage'` command} that accepts the target width.
 
 <info-box>
-	We recommend using the official {@link framework/development-tools#ckeditor-5-inspector CKEditor 5 inspector} for development and debugging. It will give you tons of useful information about the state of the editor such as internal data structures, selection, commands, and many more.
+	We recommend using the official {@link framework/development-tools/inspector CKEditor&nbsp;5 inspector} for development and debugging. It will give you tons of useful information about the state of the editor such as internal data structures, selection, commands, and many more.
 </info-box>
 
 ## Contribute

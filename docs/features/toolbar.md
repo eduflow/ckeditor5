@@ -1,13 +1,14 @@
 ---
 title: Editor toolbar
 category: features-toolbar
+meta-title: Editor toolbar | CKEditor 5 Documentation
 order: 10
 ---
 {@snippet features/build-toolbar-source}
 
 # Editor toolbar
 
-The toolbar is the most basic user interface element of CKEditor 5 that gives you convenient access to all its features. It has buttons and dropdowns that you can use to format, manage, insert, and change elements of your content.
+The toolbar is the most basic user interface element of CKEditor&nbsp;5 that gives you convenient access to all its features. It has buttons and dropdowns that you can use to format, manage, insert, and change elements of your content.
 
 ## Demo
 
@@ -16,7 +17,7 @@ Below is a sample toolbar with a basic set of features. Toolbar items can be eas
 {@snippet features/toolbar-basic}
 
 <info-box info>
-	All demos in this guide only present a limited set of features for clarity. Visit the {@link examples/builds/full-featured-editor full-featured editor example} to see more in action.
+	All demos in this guide only present a limited set of features for clarity. Visit the {@link examples/builds/full-featured-editor feature-rich editor example} to see more in action.
 </info-box>
 
 ## Basic toolbar configuration
@@ -279,7 +280,7 @@ Array.from( editor.ui.componentFactory.names() );
 
 ## Adding a custom button
 
-Refer to the {@link framework/creating-simple-plugin-timestamp Creating a simple plugin} guide to learn how to build your own plugin, register its button and add it to the toolbar configuration.
+Refer to the {@link tutorials/crash-course/editor step-by-step tutorial} to learn how to build your own plugin, register its button and add it to the toolbar configuration.
 
 ## Block toolbar
 

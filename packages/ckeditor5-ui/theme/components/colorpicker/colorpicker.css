@@ -3,12 +3,12 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
-.ck.ck-input {
-	min-width: unset;
-}
-
 .color-picker-hex-input {
 	width: max-content;
+
+	& .ck.ck-input {
+		min-width: unset;
+	}
 }
 
 .ck.ck-color-picker__row {
@@ -16,6 +16,16 @@
 	flex-direction: row;
 	flex-wrap: nowrap;
 	justify-content: space-between;
+	margin: var(--ck-spacing-large) 0 0;
+	width: unset;
+
+	& .ck.ck-labeled-field-view {
+		padding-top: unset;
+	}
+
+	& .ck.ck-input-text {
+		width: unset;
+	}
 
 	& .ck-color-picker__hash-view {
 		padding-top: var(--ck-spacing-tiny);

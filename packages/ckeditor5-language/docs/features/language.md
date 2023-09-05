@@ -1,6 +1,7 @@
 ---
 category: features
 menu-title: Text part language
+meta-title: Text part language | CKEditor 5 Documentation
 ---
 
 # Text part language
@@ -14,7 +15,7 @@ In the demo below, select a text fragment. Next, use the language toolbar dropdo
 {@snippet features/textpartlanguage}
 
 <info-box info>
-	This demo only presents a limited set of features. Visit the {@link examples/builds/full-featured-editor full-featured editor example} to see more in action.
+	This demo only presents a limited set of features. Visit the {@link examples/builds/full-featured-editor feature-rich editor example} to see more in action.
 </info-box>
 
 ## Additional feature information
@@ -80,7 +81,7 @@ ClassicEditor
 
 ## Related features
 
-There are other language-related CKEditor 5 features you may want to check:
+There are other language-related CKEditor&nbsp;5 features you may want to check:
 
 * {@link features/ui-language UI Language}  &ndash; Set the UI language.
 * {@link features/spelling-and-grammar-checking Spelling and grammar checking} &ndash; Employ multi-language spell check for flawless content.
@@ -100,7 +101,7 @@ editor.execute( 'textPartLanguage', { languageCode: 'es' } );
 ```
 
 <info-box>
-	We recommend using the official {@link framework/development-tools#ckeditor-5-inspector CKEditor 5 inspector} for development and debugging. It will give you tons of useful information about the state of the editor such as internal data structures, selection, commands, and many more.
+	We recommend using the official {@link framework/development-tools/inspector CKEditor&nbsp;5 inspector} for development and debugging. It will give you tons of useful information about the state of the editor such as internal data structures, selection, commands, and many more.
 </info-box>
 
 ## Contribute

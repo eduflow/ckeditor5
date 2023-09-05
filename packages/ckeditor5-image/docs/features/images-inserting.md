@@ -1,13 +1,15 @@
 ---
 category: features-images
 menu-title: Inserting images via URL
+meta-title: Inserting images into content via URL | CKEditor 5 Documentation
+meta-description: Learn how to insert your images into the content.
 order: 75
 ---
 {@snippet features/build-image-source}
 
 # Inserting images
 
-You can insert images by uploading them directly from your disk, but you can also configure CKEditor 5 to let you insert images using URLs. This way you can save time by adding images that are already online.
+You can insert images by uploading them directly from your disk, but you can also configure CKEditor&nbsp;5 to let you insert images using URLs. This way you can save time by adding images that are already online.
 
 ## Inserting images via a source URL
 ### Demo
@@ -17,7 +19,7 @@ To upload an image, use the image toolbar button {@icon @ckeditor/ckeditor5-core
 {@snippet features/image-insert-via-url}
 
 <info-box info>
-	The demos in this guide only presents a limited set of features. Visit the {@link examples/builds/full-featured-editor full-featured editor example} to see more in action.
+	The demos in this guide only present a limited set of features. Visit the {@link examples/builds/full-featured-editor feature-rich editor example} to see more in action.
 </info-box>
 
 ### Installation
@@ -81,7 +83,7 @@ The {@link module:image/imageupload~ImageUpload} plugin registers:
 * The {@link module:image/imageupload/uploadimagecommand~UploadImageCommand `'uploadImage'` command} that accepts the file to upload.
 
 <info-box>
-	We recommend using the official {@link framework/development-tools#ckeditor-5-inspector CKEditor 5 inspector} for development and debugging. It will give you tons of useful information about the state of the editor such as internal data structures, selection, commands, and many more.
+	We recommend using the official {@link framework/development-tools/inspector CKEditor&nbsp;5 inspector} for development and debugging. It will give you tons of useful information about the state of the editor such as internal data structures, selection, commands, and many more.
 </info-box>
 
 ## Contribute
