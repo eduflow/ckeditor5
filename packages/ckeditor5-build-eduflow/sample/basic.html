@@ -29,7 +29,11 @@
 
 <script src="../build/ckeditor.js"></script>
 <script>
-	window.CKEDITOR.BalloonEditor.create( document.querySelector( '#editor' ) )
+		window.CKEDITOR.BalloonEditor.create( document.querySelector( '#editor' ), {
+			blockToolbar: [
+				'bold',
+			],
+		} )
 		.then( editor => {
 			window.editor = editor;
 		} )
