@@ -1,7 +1,7 @@
 {
   "name": "@peergrade/ckeditor5-build-eduflow",
   "version": "39.0.2-next.0",
-  "description": "The balloon editor build of CKEditor 5 with a block toolbar – the best browser-based rich text editor.",
+  "description": "A custom build of CKEditor5 licensed to Eduflow.",
   "keywords": [
     "wysiwyg",
     "rich text",
@@ -74,15 +74,9 @@
     "node": ">=16.0.0",
     "npm": ">=5.7.1"
   },
-  "author": "CKSource (http://cksource.com/)",
-  "license": "GPL-2.0-or-later",
+  "author": "Eduflow",
+  "license": "SEE LICENSE IN General Terms and Conditions for the Subscription of Software and Services 1.5",
   "homepage": "https://ckeditor.com/ckeditor-5",
-  "bugs": "https://github.com/ckeditor/ckeditor5/issues",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ckeditor/ckeditor5.git",
-    "directory": "packages/ckeditor5-build-balloon-block"
-  },
   "scripts": {
     "build": "webpack --mode production",
     "preversion": "npm run build"
