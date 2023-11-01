@@ -9,6 +9,9 @@
 			margin: 20px auto;
 			font-family: Arial, Helvetica, sans-serif;
 		}
+		.ck.ck-icon.ck-icon_inherit-color :not([fill]) {
+			stroke: black;
+		}
 	</style>
 </head>
 <body>
@@ -29,7 +32,11 @@
 
 <script src="../build/ckeditor.js"></script>
 <script>
-	window.CKEDITOR.BalloonEditor.create( document.querySelector( '#editor' ) )
+		window.CKEDITOR.BalloonEditor.create( document.querySelector( '#editor' ), {
+			blockToolbar: [
+				'bold',
+			],
+		} )
 		.then( editor => {
 			window.editor = editor;
 		} )

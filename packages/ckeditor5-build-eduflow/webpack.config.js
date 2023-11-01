@@ -50,6 +50,10 @@ module.exports = {
 			'@peergrade/ckeditor5-build-eduflow/theme/icons/pilcrow-eduflow.svg'
 		),
 		new webpack.NormalModuleReplacementPlugin(
+			/drag-indicator\.svg/,
+			'@peergrade/ckeditor5-build-eduflow/theme/icons/pilcrow-eduflow.svg'
+		),
+		new webpack.NormalModuleReplacementPlugin(
 			/bold\.svg/,
 			'@peergrade/ckeditor5-build-eduflow/theme/icons/bold-eduflow.svg'
 		),
