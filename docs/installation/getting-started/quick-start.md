@@ -186,7 +186,7 @@ In this example, we remove the premium collaboration features as well as several
 					]
 				},
 				// https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
-				placeholder: 'Welcome to CKEditor&nbsp;5!',
+				placeholder: 'Welcome to CKEditor 5!',
 				// https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
 				fontFamily: {
 					options: [
@@ -259,6 +259,7 @@ In this example, we remove the premium collaboration features as well as several
 					// These two are commercial, but you can try them out without registering to a trial.
 					// 'ExportPdf',
 					// 'ExportWord',
+					'AIAssistant',
 					'CKBox',
 					'CKFinder',
 					'EasyImage',
