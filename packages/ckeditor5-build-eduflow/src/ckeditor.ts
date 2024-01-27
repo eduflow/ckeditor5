@@ -14,7 +14,7 @@ import ClassicEditorBase from '@ckeditor/ckeditor5-editor-classic/src/classicedi
 
 // Default
 import { Essentials } from '@ckeditor/ckeditor5-essentials';
-import { UploadAdapter } from '@ckeditor/ckeditor5-adapter-ckfinder';
+import { CKFinderUploadAdapter } from '@ckeditor/ckeditor5-adapter-ckfinder';
 import { Autoformat } from '@ckeditor/ckeditor5-autoformat';
 import { BlockToolbar, type BodyCollection } from '@ckeditor/ckeditor5-ui';
 import { Bold, Code, Italic, Strikethrough, Underline } from '@ckeditor/ckeditor5-basic-styles';
@@ -143,7 +143,7 @@ function MoveSelectionToTextOnInit( editor: Editor ): void {
 // Plugins to include in the build.
 const plugins = [
 	Essentials,
-	UploadAdapter,
+	CKFinderUploadAdapter,
 	Autoformat,
 	BlockToolbar,
 	Bold,
