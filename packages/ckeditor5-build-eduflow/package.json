@@ -1,6 +1,6 @@
 {
   "name": "@peergrade/ckeditor5-build-eduflow",
-  "version": "41.0.0-next.0",
+  "version": "41.0.0-next.1",
   "description": "A custom build of CKEditor5 licensed to Eduflow.",
   "keywords": [
     "wysiwyg",
