@@ -100,7 +100,7 @@ ClassicEditor.create( document.querySelector( '#editor' ), {
 
 ### How to get the editor instance object from the DOM element?
 
-If you have a reference to the editor editable's DOM element (the one with the `.ck-editor__editable` class and the `contenteditable` attribute), you can access the editor instance this editable element belongs to using the `ckeditorInstance` property:
+If you have a reference to the editor editable DOM element (the one with the `.ck-editor__editable` class and the `contenteditable` attribute), you can access the editor instance this editable element belongs to using the `ckeditorInstance` property:
 
 ```html
 <!-- The editable element in the editor's DOM structure. -->
@@ -198,7 +198,7 @@ editor.model.change( writer => {
 } );
 ```
 
-### How to delete all specific elements (e.g. block images) in the editor?
+### How to delete all specific elements (like block images) in the editor?
 
 ```js
 editor.model.change( writer => {
@@ -207,13 +207,13 @@ editor.model.change( writer => {
 
 	for ( const value of range.getWalker() ) {
 		if ( value.item.is( 'element', 'imageBlock' ) ) {
-			// a different `is` usage.
+			// A different `is` usage.
 			itemsToRemove.push( value.item );
 		}
 	}
 
 	for ( const item of itemsToRemove ) {
-		writer.remove( item ); // remove all of the items.
+		writer.remove( item ); // Remove all the items.
 	}
 } );
 ```
@@ -293,7 +293,7 @@ for ( const range of wordRanges ) {
 }
 ```
 
-### How to listen on a double-click (e.g. link elements)?
+### How to listen on a double-click (for example, link elements)?
 
 ```js
 // Add observer for double click and extend a generic DomEventObserver class by a native DOM dblclick event:

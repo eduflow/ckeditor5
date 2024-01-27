@@ -19,7 +19,7 @@ To see all the image features in action, check out the demo below. To learn more
 {@snippet features/image-full}
 
 <info-box info>
-	This demo only presents a limited set of features. Visit the {@link examples/builds/full-featured-editor feature-rich editor example} to see more in action.
+	This demo presents a limited set of features. Visit the {@link examples/builds/full-featured-editor feature-rich editor example} to see more in action.
 </info-box>
 
 ## Base image feature
@@ -242,7 +242,7 @@ You can also use the **Insert paragraph** handles on the bottom or top edge of t
 
 ## Image editing
 
-While the image feature does not provide native image editing support, the {@link features/ckbox CKBox premium feature} provides basic editing capabilities such as cropping or flipping. These can, however, only be applied to images served by the CKBox service.
+While the image feature does not provide native image editing support, the {@link features/ckbox CKBox premium feature} provides basic editing capabilities such as cropping to presets, flipping, or rotating.
 
 ## Contribute
 

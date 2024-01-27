@@ -68,7 +68,7 @@ Changes for the past releases are available below.
 
 ### Bug fixes
 
-* Fixed a bug with spellchecking or pasting via the context menu into a table cell crashing the editor. Closes [ckeditor/ckeditor5#6062](https://github.com/ckeditor/ckeditor5/issues/6062). ([be0d759](https://github.com/ckeditor/ckeditor5-table/commit/be0d759))
+* Fixed a bug with spell checking or pasting via the context menu into a table cell crashing the editor. Closes [ckeditor/ckeditor5#6062](https://github.com/ckeditor/ckeditor5/issues/6062). ([be0d759](https://github.com/ckeditor/ckeditor5-table/commit/be0d759))
 
 ### Other changes
 
@@ -202,17 +202,17 @@ Internal changes only (updated dependencies, documentation, etc.).
 
 ### Features
 
-* Implemented the table post–fixer which bulletproofs the feature in various complex use–cases (e.g. pasting and real-time collaborative editing). Closes [#13](https://github.com/ckeditor/ckeditor5-table/issues/13). ([01f9a3b](https://github.com/ckeditor/ckeditor5-table/commit/01f9a3b))
+* Implemented the table post–fixer which bulletproofs the feature in various complex use–cases (for example, pasting and real-time collaborative editing). Closes [#13](https://github.com/ckeditor/ckeditor5-table/issues/13). ([01f9a3b](https://github.com/ckeditor/ckeditor5-table/commit/01f9a3b))
 * Introduced the toolbar for the table widget (previously it was available only for single cells). Changed the toolbar configuration option from `table.toolbar` to `table.contentToolbar`. Closes [#113](https://github.com/ckeditor/ckeditor5-table/issues/113). Closes [#106](https://github.com/ckeditor/ckeditor5-table/issues/106). ([9f9486d](https://github.com/ckeditor/ckeditor5-table/commit/9f9486d))
 
-  Other: `config.table.toolbar` is marked as depracted. Use `config.table.contentToolbar` instead.
+  Other: `config.table.toolbar` is marked as deprecated. Use `config.table.contentToolbar` instead.
 * Introduced a support for block content inside tables. Closes [#56](https://github.com/ckeditor/ckeditor5-table/issues/56). ([cdf718e](https://github.com/ckeditor/ckeditor5-table/commit/cdf718e))
 
 ### Bug fixes
 
 * A table cell should always have a `<paragraph>` in the model. Closes [#125](https://github.com/ckeditor/ckeditor5-table/issues/125). ([1eb5d6d](https://github.com/ckeditor/ckeditor5-table/commit/1eb5d6d))
 * Downcast converter for table attributes should work with not converted child elements. Closes [#92](https://github.com/ckeditor/ckeditor5-table/issues/92). ([a3ea18d](https://github.com/ckeditor/ckeditor5-table/commit/a3ea18d))
-* Merging down rowspanned cell from the head with a cell in the body is now disabled. Closes [#86](https://github.com/ckeditor/ckeditor5-table/issues/86). ([cb77e38](https://github.com/ckeditor/ckeditor5-table/commit/cb77e38))
+* Merging down a row-spanned cell from the head with a cell in the body is now disabled. Closes [#86](https://github.com/ckeditor/ckeditor5-table/issues/86). ([cb77e38](https://github.com/ckeditor/ckeditor5-table/commit/cb77e38))
 * The upcast conversion will now properly parse inline content in table cell into single paragraph. Closes [ckeditor/ckeditor5#1246](https://github.com/ckeditor/ckeditor5/issues/1246). ([ea1e16d](https://github.com/ckeditor/ckeditor5-table/commit/ea1e16d))
 * Toggling headers should always include the column or row the selection is anchored to. Closes [#34](https://github.com/ckeditor/ckeditor5-table/issues/34). ([bce6766](https://github.com/ckeditor/ckeditor5-table/commit/bce6766))
 

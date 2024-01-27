@@ -7,6 +7,7 @@ autodetect
 [Aa]utoformat
 [Aa]utoformatting
 [Aa]utolink
+[Aa]utoparagraph
 Automattic
 [Aa]utosave
 [Aa]utosaving
@@ -28,12 +29,19 @@ CMS
 codebase
 (?i)constructor
 Cordova
+CVs
 cycler
 Dailymotion
+debounce
+declutter
+deduplicate
+deduplicating
+dialogs
 DLL
 Dmitry
 DOM
 (?i)downcast
+draggable
 [Dd]ropdown
 embeddable
 Embedly
@@ -42,9 +50,14 @@ ESLint
 formatter
 Gantt
 [Gg]etter
+global
 Grammarly
 hardcode
+hotlink
+hotlinked
 Iframely
+inlined
+ipsum
 Ivanov
 JSDoc
 Junon
@@ -57,6 +70,7 @@ Lesha
 Libre
 localizable
 Lodash
+lorem
 Luxon
 matcher
 mindmap
@@ -67,6 +81,7 @@ modified_at
 monorepo
 (?i)multiline
 [Nn]amespace
+namespacing
 npm
 Nuxt
 nvm
@@ -79,7 +94,9 @@ previewable
 Rauch
 reinitialization
 reinitialize
+resizer
 Rollup
+ruleset
 sanitization
 scaffold
 [Ss]chema
@@ -91,6 +108,7 @@ shortcode
 sidenote
 Sinon
 Socket.IO
+spacerun
 Spotify
 [Ss]trikethrough
 stringify
@@ -120,6 +138,7 @@ upvoting
 (?i)viewport
 Vite
 Vue
+walkthrough
 webpack
 Wirtz
 Wolt

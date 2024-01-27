@@ -104,7 +104,7 @@ All changes to the model are made using the {@link module:engine/model/writer~Wr
 
 In the callback, we first check if the selection is collapsed. Unlike a standard selection, which can span multiple letters, elements, or even blocks, a collapsed selection has a range of zero, meaning that it starts and ends at the same position. In other words, the collapsed selection is just a caret.
 
-So, if we are dealing with a standard (not collapsed) selection, we check for all the ranges where the `highlight` attribute can be used, loop over them, and either add or remove this attribute depending on the current state.
+If we are dealing with a standard (not collapsed) selection, we check for all the ranges where the `highlight` attribute can be used, loop over them, and either add or remove this attribute depending on the current state.
 
 If the selection is collapsed, we either add or remove the attribute based on the current state.
 
@@ -120,7 +120,7 @@ If everything went well, the text you selected should be highlighted in the edit
 
 In the CKEditor Inspector, open the `Commands` tab to see all available commands. The `highlight` command should also be listed.
 
-## What's next?
+## What's next
 
 If you want to read more about the commands, see the {@link framework/architecture/core-editor-architecture#commands Commands} document.
 

@@ -10,7 +10,7 @@ modified_at: 2023-08-16
 
 ## The editor
 
-The editors come in a few flavors. While each looks very different visually, they are very similar under the hood and consist of two parts:
+The editors come in a few flavors. While each looks different visually, they are similar under the hood and consist of two parts:
 
 * Editing engine,
 * Editing UI.
@@ -93,7 +93,7 @@ import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 CKEditorInspector.attach(editor);
 ```
 
-When the page refreshes, you should see a debugging panel for CKEditor. Go to the `Schema` tab and click on the `$text` element. On the right side you should see `highlight:true` under the `Allowed Attributes` section.
+When the page refreshes, you should see a debugging panel for CKEditor. Go to the `Schema` tab and click the `$text` element. On the right side you should see `highlight:true` under the `Allowed Attributes` section.
 
 Go to the `Model` tab and re-run this code in the console:
 

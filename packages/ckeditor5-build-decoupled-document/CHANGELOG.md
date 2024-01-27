@@ -344,13 +344,13 @@ Patch releases (bug fixes, internal changes):
 
 ### Other changes
 
-* Bumped style-loader to v1.0.0. Aligned the webpack config to the new loader API. See [ckeditor/ckeditor5#1945](https://github.com/ckeditor/ckeditor5/issues/1945). ([218070b](https://github.com/ckeditor/ckeditor5-build-decoupled-document/commit/218070b))
+* Bumped style-loader to v1.0.0. Aligned the webpack configuration to the new loader API. See [ckeditor/ckeditor5#1945](https://github.com/ckeditor/ckeditor5/issues/1945). ([218070b](https://github.com/ckeditor/ckeditor5-build-decoupled-document/commit/218070b))
 * The issue tracker for this package was moved to https://github.com/ckeditor/ckeditor5/issues. See [ckeditor/ckeditor5#1988](https://github.com/ckeditor/ckeditor5/issues/1988). ([0931639](https://github.com/ckeditor/ckeditor5-build-decoupled-document/commit/0931639))
 
 
 ## [12.3.1](https://github.com/ckeditor/ckeditor5-build-decoupled-document/compare/v12.3.0...v12.3.1) (July 10, 2019)
 
-We are happy to report the release of CKEditor&nbsp;5 v12.3.0 (and v12.3.1 with a small fix). This release introduces several new features ([word count](https://ckeditor.com/docs/ckeditor5/latest/features/word-count.html), [automatic text transformations](https://ckeditor.com/docs/ckeditor5/latest/features/text-transformation.html), [ability to control link attributes such as `target`](https://ckeditor.com/docs/ckeditor5/latest/features/link.html#custom-link-attributes-decorators) and [block indentation](https://ckeditor.com/docs/ckeditor5/latest/features/indent.html)). It also brings improvements to existing features (e.g. the ["document colors" section](https://ckeditor.com/docs/ckeditor5/latest/features/font.html#documents-colors) in the font color picker dropdowns) and many bug fixes.
+We are happy to report the release of CKEditor&nbsp;5 v12.3.0 (and v12.3.1 with a small fix). This release introduces several new features ([word count](https://ckeditor.com/docs/ckeditor5/latest/features/word-count.html), [automatic text transformations](https://ckeditor.com/docs/ckeditor5/latest/features/text-transformation.html), [ability to control link attributes such as `target`](https://ckeditor.com/docs/ckeditor5/latest/features/link.html#custom-link-attributes-decorators) and [block indentation](https://ckeditor.com/docs/ckeditor5/latest/features/indent.html)). It also brings improvements to existing features (like the ["document colors" section](https://ckeditor.com/docs/ckeditor5/latest/features/font.html#documents-colors) in the font color picker dropdowns) and many bug fixes.
 
 ### Dependencies
 
@@ -578,7 +578,7 @@ Major releases (contain breaking changes):
 
 ## [11.2.0](https://github.com/ckeditor/ckeditor5-build-decoupled-document/compare/v11.1.1...v11.2.0) (December 5, 2018)
 
-We are happy to report the release of CKEditor&nbsp;5 v11.2.0. This editor version brings the long-awaited [support for paste from Office](https://ckeditor.com/docs/ckeditor5/latest/features/paste-from-word.html) (e.g. from Microsoft Word), [integration with CKFinder file manager](https://ckeditor.com/docs/ckeditor5/latest/features/ckfinder.html), improved [image upload documentation](https://ckeditor.com/docs/ckeditor5/latest/features/image-upload.html), improved [editor UI on mobile devices](https://github.com/ckeditor/ckeditor5/issues/416#issuecomment-430246472), as well as many smaller features and improvements.
+We are happy to report the release of CKEditor&nbsp;5 v11.2.0. This editor version brings the long-awaited [support for paste from Office](https://ckeditor.com/docs/ckeditor5/latest/features/paste-from-word.html) (for example, from Microsoft Word), [integration with CKFinder file manager](https://ckeditor.com/docs/ckeditor5/latest/features/ckfinder.html), improved [image upload documentation](https://ckeditor.com/docs/ckeditor5/latest/features/image-upload.html), improved [editor UI on mobile devices](https://github.com/ckeditor/ckeditor5/issues/416#issuecomment-430246472), as well as many smaller features and improvements.
 
 Blog post is coming soon...
 
@@ -896,20 +896,20 @@ Major releases (contain breaking changes):
 
 ### Other changes
 
-* Image styles's default configuration has been changed to: left-aligned, right-aligned image and full-size image (instead of the typical: side-image and full-size image). This change makes content previously created with this build incompatible with the new setup.
+* The default configuration of the image styles was changed to: left-aligned, right-aligned image and full-size image (instead of the typical: side-image and full-size image). This change makes content previously created with this build incompatible with the new setup.
 
-   You can [configure image styles](https://ckeditor.com/docs/ckeditor5/latest/features/image.html#image-styles) in order to bring back the old setting (`[ 'full', 'side' ]`).
+   You can [configure image styles](https://ckeditor.com/docs/ckeditor5/latest/features/image.html#image-styles) to bring back the old setting (`[ 'full', 'side' ]`).
 
    Closes [#10](https://github.com/ckeditor/ckeditor5-build-decoupled-document/issues/10). ([75855d9](https://github.com/ckeditor/ckeditor5-build-decoupled-document/commit/75855d9))
 
 ### BREAKING CHANGES
 
-* The default image styles configuration has been changed (see the section above for more information).
+* The default image styles configuration was changed (see the section above for more information).
 
 
 ## [1.0.0-beta.3](https://github.com/ckeditor/ckeditor5-build-decoupled-document/compare/v1.0.0-beta.2...v1.0.0-beta.3) (April 10, 2018)
 
-### NOTE
+### Note
 
 This release followed `v1.0.0-beta.2` immediately to fix the issue mentioned below. Therefore, when upgrading from `v1.0.0-beta.1` make sure to also check [`v1.0.0-beta.2` release notes](https://github.com/ckeditor/ckeditor5-build-decoupled-document/releases/tag/v1.0.0-beta.2).
 
@@ -962,7 +962,7 @@ Major releases (contain breaking changes):
 ### BREAKING CHANGES
 
 * The global variable exported by the build is now called `DecoupledEditor` instead of `DecoupledDocumentEditor`. See [#6](https://github.com/ckeditor/ckeditor5-build-decoupled-document/issues/6).
-* The config options `config.toolbarContainer` and `config.editableContainer` have been removed. Please refer to the `DecoupledEditor` class API documentation to learn about possible methods of bootstrapping the UI.
+* The configuration options `config.toolbarContainer` and `config.editableContainer` have been removed. Refer to the `DecoupledEditor` class API documentation to learn about possible methods of bootstrapping the UI.
 
 
 ## [1.0.0-beta.1](https://github.com/ckeditor/ckeditor5-build-decoupled-document/compare/v0.0.1...v1.0.0-beta.1) (March 15, 2018)

@@ -19,7 +19,7 @@ If you want to see the final product of this tutorial before you plunge in, chec
 First, we make our plugin accessible for users who rely on keyboards for navigation. We want to ensure that pressing <kbd>Tab</kbd> and <kbd>Shift</kbd> + <kbd>Tab</kbd> will move focus around in the form view, and pressing `esc` will close it.
 
 <info-box>
-	In order to improve the accessibility of the plugin, it is important to understand how keystroke and focus management works in the CKEditor&nbsp;5 framework. We recommend you {@link framework/architecture/ui-library#keystrokes-and-focus-management read up on the basics}, or do a {@link framework/deep-dive/focus-tracking deep dive into focus tracking}.
+	To improve the accessibility of the plugin, it is important to understand how keystroke and focus management works in the CKEditor&nbsp;5 framework. We recommend you {@link framework/architecture/ui-library#keystrokes-and-focus-management read up on the basics}, or do a {@link framework/deep-dive/focus-tracking deep dive into focus tracking}.
 </info-box>
 
 We have some ready-to-use options to help us out &ndash; the {@link framework/deep-dive/focus-tracking#using-the-keystrokehandler-class KeystrokeHandler}, {@link framework/deep-dive/focus-tracking#using-the-focustracker-class FocusTracker}, and {@link framework/deep-dive/focus-tracking#using-the-focuscycler-class FocusCycler} helper classes.
@@ -172,7 +172,7 @@ When the user selects a range (a letter, a word, or a whole document fragment) a
 	As we will be working with user's selection in the document, it is important to understand what exactly does it mean in the editor's model. Read our introduction to {@link framework/architecture/editing-engine#positions-ranges-and-selections positions, ranges and selections} to expand your knowledge in the field.
 </info-box>
 
-In order to display the text from the user's selection in the form field, we need to first grab and concatenate all text from the selected range. If the user selects a couple of paragraphs, a heading, and an image, we need to go through all the nodes, and use only the ones containing text.
+To display the text from the user's selection in the form field, we need to first grab and concatenate all text from the selected range. If the user selects a couple of paragraphs, a heading, and an image, we need to go through all the nodes, and use only the ones containing text.
 
 Let's create a helper `getRangeText()` function in a separate `/utils.js` file. It will grab all items from a range using its `getItems()` method. Then, it will concatenate all text from the {@link module:engine/model/text~Text `text`} and {@link module:engine/model/textproxy~TextProxy `textProxy`} nodes, and skip all the others.
 
@@ -358,7 +358,7 @@ export default class AbbreviationUI extends Plugin {
 
 The command should now work, and pressing the `submit` button should have the same effect as it did before. We can now explore some additional functionalities. You can check it out now in the CKEditor&nbsp;5 Inspector.
 
-{@img assets/img/abbreviation-part3-1.png Screenshot of the CKEditor&nbsp;5 inspector showing the 'addAbbreviation' command.}
+{@img assets/img/abbreviation-part3-1.png Screenshot of the CKEditor&nbsp;5 inspector showing the `addAbbreviation` command.}
 
 ### Refreshing the state
 
@@ -442,7 +442,7 @@ export default class AbbreviationCommand extends Command {
 
 If the selection is not collapsed, we check if it has the `abbreviation` model attribute. If so, we will again grab the full range of the abbreviation and compare it with the user selection.
 
-When the user selects a bit of text with the abbreviation attribute, along with a bit without it, we do not want to change the command's value. So, we will use the `containsRange()` method to see if the selected range is within the abbreviation range. The second parameter makes it a `loose` check, meaning the selected range can start, end, or be equal to the abbreviation range.
+When the user selects a bit of text with the abbreviation attribute, along with a bit without it, we do not want to change the command's value. We will thus use the `containsRange()` method to see if the selected range is within the abbreviation range. The second parameter makes it a `loose` check, meaning the selected range can start, end, or be equal to the abbreviation range.
 
 ```js
 // abbreviation/abbreviationcommand.js
@@ -500,7 +500,7 @@ export default class AbbreviationCommand extends Command {
 
 You can check the command and its current value in the inspector.
 
-{@img assets/img/abbreviation-part3-2.png Screenshot of the CKEditor&nbsp;5 inspector showing the value of the 'addAbbreviation' command.}
+{@img assets/img/abbreviation-part3-2.png Screenshot of the CKEditor&nbsp;5 inspector showing the value of the `addAbbreviation` command.}
 
 We can now check the command value when the user presses the toolbar abbreviation button, and insert both abbreviation text and title values into the form's input fields.
 
@@ -557,7 +557,7 @@ export default class AbbreviationUI extends Plugin {
 
 We should now introduce more cases into our `execute()` method. For starters, if the user's selection is not collapsed, we just need to add the abbreviation attribute to their selection instead of inserting the abbreviation text into the model.
 
-So if the selection is not collapsed, we will gather all the ranges, that are allowed to use the `abbreviation` model attribute, using the schema's `getValidRanges()` method. Then we will use the `setAttribute()`, to add the title value to each of the ranges.
+If the selection is not collapsed, we will gather all the ranges that are allowed to use the `abbreviation` model attribute, using the schema's `getValidRanges()` method. Then we will use the `setAttribute()`, to add the title value to each of the ranges.
 
 If the selection is collapsed, we will keep our `insertContent()` model method from before. Then, we need to use `removeSelectionAttribute` method, to stop adding new content into the abbreviation if the user starts to type.
 
@@ -725,7 +725,7 @@ The command is now done, check how it works by trying all our different cases - 
 If you got lost at any point, this is [the final implementation of the plugin](https://github.com/ckeditor/ckeditor5-tutorials-examples/tree/main/abbreviation-plugin/part-3). You can paste the code from different files into your project, or clone and install the whole thing, and it will run out of the box.
 
 <info-box>
-	**What's next?**
+	**What's next**
 
 	That's it, you've finished the tutorial! You are now ready to create your own plugins. If you want to continue learning, move on to our more advanced tutorials, starting with the {@link tutorials/widgets/implementing-a-block-widget Implementing a block widget} guide.
 </info-box>
