@@ -29,9 +29,11 @@ import { List } from '@ckeditor/ckeditor5-list';
 import { MediaEmbed } from '@ckeditor/ckeditor5-media-embed';
 import { Paragraph } from '@ckeditor/ckeditor5-paragraph';
 import { PasteFromOffice } from '@ckeditor/ckeditor5-paste-from-office';
+import { PasteFromOfficeEnhanced } from '@ckeditor/ckeditor5-paste-from-office-enhanced';
 import { Table, TableCellProperties, TableToolbar, TableColumnResize, TableProperties } from '@ckeditor/ckeditor5-table';
 import { TextTransformation } from '@ckeditor/ckeditor5-typing';
 import { CloudServices } from '@ckeditor/ckeditor5-cloud-services';
+import { ImportWord } from '@ckeditor/ckeditor5-import-word';
 
 // Custom
 import { CodeBlock } from '@ckeditor/ckeditor5-code-block';
@@ -164,6 +166,7 @@ const plugins = [
 	MediaEmbed,
 	Paragraph,
 	PasteFromOffice,
+	PasteFromOfficeEnhanced,
 	TextTransformation,
 
 	// ADDED
@@ -183,7 +186,8 @@ const plugins = [
 	TableToolbar,
 	TableProperties,
 	TableCellProperties,
-	Underline
+	Underline,
+	ImportWord
 ];
 
 export class BalloonEditor extends BalloonEditorBase {
