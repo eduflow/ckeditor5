@@ -29,6 +29,10 @@ msgctxt "Label for the URL input in the Link URL editing balloon."
 msgid "Link URL"
 msgstr "URL de ligazón"
 
+msgctxt "An error text displayed when user attempted to enter an empty URL."
+msgid "Link URL must not be empty."
+msgstr "O URL da ligazón non debe estar baleiro."
+
 msgctxt "Label for the image link button."
 msgid "Link image"
 msgstr "Ligazón da imaxe"
@@ -55,8 +59,8 @@ msgstr "Descargábel"
 
 msgctxt "Keystroke description for assistive technologies: keystroke for creating a link."
 msgid "Create link"
-msgstr ""
+msgstr "Crear ligazón"
 
 msgctxt "Keystroke description for assistive technologies: keystroke for moving out of a link."
 msgid "Move out of a link"
-msgstr ""
+msgstr "Saír dunha ligazón"

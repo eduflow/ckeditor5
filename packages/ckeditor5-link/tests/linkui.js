@@ -14,6 +14,7 @@ import { keyCodes } from '@ckeditor/ckeditor5-utils/src/keyboard.js';
 import { getData as getModelData, setData as setModelData } from '@ckeditor/ckeditor5-engine/src/dev-utils/model.js';
 import { getData as getViewData } from '@ckeditor/ckeditor5-engine/src/dev-utils/view.js';
 import env from '@ckeditor/ckeditor5-utils/src/env.js';
+import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials.js';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph.js';
 import BlockQuote from '@ckeditor/ckeditor5-block-quote/src/blockquote.js';
 import ClickObserver from '@ckeditor/ckeditor5-engine/src/view/observer/clickobserver.js';
@@ -41,7 +42,7 @@ describe( 'LinkUI', () => {
 
 		return ClassicTestEditor
 			.create( editorElement, {
-				plugins: [ LinkEditing, LinkUI, Paragraph, BlockQuote ]
+				plugins: [ Essentials, LinkEditing, LinkUI, Paragraph, BlockQuote ]
 			} )
 			.then( newEditor => {
 				editor = newEditor;
@@ -410,6 +411,75 @@ describe( 'LinkUI', () => {
 			const newLinkDomElement = editor.editing.view.domConverter.mapViewToDom( newLinkViewElement );
 
 			expect( balloon.view.pin.lastCall.args[ 0 ].target() ).to.equal( newLinkDomElement );
+		} );
+
+		describe( 'form status', () => {
+			it( 'should update ui on error due to change ballon position', () => {
+				const updateSpy = sinon.spy( editor.ui, 'update' );
+
+				linkUIFeature._createViews();
+				formView = linkUIFeature.formView;
+				actionsView = linkUIFeature.actionsView;
+				formView.render();
+
+				setModelData( editor.model, '<paragraph>[foo]</paragraph>' );
+
+				linkUIFeature._showUI();
+
+				expect( updateSpy ).not.to.be.called;
+				formView.fire( 'submit' );
+				expect( updateSpy ).to.be.calledOnce;
+			} );
+
+			it( 'should show error form status if passed empty link', () => {
+				linkUIFeature._createViews();
+				formView = linkUIFeature.formView;
+				actionsView = linkUIFeature.actionsView;
+				formView.render();
+
+				setModelData( editor.model, '<paragraph>[foo]</paragraph>' );
+				linkUIFeature._showUI();
+
+				formView.fire( 'submit' );
+
+				expect( formView.urlInputView.errorText ).to.be.equal( 'Link URL must not be empty.' );
+			} );
+
+			it( 'should reset error form status after filling empty link', () => {
+				linkUIFeature._createViews();
+				formView = linkUIFeature.formView;
+				actionsView = linkUIFeature.actionsView;
+				formView.render();
+
+				setModelData( editor.model, '<paragraph>[foo]</paragraph>' );
+
+				linkUIFeature._showUI();
+
+				formView.fire( 'submit' );
+				expect( formView.urlInputView.errorText ).to.be.equal( 'Link URL must not be empty.' );
+
+				formView.urlInputView.fieldView.value = 'http://cksource.com';
+				formView.fire( 'submit' );
+
+				expect( formView.urlInputView.errorText ).to.be.null;
+			} );
+
+			it( 'should reset form status on show', () => {
+				linkUIFeature._createViews();
+				formView = linkUIFeature.formView;
+				actionsView = linkUIFeature.actionsView;
+				formView.render();
+
+				setModelData( editor.model, '<paragraph>[foo]</paragraph>' );
+				linkUIFeature._showUI();
+
+				formView.fire( 'submit' );
+				expect( formView.urlInputView.errorText ).to.be.equal( 'Link URL must not be empty.' );
+
+				linkUIFeature._hideUI();
+				linkUIFeature._showUI();
+				expect( formView.urlInputView.errorText ).to.be.null;
+			} );
 		} );
 
 		describe( 'response to ui#update', () => {
@@ -946,6 +1016,18 @@ describe( 'LinkUI', () => {
 			linkUIFeature._hideUI();
 
 			expect( editor.model.markers.has( 'link-ui' ) ).to.be.false;
+		} );
+
+		it( 'should not throw if selection includes soft break before text item', () => {
+			linkUIFeature._hideUI();
+
+			setModelData( editor.model, '<paragraph>[<softBreak></softBreak>fo]</paragraph>' );
+
+			linkUIFeature._showUI();
+
+			expect( () => {
+				linkUIFeature._hideUI();
+			} ).to.not.throw();
 		} );
 	} );
 
@@ -1531,8 +1613,12 @@ describe( 'LinkUI', () => {
 
 			it( 'should not allow submitting empty form when link is required', () => {
 				return createEditorWithEmptyLinks( false ).then( ( { editor, formView } ) => {
-					expect( formView.saveButtonView.isEnabled ).to.be.false;
+					const executeSpy = sinon.spy( editor, 'execute' );
 
+					formView.urlInputView.fieldView.value = '';
+					formView.fire( 'submit' );
+
+					expect( executeSpy ).not.to.be.called;
 					return editor.destroy();
 				} );
 			} );
@@ -1732,6 +1818,8 @@ describe( 'LinkUI', () => {
 
 			it( 'should hide and reveal the #actionsView on formView#submit event', () => {
 				linkUIFeature._showUI();
+
+				formView.urlInputView.fieldView.value = '/test.html';
 				formView.fire( 'submit' );
 
 				expect( balloon.visibleView ).to.equal( actionsView );

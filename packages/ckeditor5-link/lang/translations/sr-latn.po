@@ -29,6 +29,10 @@ msgctxt "Label for the URL input in the Link URL editing balloon."
 msgid "Link URL"
 msgstr "URL link"
 
+msgctxt "An error text displayed when user attempted to enter an empty URL."
+msgid "Link URL must not be empty."
+msgstr "URL linka ne sme biti prazan."
+
 msgctxt "Label for the image link button."
 msgid "Link image"
 msgstr "Link slike"
@@ -55,8 +59,8 @@ msgstr "Moguće preuzimanje"
 
 msgctxt "Keystroke description for assistive technologies: keystroke for creating a link."
 msgid "Create link"
-msgstr ""
+msgstr "Kreirajte vezu"
 
 msgctxt "Keystroke description for assistive technologies: keystroke for moving out of a link."
 msgid "Move out of a link"
-msgstr ""
+msgstr "Pomerite se sa veze"

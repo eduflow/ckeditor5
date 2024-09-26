@@ -20,6 +20,8 @@ import CKEditorError from '@ckeditor/ckeditor5-utils/src/ckeditorerror.js';
 import testUtils from '../../tests/_utils/utils.js';
 import { getData, setData } from '@ckeditor/ckeditor5-engine/src/dev-utils/model.js';
 import Accessibility from '../../src/accessibility.js';
+import EditorWatchdog from '@ckeditor/ckeditor5-watchdog/src/editorwatchdog.js';
+import ContextWatchdog from '@ckeditor/ckeditor5-watchdog/src/contextwatchdog.js';
 
 class TestEditor extends Editor {
 	static create( config ) {
@@ -214,6 +216,13 @@ describe( 'Editor', () => {
 			const editor = new TestEditor();
 
 			sinon.assert.calledWith( spy, editor.editing.view.document );
+		} );
+
+		it( 'should throw if `config.sanitizeHtml` is passed', () => {
+			expectToThrowCKEditorError( () => {
+				// eslint-disable-next-line no-new
+				new TestEditor( { sanitizeHtml: () => {} } );
+			}, 'editor-config-sanitizehtml-not-supported' );
 		} );
 	} );
 
@@ -1345,6 +1354,20 @@ describe( 'Editor', () => {
 				testUtils.sinon.assert.calledOnce( spy );
 				testUtils.sinon.assert.calledWith( spy, options );
 			} );
+		} );
+	} );
+
+	describe( 'static fields', () => {
+		it( 'Editor.Context', () => {
+			expect( Editor.Context ).to.equal( Context );
+		} );
+
+		it( 'Editor.EditorWatchdog', () => {
+			expect( Editor.EditorWatchdog ).to.equal( EditorWatchdog );
+		} );
+
+		it( 'Editor.ContextWatchdog', () => {
+			expect( Editor.ContextWatchdog ).to.equal( ContextWatchdog );
 		} );
 	} );
 } );

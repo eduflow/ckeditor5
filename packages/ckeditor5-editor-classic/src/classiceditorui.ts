@@ -10,12 +10,12 @@
 import type { Editor, ElementApi } from 'ckeditor5/src/core.js';
 import {
 	EditorUI,
-	normalizeToolbarConfig,
-	normalizeMenuBarConfig,
 	DialogView,
+	normalizeToolbarConfig,
 	type DialogViewMoveToEvent,
 	type Dialog,
-	type EditorUIReadyEvent
+	type EditorUIReadyEvent,
+	type ContextualBalloonGetPositionOptionsEvent
 } from 'ckeditor5/src/ui.js';
 import {
 	enablePlaceholder,
@@ -39,11 +39,6 @@ export default class ClassicEditorUI extends EditorUI {
 	private readonly _toolbarConfig: ReturnType<typeof normalizeToolbarConfig>;
 
 	/**
-	 * A normalized `config.menuBar` object.
-	 */
-	private readonly _menuBarConfig: ReturnType<typeof normalizeMenuBarConfig>;
-
-	/**
 	 * The element replacer instance used to hide the editor's source element.
 	 */
 	private readonly _elementReplacer: ElementReplacer;
@@ -59,9 +54,6 @@ export default class ClassicEditorUI extends EditorUI {
 
 		this.view = view;
 		this._toolbarConfig = normalizeToolbarConfig( editor.config.get( 'toolbar' ) );
-
-		// We use config.define in ClassicEditor, there will always be some configuration.
-		this._menuBarConfig = normalizeMenuBarConfig( editor.config.get( 'menuBar' ) || {} );
 
 		this._elementReplacer = new ElementReplacer();
 
@@ -124,8 +116,14 @@ export default class ClassicEditorUI extends EditorUI {
 
 		this._initPlaceholder();
 		this._initToolbar();
-		this._initMenuBar();
+
+		if ( view.menuBarView ) {
+			this._initMenuBar( view.menuBarView );
+		}
+
 		this._initDialogPluginIntegration();
+		this._initContextualBalloonIntegration();
+
 		this.fire<EditorUIReadyEvent>( 'ready' );
 	}
 
@@ -161,21 +159,6 @@ export default class ClassicEditorUI extends EditorUI {
 	}
 
 	/**
-	 * Initializes the editor menu bar.
-	 */
-	private _initMenuBar(): void {
-		const view = this.view;
-
-		if ( !view.menuBarView ) {
-			return;
-		}
-
-		this._setupMenuBarBehaviors( view.menuBarView.element! );
-
-		view.menuBarView.fillFromConfig( this._menuBarConfig, this.componentFactory );
-	}
-
-	/**
 	 * Enable the placeholder text on the editing root.
 	 */
 	private _initPlaceholder(): void {
@@ -205,6 +188,65 @@ export default class ClassicEditorUI extends EditorUI {
 			isDirectHost: false,
 			keepOnFocus: true
 		} );
+	}
+
+	/**
+	 * Provides an integration between the sticky toolbar and {@link module:ui/panel/balloon/contextualballoon contextual balloon plugin}.
+	 * It allows the contextual balloon to consider the height of the
+	 * {@link module:editor-classic/classiceditoruiview~ClassicEditorUIView#stickyPanel}. It prevents the balloon from overlapping
+	 * the sticky toolbar by adjusting the balloon's position using viewport offset configuration.
+	 */
+	private _initContextualBalloonIntegration(): void {
+		if ( !this.editor.plugins.has( 'ContextualBalloon' ) ) {
+			return;
+		}
+
+		const { stickyPanel } = this.view;
+		const contextualBalloon = this.editor.plugins.get( 'ContextualBalloon' );
+
+		contextualBalloon.on<ContextualBalloonGetPositionOptionsEvent>( 'getPositionOptions', evt => {
+			const position = evt.return;
+
+			if ( !position || !stickyPanel.isSticky || !stickyPanel.element ) {
+				return;
+			}
+
+			// Measure toolbar (and menu bar) height.
+			const stickyPanelHeight = new Rect( stickyPanel.element ).height;
+
+			// Handle edge case when the target element is larger than the limiter.
+			// It's an issue because the contextual balloon can overlap top table cells when the table is larger than the viewport
+			// and it's placed at the top of the editor. It's better to overlap toolbar in that situation.
+			// Check this issue: https://github.com/ckeditor/ckeditor5/issues/15744
+			const target = typeof position.target === 'function' ? position.target() : position.target;
+			const limiter = typeof position.limiter === 'function' ? position.limiter() : position.limiter;
+
+			if ( target && limiter && new Rect( target ).height >= new Rect( limiter ).height - stickyPanelHeight ) {
+				return;
+			}
+
+			// Ensure that viewport offset is present, it can be undefined according to the typing.
+			const viewportOffsetConfig = { ...position.viewportOffsetConfig };
+			const newTopViewportOffset = ( viewportOffsetConfig.top || 0 ) + stickyPanelHeight;
+
+			evt.return = {
+				...position,
+				viewportOffsetConfig: {
+					...viewportOffsetConfig,
+					top: newTopViewportOffset
+				}
+			};
+		}, { priority: 'low' } );
+
+		// Update balloon position when the toolbar becomes sticky or when ui viewportOffset changes.
+		const updateBalloonPosition = () => {
+			if ( contextualBalloon.visibleView ) {
+				contextualBalloon.updatePosition();
+			}
+		};
+
+		this.listenTo( stickyPanel, 'change:isSticky', updateBalloonPosition );
+		this.listenTo( this.editor.ui, 'change:viewportOffset', updateBalloonPosition );
 	}
 
 	/**
@@ -274,29 +316,6 @@ export default class ClassicEditorUI extends EditorUI {
 				}
 			}, { priority: 'high' } );
 		}, { priority: 'low' } );
-	}
-
-	/**
-	 * Handles focus and keystrokes for menu bar element.
-	 */
-	private _setupMenuBarBehaviors( menuBarViewElement: HTMLElement ) {
-		const editor = this.editor;
-		this.focusTracker.add( menuBarViewElement );
-		editor.keystrokes.listenTo( menuBarViewElement );
-
-		editor.keystrokes.set( 'Esc', ( data, cancel ) => {
-			if ( menuBarViewElement.contains( this.focusTracker.focusedElement ) ) {
-				editor.editing.view.focus();
-				cancel();
-			}
-		} );
-
-		editor.keystrokes.set( 'Alt+F9', ( data, cancel ) => {
-			if ( !menuBarViewElement.contains( this.focusTracker.focusedElement ) ) {
-				this.view.menuBarView!.focus();
-				cancel();
-			}
-		} );
 	}
 }
 

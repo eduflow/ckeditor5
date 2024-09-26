@@ -135,6 +135,18 @@ export default class ImageUploadEditing extends Plugin {
 
 				editor.execute( 'uploadImage', { file: images } );
 			} );
+
+			const uploadImageCommand = editor.commands.get( 'uploadImage' )!;
+
+			if ( !uploadImageCommand.isAccessAllowed ) {
+				const notification: Notification = editor.plugins.get( 'Notification' );
+				const t = editor.locale.t;
+
+				// eslint-disable-next-line max-len
+				notification.showWarning( t( 'You have no image upload permissions.' ), {
+					namespace: 'image'
+				} );
+			}
 		} );
 
 		// Handle HTML pasted with images with base64 or blob sources.
@@ -320,6 +332,10 @@ export default class ImageUploadEditing extends Plugin {
 					} );
 				}
 
+				if ( editor.ui ) {
+					editor.ui.ariaLiveAnnouncer.announce( t( 'Uploading image' ) );
+				}
+
 				model.enqueueChange( { isUndoable: false }, writer => {
 					writer.setAttribute( 'uploadStatus', 'uploading', imageElement );
 				} );
@@ -332,12 +348,20 @@ export default class ImageUploadEditing extends Plugin {
 
 					writer.setAttribute( 'uploadStatus', 'complete', imageElement );
 
+					if ( editor.ui ) {
+						editor.ui.ariaLiveAnnouncer.announce( t( 'Image upload complete' ) );
+					}
+
 					this.fire<ImageUploadCompleteEvent>( 'uploadComplete', { data, imageElement } );
 				} );
 
 				clean();
 			} )
 			.catch( error => {
+				if ( editor.ui ) {
+					editor.ui.ariaLiveAnnouncer.announce( t( 'Error during image upload' ) );
+				}
+
 				// If status is not 'error' nor 'aborted' - throw error because it means that something else went wrong,
 				// it might be generic error and it would be real pain to find what is going on.
 				if ( loader.status !== 'error' && loader.status !== 'aborted' ) {

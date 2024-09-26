@@ -31,7 +31,7 @@ import ListPropertiesEditing from '../../src/listproperties/listpropertieseditin
 import stubUid from '../list/_utils/uid.js';
 
 describe( 'TodoListEditing', () => {
-	let editor, model, view, editorElement;
+	let editor, model, view, editorElement, modelRoot;
 
 	testUtils.createSinonSandbox();
 
@@ -39,11 +39,10 @@ describe( 'TodoListEditing', () => {
 		editorElement = document.createElement( 'div' );
 		document.body.appendChild( editorElement );
 
-		editor = await ClassicTestEditor.create( editorElement, {
-			plugins: [ Paragraph, TodoListEditing, BlockQuoteEditing, TableEditing, HeadingEditing, AlignmentEditing ]
-		} );
+		editor = await createEditor();
 
 		model = editor.model;
+		modelRoot = model.document.getRoot();
 		view = editor.editing.view;
 
 		stubUid();
@@ -202,6 +201,53 @@ describe( 'TodoListEditing', () => {
 				'</ul>',
 				'<paragraph listIndent="0" listItemId="a00" listType="todo">foo</paragraph>'
 			);
+		} );
+
+		it( 'should convert li with a checkbox and a paragraph ( when checked )', () => {
+			testUpcast(
+				'<ul>' +
+					'<li>' +
+						'<input type="checkbox" checked="checked">' +
+						'<p>foo</p>' +
+					'</li>' +
+				'</ul>',
+				'<paragraph listIndent="0" listItemId="a00" listType="todo" todoListChecked="true">foo</paragraph>'
+			);
+		} );
+
+		it( 'should convert nested li with a checkbox and a paragraph ( when checked )', () => {
+			testUpcast(
+				'<ul>' +
+					'<li>' +
+						'<input type="checkbox">' +
+						'<ul>' +
+							'<li>' +
+								'<input type="checkbox" checked="checked">' +
+								'<p>foo</p>' +
+							'</li>' +
+						'</ul>' +
+					'</li>' +
+				'</ul>',
+				'<paragraph listIndent="0" listItemId="a01" listType="todo"></paragraph>' +
+				'<paragraph listIndent="1" listItemId="a00" listType="todo" todoListChecked="true">foo</paragraph>'
+			);
+		} );
+
+		it( 'should not convert nested li if it was already consumed', () => {
+			editor.data.upcastDispatcher.on( 'element:li', ( evt, data, conversionApi ) => {
+				conversionApi.consumable.consume( data.viewItem, { name: true } );
+			}, { priority: 'highest' } );
+
+			editor.setData(
+				'<ul>' +
+					'<li>' +
+						'<input type="checkbox" checked="checked">' +
+						'<p>foo</p>' +
+					'</li>' +
+				'</ul>'
+			);
+
+			expect( getModelData( model, { withoutSelection: true } ) ).to.equal( '<paragraph></paragraph>' );
 		} );
 
 		it( 'should convert li with a checkbox and two paragraphs', () => {
@@ -953,6 +999,96 @@ describe( 'TodoListEditing', () => {
 		} );
 	} );
 
+	describe( 'accessibility', () => {
+		let announcerSpy;
+
+		beforeEach( () => {
+			announcerSpy = sinon.spy( editor.ui.ariaLiveAnnouncer, 'announce' );
+		} );
+
+		it( 'should announce entering and leaving list (multiBlock = false)', async () => {
+			await editor.destroy();
+
+			editor = await createEditor( {
+				list: {
+					multiBlock: false
+				}
+			} );
+
+			model = editor.model;
+			modelRoot = model.document.getRoot();
+			announcerSpy = sinon.spy( editor.ui.ariaLiveAnnouncer, 'announce' );
+
+			setModelData( model,
+				'<paragraph>[Foo]</paragraph>' +
+				'<listItem listType="todo" listIndent="0">1</listItem>' +
+				'<listItem listType="todo" listIndent="0" todoListChecked="true">2</listItem>' +
+				'<paragraph>Foo</paragraph>'
+			);
+
+			moveSelection( [ 1, 0 ], [ 1, 1 ] );
+			expectAnnounce( 'Entering a to-do list' );
+
+			moveSelection( [ 3, 0 ], [ 3, 1 ] );
+			expectAnnounce( 'Leaving a to-do list' );
+		} );
+
+		it( 'should announce entering and leaving list', () => {
+			setModelData( model,
+				'<paragraph>[Foo]</paragraph>' +
+				'<paragraph listType="todo" listIndent="0">1</paragraph>' +
+				'<paragraph listType="todo" listIndent="0" todoListChecked="true">2</paragraph>' +
+				'<paragraph>Foo</paragraph>'
+			);
+
+			moveSelection( [ 1, 0 ], [ 1, 1 ] );
+			expectAnnounce( 'Entering a to-do list' );
+
+			moveSelection( [ 3, 0 ], [ 3, 1 ] );
+			expectAnnounce( 'Leaving a to-do list' );
+		} );
+
+		it( 'should announce entering and leaving list once, even if there is nested list', () => {
+			setModelData( model,
+				'<paragraph>[Foo]</paragraph>' +
+				'<paragraph listType="todo" listIndent="0">1</paragraph>' +
+				'<paragraph listType="todo" listIndent="1">1</paragraph>' +
+				'<paragraph listType="todo" listIndent="0" todoListChecked="true">2</paragraph>' +
+				'<paragraph>Foo</paragraph>'
+			);
+
+			moveSelection( [ 1, 0 ], [ 1, 1 ] );
+			expectAnnounce( 'Entering a to-do list' );
+
+			moveSelection( [ 2, 0 ], [ 2, 1 ] );
+			expectNotToAnnounce( 'Leaving a to-do list' );
+
+			moveSelection( [ 4, 0 ], [ 4, 1 ] );
+			expectAnnounce( 'Leaving a to-do list' );
+		} );
+
+		function expectNotToAnnounce( message ) {
+			expect( announcerSpy ).not.to.be.calledWithExactly( message );
+		}
+
+		function expectAnnounce( message ) {
+			expect( announcerSpy ).to.be.calledWithExactly( message );
+		}
+
+		function moveSelection( startPath, endPath ) {
+			model.change( writer => {
+				writer.setSelection( createRange( modelRoot, startPath, modelRoot, endPath ) );
+			} );
+		}
+
+		function createRange( startElement, startPath, endElement, endPath ) {
+			return model.createRange(
+				model.createPositionFromPath( startElement, startPath ),
+				model.createPositionFromPath( endElement, endPath )
+			);
+		}
+	} );
+
 	describe( 'user interaction events', () => {
 		it( 'should toggle check state of selected to-do list item on keystroke', () => {
 			const command = editor.commands.get( 'checkTodoList' );
@@ -1211,6 +1347,13 @@ describe( 'TodoListEditing', () => {
 			} );
 		} );
 	} );
+
+	async function createEditor( config = {} ) {
+		return ClassicTestEditor.create( editorElement, {
+			plugins: [ Paragraph, TodoListEditing, BlockQuoteEditing, TableEditing, HeadingEditing, AlignmentEditing ],
+			...config
+		} );
+	}
 
 	function testUpcast( input, output ) {
 		editor.setData( input );

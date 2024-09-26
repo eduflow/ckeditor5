@@ -7,7 +7,7 @@
  * @module editor-multi-root/multirooteditoruiview
  */
 
-import { EditorUIView, InlineEditableUIView, ToolbarView } from 'ckeditor5/src/ui.js';
+import { EditorUIView, InlineEditableUIView, MenuBarView, ToolbarView } from 'ckeditor5/src/ui.js';
 import type { Locale } from 'ckeditor5/src/utils.js';
 import type { EditingView } from 'ckeditor5/src/engine.js';
 
@@ -34,6 +34,11 @@ export default class MultiRootEditorUIView extends EditorUIView {
 	public readonly editable: InlineEditableUIView;
 
 	/**
+	 * Menu bar view instance.
+	 */
+	public override menuBarView: MenuBarView;
+
+	/**
 	 * The editing view instance this view is related to.
 	 */
 	private readonly _editingView: EditingView;
@@ -52,6 +57,8 @@ export default class MultiRootEditorUIView extends EditorUIView {
 	 * @param options.shouldToolbarGroupWhenFull When set to `true` enables automatic items grouping
 	 * in the main {@link module:editor-multi-root/multirooteditoruiview~MultiRootEditorUIView#toolbar toolbar}.
 	 * See {@link module:ui/toolbar/toolbarview~ToolbarOptions#shouldGroupWhenFull} to learn more.
+	 * @param options.label When set, this value will be used as an accessible `aria-label` of the
+	 * {@link module:ui/editableui/editableuiview~EditableUIView editable view} elements.
 	 */
 	constructor(
 		locale: Locale,
@@ -60,6 +67,7 @@ export default class MultiRootEditorUIView extends EditorUIView {
 		options: {
 			editableElements?: Record<string, HTMLElement>;
 			shouldToolbarGroupWhenFull?: boolean;
+			label?: string | Record<string, string>;
 		} = {}
 	) {
 		super( locale );
@@ -70,13 +78,20 @@ export default class MultiRootEditorUIView extends EditorUIView {
 			shouldGroupWhenFull: options.shouldToolbarGroupWhenFull
 		} );
 
+		this.menuBarView = new MenuBarView( locale );
+
 		this.editables = {};
 
 		// Create `InlineEditableUIView` instance for each editable.
 		for ( const editableName of editableNames ) {
 			const editableElement = options.editableElements ? options.editableElements[ editableName ] : undefined;
+			let { label } = options;
 
-			this.createEditable( editableName, editableElement );
+			if ( typeof label === 'object' ) {
+				label = label[ editableName ];
+			}
+
+			this.createEditable( editableName, editableElement, label );
 		}
 
 		this.editable = Object.values( this.editables )[ 0 ];
@@ -86,6 +101,16 @@ export default class MultiRootEditorUIView extends EditorUIView {
 		// Also, make sure the toolbar has the proper dir attribute because its ancestor may not have one
 		// and some toolbar item styles depend on this attribute.
 		this.toolbar.extendTemplate( {
+			attributes: {
+				class: [
+					'ck-reset_all',
+					'ck-rounded-corners'
+				],
+				dir: locale.uiLanguageDirection
+			}
+		} );
+
+		this.menuBarView.extendTemplate( {
 			attributes: {
 				class: [
 					'ck-reset_all',
@@ -104,15 +129,12 @@ export default class MultiRootEditorUIView extends EditorUIView {
 	 *
 	 * @param editableName The name for the editable.
 	 * @param editableElement DOM element for which the editable should be created.
+	 * @param label The accessible editable label used by assistive technologies.
 	 * @returns The created editable instance.
 	 */
-	public createEditable( editableName: string, editableElement?: HTMLElement ): InlineEditableUIView {
-		const t = this.locale.t;
-
+	public createEditable( editableName: string, editableElement?: HTMLElement, label?: string ): InlineEditableUIView {
 		const editable = new InlineEditableUIView( this.locale, this._editingView, editableElement, {
-			label: editable => {
-				return t( 'Rich Text Editor. Editing area: %0', editable.name! );
-			}
+			label
 		} );
 
 		this.editables[ editableName ] = editable;
@@ -150,5 +172,6 @@ export default class MultiRootEditorUIView extends EditorUIView {
 
 		this.registerChild( Object.values( this.editables ) );
 		this.registerChild( this.toolbar );
+		this.registerChild( this.menuBarView );
 	}
 }
